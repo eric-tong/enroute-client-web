@@ -2,8 +2,13 @@
 
 import React, { useState } from "react";
 
+type LocationEntry = {
+  timestamp: string,
+  coords: { x: number, y: number },
+};
+
 function App() {
-  const [data, setData] = useState();
+  const [data: LocationEntry[], setData] = useState([]);
 
   fetch("https://enroute-platform.herokuapp.com/")
     .then(response => {
@@ -16,13 +21,21 @@ function App() {
     .then(setData)
     .catch(console.log);
   return (
-    <div className="data-container">
-      {data
-        ? data.map(locationEntry => (
-            <p>{new Date(locationEntry.timestamp).toString()}</p>
-          ))
-        : null}
+    <div className="container">
+      {data.map((entry: LocationEntry) => (
+        <Row entry={entry} />
+      ))}
     </div>
+  );
+}
+
+function Row({ entry }: { entry: LocationEntry }) {
+  return (
+    <>
+      <div className="datetime">{new Date(entry.timestamp).toString()}</div>
+      <div className="lat">{entry.coords.x}</div>
+      <div className="long">{entry.coords.y}</div>
+    </>
   );
 }
 
