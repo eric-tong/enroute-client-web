@@ -1,26 +1,21 @@
 // @flow
 
-import React from "react";
-import "./App.css";
+import React, { useState } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [data, setData] = useState();
+
+  fetch("https://enroute-platform.herokuapp.com/")
+    .then(response => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        throw new Error(response.status);
+      }
+    })
+    .then(setData)
+    .catch(console.log);
+  return <div className="App">{data ? data.toString() : null}</div>;
 }
 
 export default App;
