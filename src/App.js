@@ -15,7 +15,15 @@ function App() {
     })
     .then(setData)
     .catch(console.log);
-  return <div className="App">{data ? data.toString() : null}</div>;
+  return (
+    <div className="data-container">
+      {data
+        ? data.map(locationEntry => (
+            <p>{new Date(locationEntry.timestamp).toString()}</p>
+          ))
+        : null}
+    </div>
+  );
 }
 
 export default App;
