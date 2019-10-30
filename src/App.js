@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useState } from "react";
+import ReactMapGL, { Marker } from "react-map-gl";
 
 type LocationEntry = {
   timestamp: string,
@@ -9,6 +10,13 @@ type LocationEntry = {
 
 function App() {
   const [data: LocationEntry[], setData] = useState([]);
+  const [viewport, setViewport] = useState({
+    width: "100vw",
+    height: "100vh",
+    zoom: 15,
+    latitude: 51.7559253,
+    longitude: -1.2526899,
+  });
 
   fetch("https://enroute-platform.herokuapp.com/")
     .then(response => {
@@ -20,22 +28,15 @@ function App() {
     })
     .then(setData)
     .catch(console.log);
-  return (
-    <div className="container">
-      {data.map((entry: LocationEntry) => (
-        <Row entry={entry} />
-      ))}
-    </div>
-  );
-}
 
-function Row({ entry }: { entry: LocationEntry }) {
   return (
-    <>
-      <div className="datetime">{new Date(entry.timestamp).toString()}</div>
-      <div className="lat">{entry.coords.x}</div>
-      <div className="long">{entry.coords.y}</div>
-    </>
+    <ReactMapGL {...viewport} onViewportChange={setViewport}>
+      {data.slice(0, 100).map(location => (
+        <Marker latitude={location.coords.x} longitude={location.coords.y}>
+          x
+        </Marker>
+      ))}
+    </ReactMapGL>
   );
 }
 
