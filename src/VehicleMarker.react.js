@@ -2,11 +2,9 @@
 
 import React from "react";
 
-export default function VehicleMarker() {
+export default function VehicleMarker({ bearing }: { bearing: number }) {
   return (
     <svg width="70px" height="70px" viewBox="0 0 70 70" version="1.1">
-      <title>Group 2</title>
-      <desc>Created with Sketch.</desc>
       <defs>
         <circle id="path-1" cx="19" cy="33" r="19"></circle>
         <filter
@@ -44,9 +42,10 @@ export default function VehicleMarker() {
       <g
         id="Symbols"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
-        fill-rule="evenodd"
+        fillRule="evenodd"
+        transform={`rotate(${bearing ? bearing : 0} 35 35)`}
       >
         <g
           id="drone-green-copy"
@@ -57,13 +56,13 @@ export default function VehicleMarker() {
               <g id="Oval">
                 <use
                   fill="black"
-                  fill-opacity="1"
+                  fillOpacity="1"
                   filter="url(#filter-2)"
                   xlinkHref="#path-1"
                 ></use>
                 <use
                   fill="#FFFFFF"
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   xlinkHref="#path-1"
                 ></use>
               </g>
