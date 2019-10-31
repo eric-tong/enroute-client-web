@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import ReactMapGL, { Marker } from "react-map-gl";
+import VehicleMarker from "./VehicleMarker.react";
 
 type LocationEntry = {
   timestamp: string,
@@ -31,9 +32,9 @@ function App() {
 
   return (
     <ReactMapGL {...viewport} onViewportChange={setViewport}>
-      {data.slice(0, 100).map(location => (
+      {data.slice(0, 5).map(location => (
         <Marker latitude={location.coords.x} longitude={location.coords.y}>
-          x
+          <VehicleMarker />
         </Marker>
       ))}
     </ReactMapGL>
