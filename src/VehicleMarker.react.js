@@ -1,8 +1,33 @@
 // @flow
 
 import React from "react";
+import { BaseControl } from "react-map-gl";
 
-export default function VehicleMarker({ bearing }: { bearing: number }) {
+export default class VehicleMarker extends BaseControl {
+  _render() {
+    const { longitude, latitude, bearing } = this.props;
+    const coords = this._context.viewport.project([longitude, latitude]);
+
+    const markerStyle = {
+      position: "absolute",
+      left: coords[0],
+      top: coords[1],
+      transform: "translate(-35px, -35px)",
+      transition: "none",
+    };
+
+    if (!this._context.isDragging)
+      markerStyle.transition = "left 200ms, top 200ms, transform 200ms";
+
+    return (
+      <div style={markerStyle}>
+        <VehicleIcon bearing={bearing} />
+      </div>
+    );
+  }
+}
+
+function VehicleIcon({ bearing }: { bearing: number }) {
   return (
     <svg width="70px" height="70px" viewBox="0 0 70 70" version="1.1">
       <defs>

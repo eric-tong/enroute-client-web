@@ -1,7 +1,7 @@
 // @flow
 
 import React, { useEffect, useState } from "react";
-import ReactMapGL, { Marker } from "react-map-gl";
+import ReactMapGL from "react-map-gl";
 import VehicleMarker from "./VehicleMarker.react";
 
 type LocationEntry = {
@@ -22,9 +22,11 @@ function App() {
   return (
     <ReactMapGL {...viewport} onViewportChange={setViewport}>
       {coords && (
-        <Marker latitude={coords.x} longitude={coords.y}>
-          <VehicleMarker bearing={coords.bearing} />
-        </Marker>
+        <VehicleMarker
+          latitude={coords.x}
+          longitude={coords.y}
+          bearing={coords.bearing}
+        />
       )}
     </ReactMapGL>
   );
