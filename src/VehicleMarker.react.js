@@ -1,30 +1,60 @@
 // @flow
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BaseControl } from "react-map-gl";
 
-export default class VehicleMarker extends BaseControl {
+export default class VehicleMarkerWrapper extends BaseControl {
   _render() {
     const { longitude, latitude, bearing } = this.props;
-    const coords = this._context.viewport.project([longitude, latitude]);
-
-    const markerStyle = {
-      position: "absolute",
-      left: coords[0],
-      top: coords[1],
-      transform: "translate(-35px, -35px)",
-      transition: "none",
-    };
-
-    if (!this._context.isDragging)
-      markerStyle.transition = "left 200ms, top 200ms, transform 200ms";
-
+    const [left, top] = this._context.viewport.project([longitude, latitude]);
     return (
-      <div style={markerStyle}>
-        <VehicleIcon bearing={bearing} />
-      </div>
+      <VehicleMarker
+        left={left}
+        top={top}
+        bearing={bearing}
+        zoom={this._context.viewport.zoom}
+        isDragging={this._context.isDragging}
+      />
     );
   }
+}
+
+function VehicleMarker({
+  left,
+  top,
+  bearing,
+  zoom,
+  isDragging,
+}: {
+  left: number,
+  top: number,
+  bearing: number,
+  zoom: number,
+  isDragging: boolean,
+}) {
+  const [isZooming, setIsZooming] = useState(false);
+  const markerStyle = {
+    position: "absolute",
+    left: left,
+    top: top,
+    transform: "translate(-35px, -35px)",
+    transition: "none",
+  };
+
+  useEffect(() => {
+    setIsZooming(true);
+    const id = setInterval(() => setIsZooming(false), 300);
+    return () => clearInterval(id);
+  }, [zoom]);
+
+  if (!isDragging && !isZooming)
+    markerStyle.transition = "left 200ms, top 200ms, transform 200ms";
+
+  return (
+    <div style={markerStyle}>
+      <VehicleIcon bearing={bearing} />
+    </div>
+  );
 }
 
 function VehicleIcon({ bearing }: { bearing: number }) {
