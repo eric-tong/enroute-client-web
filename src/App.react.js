@@ -52,8 +52,9 @@ function useCoords() {
           ...data.coords,
           bearing:
             pastCoords &&
-            (Math.atan(
-              (data.coords.y - pastCoords.y) / (data.coords.x - pastCoords.x)
+            (Math.atan2(
+              data.coords.y - pastCoords.y,
+              data.coords.x - pastCoords.x
             ) /
               Math.PI) *
               180,
