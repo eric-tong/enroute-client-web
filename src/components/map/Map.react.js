@@ -6,11 +6,6 @@ import VehicleMarker from "./VehicleMarker.react";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 
-type LocationEntry = {
-  timestamp: string,
-  coords: { x: number, y: number },
-};
-
 const VEHICLE = gql`
   {
     vehicle {
@@ -30,16 +25,13 @@ function Map() {
     latitude: 51.7559253,
     longitude: -1.2526899,
   });
-  const { data, loading, error } = useQuery(VEHICLE);
+  const { data, loading, error } = useQuery(VEHICLE, { pollInterval: 10000 });
+  const coords = !loading && !error && data ? data.vehicle.coords : null;
 
   return (
     <ReactMapGL {...viewport} onViewportChange={setViewport}>
-      {data && !loading && !error && (
-        <VehicleMarker
-          latitude={data.vehicle.coords.x}
-          longitude={data.vehicle.coords.y}
-          bearing={0}
-        />
+      {coords && (
+        <VehicleMarker latitude={coords.x} longitude={coords.y} bearing={0} />
       )}
     </ReactMapGL>
   );
