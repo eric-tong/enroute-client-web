@@ -1,74 +1,20 @@
 // @flow
 
-import React, { useEffect, useState } from "react";
-import ReactMapGL from "react-map-gl";
-import VehicleMarker from "./VehicleMarker.react";
+import React from "react";
+import Map from "./map/Map.react";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
 
-type LocationEntry = {
-  timestamp: string,
-  coords: { x: number, y: number },
-};
+const client = new ApolloClient({
+  uri: process.env.REACT_APP_API_URL,
+});
 
 function App() {
-  const coords = useCoords();
-  const [viewport, setViewport] = useState({
-    width: "100vw",
-    height: "100vh",
-    zoom: 12,
-    latitude: 51.7559253,
-    longitude: -1.2526899,
-  });
-
   return (
-    <ReactMapGL {...viewport} onViewportChange={setViewport}>
-      {coords && (
-        <VehicleMarker
-          latitude={coords.x}
-          longitude={coords.y}
-          bearing={coords.bearing}
-        />
-      )}
-    </ReactMapGL>
+    <ApolloProvider client={client}>
+      <Map />
+    </ApolloProvider>
   );
-}
-
-function useCoords() {
-  const [coords: LocationEntry, setCoords] = useState({
-    x: 0,
-    y: 0,
-    bearing: 0,
-  });
-  const fetchData = () =>
-    fetch("https://enroute-platform.herokuapp.com/")
-      .then(response => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          throw new Error(response.status);
-        }
-      })
-      .then(data =>
-        setCoords(pastCoords => ({
-          ...data.coords,
-          bearing:
-            pastCoords &&
-            (Math.atan2(
-              data.coords.y - pastCoords.y,
-              data.coords.x - pastCoords.x
-            ) /
-              Math.PI) *
-              180,
-        }))
-      )
-      .catch(console.log);
-
-  useEffect(() => {
-    fetchData();
-    const id = setInterval(fetchData, 10000);
-    return () => clearInterval(id);
-  }, []);
-
-  return coords;
 }
 
 export default App;
