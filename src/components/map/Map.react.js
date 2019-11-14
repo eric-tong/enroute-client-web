@@ -19,6 +19,13 @@ const VEHICLE = gql`
   }
 `;
 
+const busStops = [
+  { latitude: 51.81811946797804, longitude: -1.3066886590125932, icon: "A" },
+  { latitude: 51.779284, longitude: -1.265656, icon: "B" },
+  { latitude: 51.76010073596463, longitude: -1.2582452109397764, icon: "C" },
+  { latitude: 51.75453480503126, longitude: -1.2556090514719926, icon: "D" },
+];
+
 function Map() {
   const [viewport, setViewport] = useState(initialViewport);
   const { data, loading, error } = useQuery(VEHICLE, { pollInterval: 10000 });
@@ -26,22 +33,9 @@ function Map() {
 
   return (
     <ReactMapGL {...viewport} onViewportChange={setViewport}>
-      <BusStopMarker latitude={51.779284} longitude={-1.265656} bearing={0} />
-      <BusStopMarker
-        latitude={51.81811946797804}
-        longitude={-1.3066886590125932}
-        bearing={0}
-      />
-      <BusStopMarker
-        latitude={51.76010073596463}
-        longitude={-1.2582452109397764}
-        bearing={0}
-      />
-      <BusStopMarker
-        latitude={51.75453480503126}
-        longitude={-1.2556090514719926}
-        bearing={0}
-      />
+      {busStops.map(busStop => (
+        <BusStopMarker {...busStop} />
+      ))}
       {coords && (
         <VehicleMarker latitude={coords.x} longitude={coords.y} bearing={0} />
       )}

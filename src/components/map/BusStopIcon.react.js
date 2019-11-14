@@ -2,7 +2,11 @@
 
 import React from "react";
 
-export default function BusStopIcon() {
+type Props = {
+  text: string,
+};
+
+export default function BusStopIcon({ text }: Props) {
   return (
     <svg
       version="1.1"
@@ -72,12 +76,14 @@ export default function BusStopIcon() {
         height="24.9"
       />
       <text
-        transform="matrix(1 0 0 1 26.8462 32.8523)"
         fill="#FFFFFF"
         font-family="MyriadPro-Bold"
         font-size="27px"
+        text-anchor="middle"
+        x="50%"
+        y="46%"
       >
-        B
+        {text}
       </text>
     </svg>
   );

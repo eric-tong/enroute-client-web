@@ -7,21 +7,21 @@ import BusStopIcon from "./BusStopIcon.react";
 type Props = {
   longitude: number,
   latitude: number,
-  bearing: number,
+  icon: string,
 };
 
-export default function BusStopMarker({ longitude, latitude, bearing }: Props) {
+export default function BusStopMarker({ longitude, latitude, icon }: Props) {
   const markerStyle = useMarkerStyle(longitude, latitude);
 
   const offsetMarkerStyle = {
     ...markerStyle,
     left: markerStyle.left - 35,
-    top: markerStyle.top - 20,
+    top: markerStyle.top - 50,
   };
 
   return (
     <div style={offsetMarkerStyle}>
-      <BusStopIcon />
+      <BusStopIcon text={icon} />
     </div>
   );
 }
