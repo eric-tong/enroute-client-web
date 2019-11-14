@@ -1,12 +1,25 @@
 // @flow
 
 import React, { useState } from "react";
+
+import BusStopMarker from "./BusStopMarker.react";
 import ReactMapGL from "react-map-gl";
 import VehicleMarker from "./VehicleMarker.react";
-import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import initialViewport from "../../styles/viewport";
-import BusStopMarker from "./BusStopMarker.react";
+import { useQuery } from "@apollo/react-hooks";
+
+const BUS_STOPS = gql`
+  {
+    busStops {
+      icon
+      coords {
+        x
+        y
+      }
+    }
+  }
+`;
 
 const VEHICLE = gql`
   {
@@ -19,26 +32,33 @@ const VEHICLE = gql`
   }
 `;
 
-const busStops = [
-  { latitude: 51.81811946797804, longitude: -1.3066886590125932, icon: "A" },
-  { latitude: 51.779284, longitude: -1.265656, icon: "B" },
-  { latitude: 51.76010073596463, longitude: -1.2582452109397764, icon: "C" },
-  { latitude: 51.75453480503126, longitude: -1.2556090514719926, icon: "D" },
-];
-
 function Map() {
   const [viewport, setViewport] = useState(initialViewport);
-  const { data, loading, error } = useQuery(VEHICLE, { pollInterval: 10000 });
-  const coords = !loading && !error && data ? data.vehicle.coords : null;
+  const busStopQuery = useQuery(BUS_STOPS);
+  const vehicleQuery = useQuery(VEHICLE, { pollInterval: 10000 });
+
+  const busStops =
+    !busStopQuery.loading && !busStopQuery.error
+      ? busStopQuery.data.busStops
+      : null;
+  const coords =
+    !vehicleQuery.loading && !vehicleQuery.error
+      ? vehicleQuery.data.vehicle.coords
+      : null;
 
   return (
     <ReactMapGL {...viewport} onViewportChange={setViewport}>
       {coords && (
         <VehicleMarker latitude={coords.x} longitude={coords.y} bearing={0} />
       )}
-      {busStops.map(busStop => (
-        <BusStopMarker {...busStop} />
-      ))}
+      {busStops &&
+        busStops.map(busStop => (
+          <BusStopMarker
+            latitude={busStop.coords.x}
+            longitude={busStop.coords.y}
+            icon={busStop.icon}
+          />
+        ))}
     </ReactMapGL>
   );
 }
