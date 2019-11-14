@@ -24,6 +24,7 @@ const BUS_STOPS = gql`
 const VEHICLE = gql`
   {
     vehicle {
+      bearing
       coords {
         x
         y
@@ -41,15 +42,19 @@ function Map() {
     !busStopQuery.loading && !busStopQuery.error
       ? busStopQuery.data.busStops
       : null;
-  const coords =
+  const vehicle =
     !vehicleQuery.loading && !vehicleQuery.error
-      ? vehicleQuery.data.vehicle.coords
+      ? vehicleQuery.data.vehicle
       : null;
 
   return (
     <ReactMapGL {...viewport} onViewportChange={setViewport}>
-      {coords && (
-        <VehicleMarker latitude={coords.x} longitude={coords.y} bearing={0} />
+      {vehicle && (
+        <VehicleMarker
+          latitude={vehicle.coords.x}
+          longitude={vehicle.coords.y}
+          bearing={vehicle.bearing}
+        />
       )}
       {busStops &&
         busStops.map(busStop => (
