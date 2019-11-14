@@ -11,21 +11,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.container {
-  display: grid;
-  grid-template-columns: [time] 50% [lat] 25% [long] 25%;
-  gap: 1rem;
-  padding: 2rem;
-
-  .datetime {
-    grid-column: time;
-  }
-
-  .lat {
-    grid-column: lat;
-  }
-
-  .long {
-    grid-column: long;
-  }
+.marker {
+  position: absolute;
+  transform: translate(-35px, -35px);
 }

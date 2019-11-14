@@ -18,18 +18,16 @@ export default function VehicleMarkerWrapper({
   const { left, top, isDragging, isZooming } = useViewport(longitude, latitude);
 
   const markerStyle = {
-    position: "absolute",
     left: left,
     top: top,
-    transform: "translate(-35px, -35px)",
-    transition: "none",
+    transition:
+      !isDragging && !isZooming
+        ? "left 200ms, top 200ms, transform 200ms"
+        : "none",
   };
 
-  if (!isDragging && !isZooming)
-    markerStyle.transition = "left 200ms, top 200ms, transform 200ms";
-
   return (
-    <div style={markerStyle}>
+    <div className="marker" style={markerStyle}>
       <VehicleIcon bearing={bearing} />
     </div>
   );
