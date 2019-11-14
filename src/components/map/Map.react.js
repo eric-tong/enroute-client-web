@@ -6,6 +6,7 @@ import VehicleMarker from "./VehicleMarker.react";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import initialViewport from "../../styles/viewport";
+import BusStopMarker from "./BusStopMarker.react";
 
 const VEHICLE = gql`
   {
@@ -25,25 +26,25 @@ function Map() {
 
   return (
     <ReactMapGL {...viewport} onViewportChange={setViewport}>
-      {coords && (
-        <VehicleMarker latitude={coords.x} longitude={coords.y} bearing={0} />
-      )}
-      <VehicleMarker latitude={51.779284} longitude={-1.265656} bearing={0} />
-      <VehicleMarker
+      <BusStopMarker latitude={51.779284} longitude={-1.265656} bearing={0} />
+      <BusStopMarker
         latitude={51.81811946797804}
         longitude={-1.3066886590125932}
         bearing={0}
       />
-      <VehicleMarker
+      <BusStopMarker
         latitude={51.76010073596463}
         longitude={-1.2582452109397764}
         bearing={0}
       />
-      <VehicleMarker
+      <BusStopMarker
         latitude={51.75453480503126}
         longitude={-1.2556090514719926}
         bearing={0}
       />
+      {coords && (
+        <VehicleMarker latitude={coords.x} longitude={coords.y} bearing={0} />
+      )}
     </ReactMapGL>
   );
 }
