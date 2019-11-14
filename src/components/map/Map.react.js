@@ -28,6 +28,22 @@ function Map() {
       {coords && (
         <VehicleMarker latitude={coords.x} longitude={coords.y} bearing={0} />
       )}
+      <VehicleMarker latitude={51.779284} longitude={-1.265656} bearing={0} />
+      <VehicleMarker
+        latitude={51.81811946797804}
+        longitude={-1.3066886590125932}
+        bearing={0}
+      />
+      <VehicleMarker
+        latitude={51.76010073596463}
+        longitude={-1.2582452109397764}
+        bearing={0}
+      />
+      <VehicleMarker
+        latitude={51.75453480503126}
+        longitude={-1.2556090514719926}
+        bearing={0}
+      />
     </ReactMapGL>
   );
 }

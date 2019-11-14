@@ -2,7 +2,7 @@
 
 import React from "react";
 import VehicleIcon from "./VehicleIcon.react";
-import useViewport from "../../utils/useViewport";
+import useMarkerStyle from "../../utils/useMarkerStyle";
 
 type Props = {
   longitude: number,
@@ -15,19 +15,17 @@ export default function VehicleMarkerWrapper({
   latitude,
   bearing,
 }: Props) {
-  const { left, top, isDragging, isZooming } = useViewport(longitude, latitude);
+  const markerStyle = useMarkerStyle(longitude, latitude);
 
-  const markerStyle = {
-    left: left,
-    top: top,
-    transition:
-      !isDragging && !isZooming
-        ? "left 200ms, top 200ms, transform 200ms"
-        : "none",
+  const offset = 35;
+  const offsetMarkerStyle = {
+    ...markerStyle,
+    left: markerStyle.left - offset,
+    top: markerStyle.top - offset,
   };
 
   return (
-    <div className="marker" style={markerStyle}>
+    <div style={offsetMarkerStyle}>
       <VehicleIcon bearing={bearing} />
     </div>
   );
