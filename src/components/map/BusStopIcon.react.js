@@ -48,7 +48,7 @@ export default function BusStopIcon({ text }: Props) {
           values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.158288043 0"
         ></feColorMatrix>
       </filter>
-      <g id="pin">
+      <g id="pin" transform="translate(35 50) scale(0.6) translate(-35 -50)">
         <g id="shadow" filter="url(#filter-2)">
           <path
             id="shadow-path_1_"
@@ -65,26 +65,17 @@ export default function BusStopIcon({ text }: Props) {
           d="M35,2.2c10.8,0,19.5,9.5,19.5,21.3C54.5,41.5,35,50,35,50s-19.5-8.5-19.5-26.4
 		C15.5,11.8,24.2,2.2,35,2.2z"
         />
+        <text
+          fill="#FFFFFF"
+          font-family="MyriadPro-Bold"
+          font-size="27px"
+          text-anchor="middle"
+          x="50%"
+          y="46%"
+        >
+          {text}
+        </text>
       </g>
-      <rect
-        x="21.4"
-        y="13.7"
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        fill="none"
-        width="27.2"
-        height="24.9"
-      />
-      <text
-        fill="#FFFFFF"
-        font-family="MyriadPro-Bold"
-        font-size="27px"
-        text-anchor="middle"
-        x="50%"
-        y="46%"
-      >
-        {text}
-      </text>
     </svg>
   );
 }

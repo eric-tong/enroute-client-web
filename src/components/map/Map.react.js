@@ -33,12 +33,12 @@ function Map() {
 
   return (
     <ReactMapGL {...viewport} onViewportChange={setViewport}>
-      {busStops.map(busStop => (
-        <BusStopMarker {...busStop} />
-      ))}
       {coords && (
         <VehicleMarker latitude={coords.x} longitude={coords.y} bearing={0} />
       )}
+      {busStops.map(busStop => (
+        <BusStopMarker {...busStop} />
+      ))}
     </ReactMapGL>
   );
 }
