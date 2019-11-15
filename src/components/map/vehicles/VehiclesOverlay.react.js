@@ -24,6 +24,7 @@ export default function VehiclesOverlay() {
     return null;
   } else if (error) {
     console.log(error);
+    return null;
   } else {
     const { coords, bearing } = data.vehicle;
     return (

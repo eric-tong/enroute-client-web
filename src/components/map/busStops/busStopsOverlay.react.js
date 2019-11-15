@@ -24,6 +24,7 @@ export default function BusStopsOverlay() {
     return null;
   } else if (error) {
     console.log(error);
+    return null;
   } else {
     return data.busStops.map(({ icon, coords }) => (
       <BusStopMarker
