@@ -1,14 +1,14 @@
 // @flow
 
+import BusStopMarker from "./BusStopMarker.react";
 import React from "react";
-import VehicleMarker from "./VehicleMarker.react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
-const VEHICLE = gql`
+const BUS_STOPS = gql`
   {
-    vehicle {
-      bearing
+    busStops {
+      icon
       coords {
         x
         y
@@ -17,21 +17,21 @@ const VEHICLE = gql`
   }
 `;
 
-export default function VehiclesOverlay() {
-  const { loading, error, data } = useQuery(VEHICLE, { pollInterval: 10000 });
+export default function BusStopsOverlay() {
+  const { loading, error, data } = useQuery(BUS_STOPS);
 
   if (loading) {
     return null;
   } else if (error) {
     console.log(error);
   } else {
-    const { coords, bearing } = data.vehicle;
-    return (
-      <VehicleMarker
+    return data.busStops.map(({ icon, coords }) => (
+      <BusStopMarker
+        key={icon}
         latitude={coords.x}
         longitude={coords.y}
-        bearing={bearing}
+        icon={icon}
       />
-    );
+    ));
   }
 }

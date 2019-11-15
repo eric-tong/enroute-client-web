@@ -1,8 +1,8 @@
 // @flow
 
-import React from "react";
-import useMarkerStyle from "../../utils/useMarkerStyle";
 import BusStopIcon from "./BusStopIcon.react";
+import React from "react";
+import useMarkerStyle from "../../../utils/useMarkerStyle";
 
 type Props = {
   longitude: number,
