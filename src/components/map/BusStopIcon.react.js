@@ -52,24 +52,24 @@ export default function BusStopIcon({ text }: Props) {
         <g id="shadow" filter="url(#filter-2)">
           <path
             id="shadow-path_1_"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M35,5.7c11.4,0,20.6,14,20.6,25.9S46.4,53,35,53s-20.6-9.6-20.6-21.4S23.6,5.7,35,5.7z"
           />
         </g>
         <path
           id="pin-shape"
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           fill="#002147"
           d="M35,2.2c10.8,0,19.5,9.5,19.5,21.3C54.5,41.5,35,50,35,50s-19.5-8.5-19.5-26.4
 		C15.5,11.8,24.2,2.2,35,2.2z"
         />
         <text
           fill="#FFFFFF"
-          font-family="MyriadPro-Bold"
-          font-size="27px"
-          text-anchor="middle"
+          fontFamily="MyriadPro-Bold"
+          fontSize="27px"
+          textAnchor="middle"
           x="50%"
           y="46%"
         >

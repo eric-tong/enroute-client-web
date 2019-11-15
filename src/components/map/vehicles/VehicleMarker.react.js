@@ -2,7 +2,7 @@
 
 import React from "react";
 import VehicleIcon from "./VehicleIcon.react";
-import useMarkerStyle from "../../utils/useMarkerStyle";
+import useMarkerStyle from "../../../utils/useMarkerStyle";
 
 type Props = {
   longitude: number,

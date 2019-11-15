@@ -3,12 +3,11 @@
 import React, { useState } from "react";
 
 import BusStopMarker from "./BusStopMarker.react";
-import { Marker } from "react-map-gl";
 import ReactMapGL from "react-map-gl";
-import VehicleMarker from "./VehicleMarker.react";
+import RouteLine from "./RouteLine.react";
+import VehiclesOverlay from "./vehicles/VehiclesOverlay.react";
 import { gql } from "apollo-boost";
 import initialViewport from "../../styles/viewport";
-import locations from "../../locations";
 import { useQuery } from "@apollo/react-hooks";
 
 const BUS_STOPS = gql`
@@ -23,49 +22,28 @@ const BUS_STOPS = gql`
   }
 `;
 
-const VEHICLE = gql`
-  {
-    vehicle {
-      bearing
-      coords {
-        x
-        y
-      }
-    }
-  }
-`;
-
 function Map() {
   const [viewport, setViewport] = useState(initialViewport);
+  const [isLoaded, setIsLoaded] = useState(false);
   const busStopQuery = useQuery(BUS_STOPS);
-  const vehicleQuery = useQuery(VEHICLE, { pollInterval: 10000 });
 
   const busStops =
     !busStopQuery.loading && !busStopQuery.error
       ? busStopQuery.data.busStops
       : null;
-  const vehicle =
-    !vehicleQuery.loading && !vehicleQuery.error
-      ? vehicleQuery.data.vehicle
-      : null;
-  console.log(vehicle);
+
   return (
-    <ReactMapGL {...viewport} onViewportChange={setViewport}>
-      {locations.map(location => (
-        <Marker latitude={location[1]} longitude={location[0]}>
-          x
-        </Marker>
-      ))}
-      {vehicle && (
-        <VehicleMarker
-          latitude={vehicle.coords.x}
-          longitude={vehicle.coords.y}
-          bearing={vehicle.bearing}
-        />
-      )}
+    <ReactMapGL
+      {...viewport}
+      onViewportChange={setViewport}
+      onLoad={() => setIsLoaded(true)}
+    >
+      {isLoaded && <RouteLine />}
+      <VehiclesOverlay />
       {busStops &&
         busStops.map(busStop => (
           <BusStopMarker
+            key={busStop.icon}
             latitude={busStop.coords.x}
             longitude={busStop.coords.y}
             icon={busStop.icon}
