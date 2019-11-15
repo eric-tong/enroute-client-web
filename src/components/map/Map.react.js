@@ -3,10 +3,12 @@
 import React, { useState } from "react";
 
 import BusStopMarker from "./BusStopMarker.react";
+import { Marker } from "react-map-gl";
 import ReactMapGL from "react-map-gl";
 import VehicleMarker from "./VehicleMarker.react";
 import { gql } from "apollo-boost";
 import initialViewport from "../../styles/viewport";
+import locations from "../../locations";
 import { useQuery } from "@apollo/react-hooks";
 
 const BUS_STOPS = gql`
@@ -46,9 +48,14 @@ function Map() {
     !vehicleQuery.loading && !vehicleQuery.error
       ? vehicleQuery.data.vehicle
       : null;
-
+  console.log(vehicle);
   return (
     <ReactMapGL {...viewport} onViewportChange={setViewport}>
+      {locations.map(location => (
+        <Marker latitude={location[1]} longitude={location[0]}>
+          x
+        </Marker>
+      ))}
       {vehicle && (
         <VehicleMarker
           latitude={vehicle.coords.x}
