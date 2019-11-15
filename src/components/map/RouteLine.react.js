@@ -40,7 +40,7 @@ export default function RouteLine() {
           "line-cap": "round",
         },
         paint: {
-          "line-color": "#8BC34A",
+          "line-color": "#C5E1A5",
           "line-width": 2,
         },
       });

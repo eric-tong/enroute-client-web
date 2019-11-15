@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import BusStopsOverlay from "./busStops/busStopsOverlay.react";
+import BusStopsOverlay from "./busStops/BusStopsOverlay.react";
 import ReactMapGL from "react-map-gl";
 import RouteLine from "./RouteLine.react";
 import VehiclesOverlay from "./vehicles/VehiclesOverlay.react";
