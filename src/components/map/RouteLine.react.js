@@ -20,30 +20,38 @@ export default function RouteLine() {
   const { loading, error, data } = useQuery(ROUTE);
 
   useEffect(() => {
-    if (!loading && !error)
-      mapContext.map.addLayer({
-        id: "route",
-        type: "line",
-        source: {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            properties: {},
-            geometry: {
-              type: "LineString",
-              coordinates: data.route.map(({ x, y }) => [y, x]),
+    if (!loading && !error) {
+      const map = mapContext.map;
+      const firstSymbolId = map
+        .getStyle()
+        .layers.find(layer => layer.type === "symbol").id;
+      map.addLayer(
+        {
+          id: "route",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "LineString",
+                coordinates: data.route.map(({ x, y }) => [y, x]),
+              },
             },
           },
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": "#C5E1A5",
+            "line-width": 2,
+          },
         },
-        layout: {
-          "line-join": "round",
-          "line-cap": "round",
-        },
-        paint: {
-          "line-color": "#C5E1A5",
-          "line-width": 2,
-        },
-      });
+        firstSymbolId
+      );
+    }
     // eslint-disable-next-line
   }, [loading, data]);
 
