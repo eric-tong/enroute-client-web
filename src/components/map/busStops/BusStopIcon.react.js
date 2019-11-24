@@ -67,7 +67,8 @@ export default function BusStopIcon({ text }: Props) {
         />
         <text
           fill="#FFFFFF"
-          fontFamily="MyriadPro-Bold"
+          fontFamily="MyriadPro-Bold, Helvetica, Arial, sans-serif"
+          fontWeight="bold"
           fontSize="27px"
           textAnchor="middle"
           x="50%"
