@@ -4,7 +4,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
-import CheckInPage from "./components/checkin/CheckInPage.react";
+import CheckInPage from "./components/checkIn/CheckInPage.react";
 import MapPage from "./components/map/MapPage.react";
 import React from "react";
 
