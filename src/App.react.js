@@ -1,8 +1,11 @@
 // @flow
 
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
-import Map from "./components/map/Map.react";
+import CheckInPage from "./components/checkin/CheckInPage.react";
+import MapPage from "./components/map/MapPage.react";
 import React from "react";
 
 const client = new ApolloClient({
@@ -12,7 +15,12 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Map />
+      <Router>
+        <Switch>
+          <Route component={CheckInPage} path="/checkin" />
+          <Route component={MapPage} path="/" c />
+        </Switch>
+      </Router>
     </ApolloProvider>
   );
 }
