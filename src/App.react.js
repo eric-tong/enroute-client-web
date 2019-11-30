@@ -17,8 +17,13 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <Switch>
-          <Route component={CheckInPage} path="/checkin" />
-          <Route component={MapPage} path="/" c />
+          <Route
+            path="/checkin/:vehicleId?"
+            render={props => (
+              <CheckInPage vehicleId={props.match.params.vehicleId} />
+            )}
+          />
+          <Route path="/" component={MapPage} />
         </Switch>
       </Router>
     </ApolloProvider>

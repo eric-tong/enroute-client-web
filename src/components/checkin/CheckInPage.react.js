@@ -2,6 +2,10 @@
 
 import React from "react";
 
-export default function CheckInDashboard() {
-  return <p>"Check In"</p>;
+type Props = {
+  vehicleId: ?string,
+};
+
+export default function CheckInDashboard({ vehicleId }: Props) {
+  return <p>{vehicleId}</p>;
 }
