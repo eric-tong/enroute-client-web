@@ -2,7 +2,7 @@
 
 import "../../styles/checkmark.scss";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = {|
   vehicleId: ?string,
@@ -20,16 +20,16 @@ export default function CheckInPage({ vehicleId }: Props) {
   const [userType, setUserType] = useState<?UserType>();
 
   const header = vehicleId ? `Check in to bus ${vehicleId}` : "No bus found";
-  const body = vehicleId ? (
-    userType ? (
-      <ConfirmationSection userType={userType} />
-    ) : (
-      <OptionsList vehicleId={vehicleId} onItemClick={setUserType} />
-    )
-  ) : (
+  const body = !vehicleId ? (
     undefined
+  ) : userType ? (
+    <ConfirmationSection
+      userType={userType}
+      onButtonClick={() => setUserType()}
+    />
+  ) : (
+    <OptionsList vehicleId={vehicleId} onItemClick={setUserType} />
   );
-
   return (
     <main className="check-in-container">
       <header>
@@ -40,12 +40,36 @@ export default function CheckInPage({ vehicleId }: Props) {
   );
 }
 
-function ConfirmationSection({ userType }: { userType: UserType }) {
+function ConfirmationSection({
+  userType,
+  onButtonClick,
+}: {
+  userType: UserType,
+  onButtonClick: () => void,
+}) {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(id);
+  }, []);
+
   return (
     <section className="confirmation">
-      <CheckMark isLoading={false} />
-      <h2>Check in successful</h2>
-      <p>Checked in as {userTypeNames[userType]}. Change.</p>
+      <div className="half-section">
+        <CheckMark isLoading={isLoading} />
+      </div>
+      <div className="half-section">
+        <h2>{isLoading ? "Checking in..." : "Check in successful"}</h2>
+        {!isLoading && (
+          <p>
+            Checked in as a {userTypeNames[userType]}.{" "}
+            <a onClick={onButtonClick}>Change.</a>
+          </p>
+        )}
+      </div>
     </section>
   );
 }

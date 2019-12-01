@@ -22,8 +22,8 @@ h1 {
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+  color: #0cd390;
+  text-decoration: underline;
 }
 
 #root {
@@ -48,6 +48,15 @@ a {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    .half-section {
+      flex: 1;
+
+      &:first-child {
+        display: flex;
+        align-items: flex-end;
+      }
+    }
   }
 
   .options-container {
