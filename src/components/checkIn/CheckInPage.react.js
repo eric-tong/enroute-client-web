@@ -17,7 +17,7 @@ const userTypeNames: { [UserType]: string } = {
 };
 
 export default function CheckInPage({ vehicleId }: Props) {
-  const [userType, setUserType] = useState<?UserType>();
+  const [userType, setUserType] = useUserType();
 
   const header = vehicleId ? `Check in to bus ${vehicleId}` : "No bus found";
   const body = !vehicleId ? (
@@ -100,4 +100,21 @@ function OptionsList({
       ))}
     </section>
   );
+}
+
+function useUserType() {
+  const [userType, setUserType] = useState<?UserType>(
+    localStorage.getItem("userType")
+  );
+  return [
+    userType,
+    (newUserType: ?UserType) => {
+      if (newUserType) {
+        localStorage.setItem("userType", newUserType);
+      } else {
+        localStorage.removeItem("userType");
+      }
+      setUserType(newUserType);
+    },
+  ];
 }
