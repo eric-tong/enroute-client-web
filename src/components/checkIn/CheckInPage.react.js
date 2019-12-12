@@ -67,7 +67,7 @@ function ConfirmationSection({
         {!isLoading && (
           <p>
             Checked in as a {userTypeNames[userType]}.{" "}
-            <a onClick={onButtonClick}>Change.</a>
+            <button onClick={onButtonClick}>Change.</button>
           </p>
         )}
       </div>
