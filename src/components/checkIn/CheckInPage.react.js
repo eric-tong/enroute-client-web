@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 type Props = {|
   vehicleId: ?string,
 |};
+/* eslint-disable-next-line no-use-before-define */
 type UserType = $Keys<typeof userTypeNames>;
 
 const userTypes: UserType[] = ["university", "company", "visitor"];

@@ -9,8 +9,8 @@ import { useQuery } from "@apollo/react-hooks";
 const ROUTE = gql`
   {
     route {
-      x
-      y
+      longitude
+      latitude
     }
   }
 `;
@@ -36,7 +36,10 @@ export default function RouteLine() {
               properties: {},
               geometry: {
                 type: "LineString",
-                coordinates: data.route.map(({ x, y }) => [y, x]),
+                coordinates: data.route.map(({ longitude, latitude }) => [
+                  longitude,
+                  latitude,
+                ]),
               },
             },
           },

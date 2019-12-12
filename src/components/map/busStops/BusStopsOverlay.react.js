@@ -10,10 +10,8 @@ const BUS_STOPS = gql`
     busStops {
       id
       icon
-      coords {
-        x
-        y
-      }
+      longitude
+      latitude
     }
   }
 `;
@@ -27,11 +25,11 @@ export default function BusStopsOverlay() {
     console.log(error);
     return null;
   } else {
-    return data.busStops.map(({ id, icon, coords }) => (
+    return data.busStops.map(({ id, icon, longitude, latitude }) => (
       <BusStopMarker
         key={id}
-        latitude={coords.x}
-        longitude={coords.y}
+        latitude={latitude}
+        longitude={longitude}
         icon={icon}
       />
     ));
