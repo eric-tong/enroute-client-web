@@ -7,11 +7,12 @@ import { useQuery } from "@apollo/react-hooks";
 
 const VEHICLE = gql`
   {
-    vehicle {
-      bearing
-      coords {
-        x
-        y
+    vehicles {
+      id
+      avl {
+        longitude
+        latitude
+        angle
       }
     }
   }
@@ -26,13 +27,16 @@ export default function VehiclesOverlay() {
     console.log(error);
     return null;
   } else {
-    const { coords, bearing } = data.vehicle;
-    return (
-      <VehicleMarker
-        latitude={coords.x}
-        longitude={coords.y}
-        bearing={bearing}
-      />
-    );
+    return data.vehicles.map(vehicle => {
+      const { longitude, latitude, angle } = vehicle.avl;
+      return (
+        <VehicleMarker
+          key={vehicle.id}
+          latitude={latitude}
+          longitude={longitude}
+          bearing={angle}
+        />
+      );
+    });
   }
 }
