@@ -11,17 +11,10 @@ type Props = {
 };
 
 export default function VehicleMarker({ longitude, latitude, bearing }: Props) {
-  const markerStyle = useMarkerStyle(longitude, latitude);
-
-  const offset = 35;
-  const offsetMarkerStyle = {
-    ...markerStyle,
-    left: markerStyle.left - offset,
-    top: markerStyle.top - offset,
-  };
+  const markerStyle = useMarkerStyle(longitude, latitude, [35, 35]);
 
   return (
-    <div style={offsetMarkerStyle}>
+    <div style={markerStyle}>
       <VehicleIcon bearing={bearing} />
     </div>
   );

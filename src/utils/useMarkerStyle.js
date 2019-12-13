@@ -1,6 +1,7 @@
 // @flow
 
 import { useContext, useEffect, useState } from "react";
+
 import { _MapContext as MapContext } from "react-map-gl";
 
 type MarkerStyleType = {
@@ -12,7 +13,8 @@ type MarkerStyleType = {
 
 export default function useMarkerStyle(
   longitude: number,
-  latitude: number
+  latitude: number,
+  offset: [number, number] = [0, 0]
 ): MarkerStyleType {
   const [isZooming, setIsZooming] = useState(false);
   const { isDragging, viewport } = useContext(MapContext);
@@ -23,7 +25,9 @@ export default function useMarkerStyle(
     return () => clearInterval(id);
   }, [viewport.zoom]);
 
-  const [left, top] = viewport.project([longitude, latitude]);
+  const [left, top] = viewport
+    .project([longitude, latitude])
+    .map((pos, i) => pos - offset[i]);
   const transition =
     !isDragging && !isZooming
       ? "left 200ms, top 200ms, transform 200ms"
