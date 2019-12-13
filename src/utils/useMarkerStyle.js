@@ -6,8 +6,7 @@ import { _MapContext as MapContext } from "react-map-gl";
 
 type MarkerStyleType = {
   position: "absolute",
-  left: number,
-  top: number,
+  transform: string,
   transition: string,
 };
 
@@ -28,10 +27,9 @@ export default function useMarkerStyle(
   const [left, top] = viewport
     .project([longitude, latitude])
     .map((pos, i) => pos - offset[i]);
-  const transition =
-    !isDragging && !isZooming
-      ? "left 200ms, top 200ms, transform 200ms"
-      : "none";
 
-  return { position: "absolute", left, top, transition };
+  const transform = `translate(${left}px, ${top}px)`;
+  const transition = !isDragging && !isZooming ? "transform 200ms" : "none";
+
+  return { position: "absolute", transform, transition };
 }
