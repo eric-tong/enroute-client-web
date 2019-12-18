@@ -43,6 +43,12 @@ button {
   height: 100%;
 }
 
+.card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 0.25rem 0.75rem 0 rgba(0, 0, 0, 0.1);
+}
+
 .check-in-container {
   display: flex;
   flex-direction: column;

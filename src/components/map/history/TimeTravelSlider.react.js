@@ -9,15 +9,16 @@ export default function TimeTravelSlider() {
 
   return (
     <div className="time-travel-slider-container">
-      <input
-        type="range"
-        min="1"
-        max="100"
-        value={time}
-        onChange={event => setTime(event.target.value)}
-        id="myRange"
-      />
-      Hello World
+      <div className="card">
+        <input
+          type="range"
+          min="1"
+          max="100"
+          value={time}
+          onChange={event => setTime(event.target.value)}
+          className="slider"
+        />
+      </div>
     </div>
   );
 }
