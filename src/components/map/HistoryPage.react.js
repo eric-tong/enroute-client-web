@@ -14,15 +14,17 @@ export default function HistoryPage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <ReactMapGL
-      {...viewport}
-      onViewportChange={setViewport}
-      onLoad={() => setIsLoaded(true)}
-    >
-      {isLoaded && <RouteLine />}
-      <VehiclesOverlay />
-      <BusStopsOverlay />
+    <>
+      <ReactMapGL
+        {...viewport}
+        onViewportChange={setViewport}
+        onLoad={() => setIsLoaded(true)}
+      >
+        {isLoaded && <RouteLine />}
+        <VehiclesOverlay />
+        <BusStopsOverlay />
+      </ReactMapGL>
       <TimeTravelSlider />
-    </ReactMapGL>
+    </>
   );
 }

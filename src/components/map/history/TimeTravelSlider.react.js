@@ -1,16 +1,20 @@
 // @flow
 
-import React from "react";
+import "../../../styles/time-travel-slider.scss";
+
+import React, { useState } from "react";
 
 export default function TimeTravelSlider() {
+  const [time, setTime] = useState(50);
+
   return (
-    <div className="slidecontainer">
+    <div className="time-travel-slider-container">
       <input
         type="range"
         min="1"
         max="100"
-        value="50"
-        class="slider"
+        value={time}
+        onChange={event => setTime(event.target.value)}
         id="myRange"
       />
       Hello World
