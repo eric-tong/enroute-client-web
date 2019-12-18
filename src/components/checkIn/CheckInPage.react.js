@@ -1,6 +1,7 @@
 // @flow
 
 import "../../styles/checkmark.scss";
+import "../../styles/check-in.scss";
 
 import React, { useEffect, useState } from "react";
 
