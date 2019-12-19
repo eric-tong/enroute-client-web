@@ -51,10 +51,7 @@ export default function HistoryPage() {
             </button>
           </h2>
           <p>
-            {avl &&
-              DateTime.fromMillis(parseInt(avl.timestamp, 10)).toLocaleString(
-                DateTime.TIME_WITH_SECONDS
-              )}
+            {avl && DateTime.fromMillis(parseInt(avl.timestamp, 10)).toISO()}
           </p>
           <TimeTravelSlider
             steps={steps}
