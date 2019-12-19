@@ -19,7 +19,7 @@ const VEHICLE = gql`
 `;
 
 export default function VehiclesOverlay() {
-  const { loading, error, data } = useQuery(VEHICLE, { pollInterval: 10000 });
+  const { loading, error, data } = useQuery(VEHICLE, { pollInterval: 5000 });
 
   if (loading) {
     return null;
