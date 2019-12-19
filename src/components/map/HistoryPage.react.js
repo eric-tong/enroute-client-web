@@ -23,17 +23,7 @@ const AVLS = gql`
 
 export default function HistoryPage() {
   const [viewport, setViewport] = useState(initialViewport);
-  const [timeIndex, setTimeIndex] = useState<number>(1);
-  const { loading, error, data } = useQuery(AVLS);
-
-  useEffect(() => {
-    const isLoaded = !loading && !error && data.avls.length > 0;
-    if (isLoaded) setTimeIndex(data.avls.length - 1);
-  }, [data]);
-
-  const isLoaded = !loading && !error && data.avls.length > 0;
-  const index = isLoaded ? Math.min(timeIndex, data?.avls?.length - 1) : 1;
-  const avl = isLoaded ? data.avls[index] : undefined;
+  const { avl, steps, index, setIndex } = useAvl();
 
   return (
     <>
@@ -48,10 +38,31 @@ export default function HistoryPage() {
         <BusStopsOverlay />
       </ReactMapGL>
       <TimeTravelSlider
-        steps={data?.avls?.length}
+        steps={steps}
         currentIndex={index}
-        onValueChange={setTimeIndex}
+        onValueChange={setIndex}
       />
     </>
   );
+}
+
+function useAvl() {
+  const { loading, error, data } = useQuery(AVLS);
+  const [index, setIndex] = useState<number>(Number.MAX_VALUE);
+
+  useEffect(() => {
+    if (!loading && !error) setIndex(data.avls.length - 1);
+  }, [loading, error, data]);
+
+  if (loading || error) {
+    return {};
+  } else {
+    const steps = data.avls.length - 1;
+    return {
+      avl: data.avls[index],
+      index: Math.min(index, steps),
+      steps,
+      setIndex,
+    };
+  }
 }

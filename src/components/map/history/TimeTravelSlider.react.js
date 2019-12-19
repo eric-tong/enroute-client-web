@@ -12,7 +12,7 @@ type Props = {
 
 export default function TimeTravelSlider({
   steps = 1,
-  currentIndex,
+  currentIndex = 1,
   onValueChange,
 }: Props) {
   return (
