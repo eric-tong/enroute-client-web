@@ -3,7 +3,6 @@
 import "./styles/index.scss";
 
 import App from "./App.react";
-import { DateTime } from "luxon";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Settings } from "luxon";
