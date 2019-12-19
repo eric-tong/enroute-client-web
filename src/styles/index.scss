@@ -5,6 +5,8 @@ html {
   font-size: 16px;
   color: #000000c5;
   background: #fafafa;
+
+  --accent: #0cd390;
 }
 
 body {
@@ -30,7 +32,7 @@ p {
 }
 
 a {
-  color: #0cd390;
+  color: var(--accent);
   text-decoration: underline;
   cursor: pointer;
 }
