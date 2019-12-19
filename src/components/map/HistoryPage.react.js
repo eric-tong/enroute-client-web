@@ -1,8 +1,11 @@
 // @flow
 
+import "../../styles/history.scss";
+
 import React, { useEffect, useState } from "react";
 
 import BusStopsOverlay from "./busStops/BusStopsOverlay.react";
+import { DateTime } from "luxon";
 import ReactMapGL from "react-map-gl";
 import TimeTravelSlider from "./history/TimeTravelSlider.react";
 import VehicleMarker from "./vehicles/VehicleMarker.react";
@@ -11,8 +14,8 @@ import initialViewport from "../../styles/viewport";
 import { useQuery } from "@apollo/react-hooks";
 
 const AVLS = gql`
-  {
-    avls {
+  query getAvls($date: String!) {
+    avls(date: $date) {
       timestamp
       latitude
       longitude
@@ -23,7 +26,8 @@ const AVLS = gql`
 
 export default function HistoryPage() {
   const [viewport, setViewport] = useState(initialViewport);
-  const { avl, steps, index, setIndex } = useAvl();
+  const { date, increment, decrement } = useDate();
+  const { avl, steps, index, setIndex } = useAvl(date);
 
   return (
     <>
@@ -37,17 +41,49 @@ export default function HistoryPage() {
         )}
         <BusStopsOverlay />
       </ReactMapGL>
-      <TimeTravelSlider
-        steps={steps}
-        currentIndex={index}
-        onValueChange={setIndex}
-      />
+      <div className="time-travel-slider-container">
+        <div className="card">
+          <h2 className="date">
+            <button onClick={decrement}>&larr;</button>
+            <p>{date.toLocaleString(DateTime.DATE_HUGE)}</p>
+            <button onClick={increment} className={increment ? "" : "disabled"}>
+              &rarr;
+            </button>
+          </h2>
+          <p>
+            {avl &&
+              DateTime.fromMillis(parseInt(avl.timestamp, 10)).toLocaleString(
+                DateTime.TIME_WITH_SECONDS
+              )}
+          </p>
+          <TimeTravelSlider
+            steps={steps}
+            currentIndex={index}
+            onValueChange={setIndex}
+          />
+        </div>
+      </div>
     </>
   );
 }
 
-function useAvl() {
-  const { loading, error, data } = useQuery(AVLS);
+function useDate() {
+  const today = DateTime.local().startOf("day");
+  const [date, setDate] = useState(today);
+  const isToday = today.valueOf() === date.valueOf();
+  return {
+    date,
+    increment: isToday
+      ? undefined
+      : () => setDate(date => date.plus({ day: 1 })),
+    decrement: () => setDate(date => date.minus({ day: 1 })),
+  };
+}
+
+function useAvl(date: DateTime) {
+  const { loading, error, data } = useQuery(AVLS, {
+    variables: { date: date.toISO() },
+  });
   const [index, setIndex] = useState<number>(Number.MAX_VALUE);
 
   useEffect(() => {
