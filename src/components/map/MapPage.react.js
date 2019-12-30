@@ -6,10 +6,10 @@ import BusStopsOverlay from "./busStops/BusStopsOverlay.react";
 import ReactMapGL from "react-map-gl";
 import RouteLine from "./RouteLine.react";
 import VehiclesOverlay from "./vehicles/VehiclesOverlay.react";
-import initialViewport from "../../styles/viewport";
+import useViewport from "../../utils/useViewport";
 
 function Map() {
-  const [viewport, setViewport] = useState(initialViewport);
+  const [viewport, setViewport] = useViewport();
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (

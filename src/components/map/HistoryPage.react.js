@@ -10,8 +10,8 @@ import ReactMapGL from "react-map-gl";
 import TimeTravelSlider from "./history/TimeTravelSlider.react";
 import VehicleMarker from "./vehicles/VehicleMarker.react";
 import { gql } from "apollo-boost";
-import initialViewport from "../../styles/viewport";
 import { useQuery } from "@apollo/react-hooks";
+import useViewport from "../../utils/useViewport";
 
 const AVLS = gql`
   query getAvls($date: String!) {
@@ -25,7 +25,7 @@ const AVLS = gql`
 `;
 
 export default function HistoryPage() {
-  const [viewport, setViewport] = useState(initialViewport);
+  const [viewport, setViewport] = useViewport();
   const { date, increment, decrement } = useDate();
   const { avl, steps, index, setIndex } = useAvl(date);
 
