@@ -8,6 +8,7 @@ import CheckInPage from "./pages/check-in/CheckInPage.react";
 import HistoryPage from "./pages/map/HistoryPage.react";
 import MapPage from "./pages/map/MapPage.react";
 import React from "react";
+import RecordsPage from "./pages/records/RecordsPage.react";
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_API_URL
@@ -25,6 +26,7 @@ function App() {
             )}
           />
           <Route path="/history" component={HistoryPage} />
+          <Route path="/records" component={RecordsPage} />
           <Route path="/" component={MapPage} />
         </Switch>
       </Router>
