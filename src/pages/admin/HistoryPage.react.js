@@ -4,11 +4,11 @@ import "../../styles/history.scss";
 
 import React, { useEffect, useState } from "react";
 
-import BusStopsOverlay from "./busStops/BusStopsOverlay.react";
+import BusStopsOverlay from "../map/busStops/BusStopsOverlay.react";
 import { DateTime } from "luxon";
 import ReactMapGL from "react-map-gl";
-import TimeTravelSlider from "./history/TimeTravelSlider.react";
-import VehicleMarker from "./vehicles/VehicleMarker.react";
+import TimeTravelSlider from "../map/history/TimeTravelSlider.react";
+import VehicleMarker from "../map/vehicles/VehicleMarker.react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import useViewport from "../../utils/useViewport";
@@ -56,7 +56,7 @@ export default function HistoryPage() {
                   {
                     hour: "2-digit",
                     minute: "2-digit",
-                    hour12: true,
+                    hour12: true
                   }
                 )
               : "Loading..."}
@@ -81,13 +81,13 @@ function useDate() {
     increment: isToday
       ? undefined
       : () => setDate(date => date.plus({ day: 1 })),
-    decrement: () => setDate(date => date.minus({ day: 1 })),
+    decrement: () => setDate(date => date.minus({ day: 1 }))
   };
 }
 
 function useAvl(date: DateTime) {
   const { loading, error, data } = useQuery(AVLS, {
-    variables: { date: date.toISO() },
+    variables: { date: date.toISO() }
   });
   const [index, setIndex] = useState<number>(Number.MAX_VALUE);
 
@@ -103,7 +103,7 @@ function useAvl(date: DateTime) {
       avl: data.avls[index],
       index: Math.min(index, steps),
       steps,
-      setIndex,
+      setIndex
     };
   }
 }
