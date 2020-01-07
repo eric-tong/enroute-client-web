@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,500&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap");
 
 html {
   height: 100%;
@@ -21,11 +21,16 @@ body {
 }
 
 h1 {
+  font-size: 2rem;
   font-weight: lighter;
+  margin: 0.5rem 0;
+  color: var(--accent);
 }
 
 h2 {
   font-size: 1.25rem;
+  margin: 0.25rem 0;
+  font-weight: normal;
 }
 
 p {
@@ -65,6 +70,25 @@ table {
   }
 }
 
+small {
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.translucent {
+  opacity: 25%;
+}
+
+span.interpunct {
+  display: inline-block;
+  width: 0.25em;
+  height: 0.25em;
+  background: currentColor;
+  margin: 0 0.5rem 0.125rem 0.5rem;
+  border-radius: 50%;
+  opacity: 50%;
+}
+
 #root {
   width: 100%;
   height: 100%;
@@ -74,11 +98,26 @@ table {
 #panel {
   background: var(--background);
   border-radius: 0.5rem 0 0 0.5rem;
-  padding: 1rem;
+  padding: 2rem;
   box-sizing: border-box;
   z-index: 1;
   box-shadow: -0.25rem 0 0.75rem 0 rgba(0, 0, 0, 0.1);
   flex-grow: 1;
+}
+
+.tag {
+  @extend small;
+  display: inline-block;
+  color: var(--background);
+  background: var(--accent);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.75rem;
+
+  &.ghost {
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    background: none;
+  }
 }
 
 .card {

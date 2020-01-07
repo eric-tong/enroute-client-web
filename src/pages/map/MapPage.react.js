@@ -29,7 +29,22 @@ function Map() {
 }
 
 function Panel() {
-  return <div id="panel">Hello W0rld</div>;
+  return (
+    <section id="panel">
+      <h1>Arrivals</h1>
+      <div className="tile">
+        <h2>Oxford Town Centre</h2>
+        <small>Broad Street</small>
+        <span class="interpunct" />
+        <small className="translucent">To Begbroke</small>
+        <div className="arrival-row">1:00 pm</div>
+        <div className="arrival-row">1:00 pm</div>
+        <div className="arrival-row">1:00 pm</div>
+        <div className="arrival-row">1:00 pm</div>
+        <div className="arrival-row">1:00 pm</div>
+      </div>
+    </section>
+  );
 }
 
 export default Map;
