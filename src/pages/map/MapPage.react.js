@@ -28,20 +28,30 @@ function Map() {
   );
 }
 
+const arrivals = [
+  { scheduledTime: "1:00 pm" },
+  { scheduledTime: "1:25 pm" },
+  { scheduledTime: "2:10 pm" },
+  { scheduledTime: "2:50 pm" },
+  { scheduledTime: "3:10 pm" }
+];
+
 function Panel() {
   return (
     <section id="panel">
       <h1>Arrivals</h1>
       <div className="tile">
         <h2>Oxford Town Centre</h2>
-        <small>Broad Street</small>
-        <span class="interpunct" />
-        <small className="translucent">To Begbroke</small>
-        <div className="arrival-row">1:00 pm</div>
-        <div className="arrival-row">1:00 pm</div>
-        <div className="arrival-row">1:00 pm</div>
-        <div className="arrival-row">1:00 pm</div>
-        <div className="arrival-row">1:00 pm</div>
+        <p>
+          <small>Broad Street</small>
+          <span class="interpunct" />
+          <small className="translucent">To Begbroke</small>
+        </p>
+        {arrivals.map(({ scheduledTime }) => (
+          <div key={scheduledTime} className="arrival-row">
+            {scheduledTime}
+          </div>
+        ))}
       </div>
     </section>
   );
