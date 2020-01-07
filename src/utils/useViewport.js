@@ -19,22 +19,15 @@ export default function useViewport() {
 }
 
 function getDefaultViewport() {
-  const width = window.innerWidth;
+  const width = window.innerWidth - 30 * 16;
   const height = window.innerHeight;
-  const isPortrait = height > width;
-  const padding = 64;
   return new WebMercatorViewport({ width, height }).fitBounds(
     [
       [-1.3066886590125932, 51.81811946797804],
-      [-1.2556090514719926, 51.75453480503126],
+      [-1.2556090514719926, 51.75453480503126]
     ],
     {
-      padding: {
-        bottom: isPortrait ? height / 2 : padding,
-        right: isPortrait ? padding : width / 2,
-        top: padding,
-        left: padding,
-      },
+      padding: 64
     }
   );
 }

@@ -13,16 +13,23 @@ function Map() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <ReactMapGL
-      {...viewport}
-      onViewportChange={setViewport}
-      onLoad={() => setIsLoaded(true)}
-    >
-      {isLoaded && <RouteLine />}
-      <VehiclesOverlay />
-      <BusStopsOverlay />
-    </ReactMapGL>
+    <>
+      <ReactMapGL
+        {...viewport}
+        onViewportChange={setViewport}
+        onLoad={() => setIsLoaded(true)}
+      >
+        {isLoaded && <RouteLine />}
+        <VehiclesOverlay />
+        <BusStopsOverlay />
+      </ReactMapGL>
+      <Panel />
+    </>
   );
+}
+
+function Panel() {
+  return <div id="panel">Hello W0rld</div>;
 }
 
 export default Map;
