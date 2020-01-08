@@ -7,7 +7,7 @@ import useMarkerStyle from "../../../utils/useMarkerStyle";
 type Props = {
   longitude: number,
   latitude: number,
-  icon: string,
+  icon: string
 };
 
 export default function BusStopMarker({ longitude, latitude, icon }: Props) {
