@@ -49,12 +49,14 @@ function ArrivalTile({ name, street, arrivals }: BusStop) {
           <small className="translucent">To Begbroke</small>
         </p>
       </div>
-      {arrivals.map(arrival => (
-        <div key={arrival} className="row">
-          {arrival}
-          <small className="accent">On Time</small>
-        </div>
-      ))}
+      <ul>
+        {arrivals.map(arrival => (
+          <li key={arrival} className="row">
+            {arrival}
+            <small className="accent">On Time</small>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

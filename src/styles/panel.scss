@@ -19,24 +19,32 @@
   .tile {
     float: left;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 0.625rem;
     border-radius: 1rem;
     box-sizing: border-box;
 
     .header {
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 0 0.625rem;
+      box-sizing: border-box;
+      height: 5rem;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+
       .subtitle {
         margin: 0 0;
       }
     }
     .row {
       margin: 0.5rem 0;
+      padding: 0 0.625rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
 
       &:first-of-type {
-        font-size: 1.25em;
+        font-size: 1.125em;
         font-weight: bold;
       }
     }
