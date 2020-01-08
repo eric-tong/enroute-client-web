@@ -11,7 +11,7 @@ import { useQuery } from "@apollo/react-hooks";
 type BusStop = {
   name: string,
   street: string,
-  arrivals: string[]
+  arrivals: DateTime[]
 };
 
 const BUS_STOPS = gql`
@@ -51,8 +51,8 @@ function ArrivalTile({ name, street, arrivals }: BusStop) {
       </div>
       <ul>
         {arrivals.map(arrival => (
-          <li key={arrival} className="row">
-            {arrival}
+          <li key={arrival.toMillis()} className="row">
+            {arrival.toFormat("hh:mm a")}
             <small className="accent">On Time</small>
           </li>
         ))}
@@ -62,13 +62,23 @@ function ArrivalTile({ name, street, arrivals }: BusStop) {
 }
 
 function useBusStops(): BusStop[] {
-  const { loading, error, data = { busStops: [] } } = useQuery<BusStop>(
-    BUS_STOPS
-  );
-  return data.busStops.map(busStop => ({
+  const { data = { busStops: [] } } = useQuery<BusStop>(BUS_STOPS, {
+    pollInterval: 15000
+  });
+
+  const busStops: BusStop[] = data.busStops.map(busStop => ({
     ...busStop,
-    arrivals: busStop.arrivals.map(dateString =>
-      DateTime.fromISO(dateString).toFormat("hh:mm a")
-    )
+    arrivals: busStop.arrivals.map(dateString => DateTime.fromISO(dateString))
   }));
+  busStops.sort(
+    (a, b) =>
+      (a.arrivals.length > 0
+        ? a.arrivals[0].toMillis()
+        : Number.MAX_SAFE_INTEGER) -
+      (b.arrivals.length > 0
+        ? b.arrivals[0].toMillis()
+        : Number.MAX_SAFE_INTEGER)
+  );
+
+  return busStops;
 }
