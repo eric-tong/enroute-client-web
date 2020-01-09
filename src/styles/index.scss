@@ -39,7 +39,7 @@ ul {
 h1 {
   font-size: 2rem;
   font-weight: lighter;
-  margin: 0.5rem 0;
+  margin: 0;
   color: var(--accent);
 }
 
@@ -59,11 +59,15 @@ h3 {
 
 p {
   margin: 0;
+
+  button {
+    text-decoration: underline;
+  }
 }
 
 a {
   color: var(--accent);
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -74,6 +78,7 @@ button {
   font-size: inherit;
   padding: inherit;
   margin: inherit;
+  text-decoration: none;
 
   &.disabled {
     color: #aaa;

@@ -3,6 +3,7 @@
 import "../../../styles/panel.scss";
 
 import { DateTime } from "luxon";
+import MenuButton from "../../misc/MenuButton.react";
 import { PANEL_WIDTH } from "../../../utils/useViewport";
 import React from "react";
 import { gql } from "apollo-boost";
@@ -33,7 +34,10 @@ export default function Panel() {
 
   return (
     <section id="panel" style={{ width: PANEL_WIDTH }}>
-      <h1>Minibus Departures</h1>
+      <header>
+        <h1>Minibus Departures</h1>
+        <MenuButton />
+      </header>
       {busStopGroups.map(({ direction, busStops }) => (
         <>
           <h3>To {direction}</h3>

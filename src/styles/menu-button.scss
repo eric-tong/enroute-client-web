@@ -1,0 +1,37 @@
+.menu {
+  padding: 0.25rem 0.5rem;
+  display: flex;
+  align-items: center;
+  .menu-icon {
+    margin-right: 0.375em;
+    opacity: 0.7;
+    .bar {
+      background: currentColor;
+      height: 0.125em;
+      width: 1em;
+      margin: 0.125em 0;
+      transition: transform 300ms;
+    }
+  }
+  &:hover {
+    .bar {
+      &:first-child {
+        transform: translateY(-1px);
+      }
+      &:last-child {
+        transform: translateY(1px);
+      }
+    }
+  }
+
+  &:active {
+    .bar {
+      &:first-child {
+        transform: translateY(-2px);
+      }
+      &:last-child {
+        transform: translateY(2px);
+      }
+    }
+  }
+}
