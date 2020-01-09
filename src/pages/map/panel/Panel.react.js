@@ -29,13 +29,18 @@ const BUS_STOPS = gql`
 `;
 
 export default function Panel() {
-  const busStops = useBusStops();
+  const busStopGroups = useBusStopGroups();
 
   return (
     <section id="panel" style={{ width: PANEL_WIDTH }}>
       <h1>Minibus Departures</h1>
-      {busStops.map(busStop => (
-        <DepartureTile key={busStop.id} {...busStop} />
+      {busStopGroups.map(({ direction, busStops }) => (
+        <>
+          <h3>To {direction}</h3>
+          {busStops.map(busStop => (
+            <DepartureTile key={busStop.id} {...busStop} />
+          ))}
+        </>
       ))}
     </section>
   );
@@ -64,7 +69,7 @@ function DepartureTile({ id, name, street, direction, departures }: BusStop) {
   );
 }
 
-function useBusStops(): BusStop[] {
+function useBusStopGroups(): { direction: string, busStops: BusStop[] }[] {
   const { data = { busStops: [] } } = useQuery<BusStop>(BUS_STOPS, {
     pollInterval: 15000
   });
@@ -75,5 +80,12 @@ function useBusStops(): BusStop[] {
       DateTime.fromISO(dateString)
     )
   }));
-  return busStops;
+
+  const directions = new Set(busStops.map(busStop => busStop.direction));
+  const busStopsByDirection = Array.from(directions).map(direction => ({
+    direction,
+    busStops: busStops.filter(busStop => busStop.direction === direction)
+  }));
+
+  return busStopsByDirection;
 }

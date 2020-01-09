@@ -49,6 +49,14 @@ h2 {
   font-weight: normal;
 }
 
+h3 {
+  @extend .subtle;
+  font-size: 0.75rem;
+  margin: 0.5rem 0 0 0;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
 p {
   margin: 0;
 }
