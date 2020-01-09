@@ -3,7 +3,6 @@
 import "../../../styles/panel.scss";
 
 import { DateTime } from "luxon";
-import { NavLink } from "react-router-dom";
 import { PANEL_WIDTH } from "../../../utils/useViewport";
 import React from "react";
 import { gql } from "apollo-boost";
@@ -13,7 +12,8 @@ type BusStop = {
   id: number,
   name: string,
   street: string,
-  arrivals: DateTime[]
+  direction: string,
+  departures: DateTime[]
 };
 
 const BUS_STOPS = gql`
@@ -22,7 +22,8 @@ const BUS_STOPS = gql`
       id
       name
       street
-      arrivals
+      direction
+      departures
     }
   }
 `;
@@ -32,29 +33,29 @@ export default function Panel() {
 
   return (
     <section id="panel" style={{ width: PANEL_WIDTH }}>
-      <h1>Arrivals</h1>
+      <h1>Minibus Departures</h1>
       {busStops.map(busStop => (
-        <ArrivalTile key={busStop.name} {...busStop} />
+        <DepartureTile key={busStop.id} {...busStop} />
       ))}
     </section>
   );
 }
 
-function ArrivalTile({ id, name, street, arrivals }: BusStop) {
+function DepartureTile({ id, name, street, direction, departures }: BusStop) {
   return (
     <div className="tile">
       <div className="header">
         <h2>{name}</h2>
         <p className="subtitle">
           <small>{street}</small>
-          <span className="interpunct" />
-          <small className="translucent">To Begbroke</small>
+          <span className="chevron" />
+          <small className="subtle">To {direction}</small>
         </p>
       </div>
       <ul>
-        {arrivals.map(arrival => (
-          <li key={arrival.toMillis()} className="row">
-            {arrival.toFormat("hh:mm a")}
+        {departures.map(departure => (
+          <li key={departure.toMillis()} className="row">
+            {departure.toFormat("hh:mm a")}
             <small className="accent">On Time</small>
           </li>
         ))}
@@ -70,17 +71,9 @@ function useBusStops(): BusStop[] {
 
   const busStops: BusStop[] = data.busStops.map(busStop => ({
     ...busStop,
-    arrivals: busStop.arrivals.map(dateString => DateTime.fromISO(dateString))
+    departures: busStop.departures.map(dateString =>
+      DateTime.fromISO(dateString)
+    )
   }));
-  busStops.sort(
-    (a, b) =>
-      (a.arrivals.length > 0
-        ? a.arrivals[0].toMillis()
-        : Number.MAX_SAFE_INTEGER) -
-      (b.arrivals.length > 0
-        ? b.arrivals[0].toMillis()
-        : Number.MAX_SAFE_INTEGER)
-  );
-
   return busStops;
 }

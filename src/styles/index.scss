@@ -8,6 +8,7 @@ html {
 
   --background: #fafafa;
   --accent: #0cd390;
+  --subtle: #b0bec5;
 
   --shadow: rgba(0, 0, 0, 0.1);
 }
@@ -90,8 +91,8 @@ small {
   font-weight: bold;
 }
 
-.translucent {
-  opacity: 25%;
+.subtle {
+  color: var(--subtle);
 }
 
 .accent {
@@ -99,13 +100,31 @@ small {
 }
 
 span.interpunct {
+  @extend .subtle;
   display: inline-block;
   width: 0.25em;
   height: 0.25em;
   background: currentColor;
   margin: 0 0.5rem 0.125rem 0.5rem;
   border-radius: 50%;
-  opacity: 50%;
+  opacity: 60%;
+}
+
+span.chevron::before {
+  @extend .subtle;
+  font-size: 0.5em;
+  border-style: solid;
+  border-width: 0.25em 0.25em 0 0;
+  content: "";
+  display: inline-block;
+  height: 0.45em;
+  left: 0;
+  transform: rotate(45deg);
+  position: relative;
+  vertical-align: middle;
+  width: 0.45em;
+  margin: 0.75em;
+  opacity: 60%;
 }
 
 #root {
