@@ -3,12 +3,14 @@
 import "../../../styles/panel.scss";
 
 import { DateTime } from "luxon";
+import { NavLink } from "react-router-dom";
 import { PANEL_WIDTH } from "../../../utils/useViewport";
 import React from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 type BusStop = {
+  id: number,
   name: string,
   street: string,
   arrivals: DateTime[]
@@ -38,14 +40,14 @@ export default function Panel() {
   );
 }
 
-function ArrivalTile({ name, street, arrivals }: BusStop) {
+function ArrivalTile({ id, name, street, arrivals }: BusStop) {
   return (
     <div className="tile">
       <div className="header">
         <h2>{name}</h2>
         <p className="subtitle">
           <small>{street}</small>
-          <span class="interpunct" />
+          <span className="interpunct" />
           <small className="translucent">To Begbroke</small>
         </p>
       </div>
