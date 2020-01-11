@@ -35,7 +35,7 @@ export default function Panel() {
   return (
     <section id="panel" style={{ width: PANEL_WIDTH }}>
       <header>
-        <h1>Minibus Departures</h1>
+        <h1>Live Departures</h1>
         <MenuButton />
       </header>
       {busStopGroups.map(({ direction, busStops }) => (

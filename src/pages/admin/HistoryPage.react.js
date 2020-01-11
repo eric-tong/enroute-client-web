@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import BusStopsOverlay from "../map/busStops/BusStopsOverlay.react";
 import { DateTime } from "luxon";
 import ReactMapGL from "react-map-gl";
-import TimeTravelSlider from "../map/history/TimeTravelSlider.react";
+import TimeTravelSlider from "./history/TimeTravelSlider.react";
 import VehicleMarker from "../map/vehicles/VehicleMarker.react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
@@ -15,7 +15,7 @@ import useViewport from "../../utils/useViewport";
 
 const AVLS = gql`
   query getAvls($date: String!) {
-    avls(date: $date) {
+    avls(date: $date, full: true) {
       timestamp
       latitude
       longitude
@@ -56,6 +56,7 @@ export default function HistoryPage() {
                   {
                     hour: "2-digit",
                     minute: "2-digit",
+                    second: "2-digit",
                     hour12: true
                   }
                 )
