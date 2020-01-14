@@ -14,7 +14,7 @@ type BusStop = {
   name: string,
   street: string,
   direction: string,
-  departures: DateTime[]
+  departures: { scheduled: DateTime, predicted: ?DateTime }[]
 };
 
 const BUS_STOPS = gql`
@@ -24,14 +24,16 @@ const BUS_STOPS = gql`
       name
       street
       direction
-      departures
+      departures {
+        scheduled
+        predicted
+      }
     }
   }
 `;
 
 export default function Panel() {
   const busStopGroups = useBusStopGroups();
-
   return (
     <section id="panel" style={{ width: PANEL_WIDTH }}>
       <header>
@@ -39,12 +41,12 @@ export default function Panel() {
         <MenuButton />
       </header>
       {busStopGroups.map(({ direction, busStops }) => (
-        <>
+        <React.Fragment key={direction}>
           <h3>To {direction}</h3>
           {busStops.map(busStop => (
             <DepartureTile key={busStop.id} {...busStop} />
           ))}
-        </>
+        </React.Fragment>
       ))}
     </section>
   );
@@ -63,9 +65,13 @@ function DepartureTile({ id, name, street, direction, departures }: BusStop) {
       </div>
       <ul>
         {departures.map(departure => (
-          <li key={departure.toMillis()} className="row">
-            {departure.toFormat("hh:mm a")}
-            <small className="accent">On Time</small>
+          <li key={departure.scheduled.toMillis()} className="row">
+            {departure.scheduled.toFormat("hh:mm a")}
+            <small className="accent">
+              {departure.predicted
+                ? departure.predicted.toFormat("hh:mm a")
+                : "On Time"}
+            </small>
           </li>
         ))}
       </ul>
@@ -80,9 +86,10 @@ function useBusStopGroups(): { direction: string, busStops: BusStop[] }[] {
 
   const busStops: BusStop[] = data.busStops.map(busStop => ({
     ...busStop,
-    departures: busStop.departures.map(dateString =>
-      DateTime.fromISO(dateString)
-    )
+    departures: busStop.departures.map(departure => ({
+      scheduled: DateTime.fromSQL(departure.scheduled),
+      predicted: departure.predicted && DateTime.fromSQL(departure.predicted)
+    }))
   }));
 
   const directions = new Set(busStops.map(busStop => busStop.direction));
