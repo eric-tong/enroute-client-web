@@ -1,6 +1,7 @@
 // @flow
 
 import type { BusStop } from "./Panel.react";
+import { DateTime } from "luxon";
 import React from "react";
 
 export default function DepartureTile({
@@ -24,14 +25,36 @@ export default function DepartureTile({
         {departures.map(departure => (
           <li key={departure.scheduled.toMillis()} className="row">
             {departure.scheduled.toFormat("hh:mm a")}
-            <small className="accent">
-              {departure.predicted
-                ? departure.predicted.toFormat("hh:mm a")
-                : "On Time"}
-            </small>
+            <DepartureStatus departure={departure} />
           </li>
         ))}
       </ul>
     </div>
   );
+}
+
+function DepartureStatus({
+  departure
+}: {
+  departure: $ElementType<$PropertyType<BusStop, "departures">, number>
+}) {
+  const OnTime = <small className="accent">On Time</small>;
+  if (!departure.predicted) return OnTime;
+
+  const lateDuration =
+    (departure.predicted.valueOf() - departure.scheduled.valueOf()) / 60000;
+  const now = DateTime.local();
+  const duration = (now.valueOf() - departure.scheduled.valueOf()) / 60000;
+
+  if (duration < 1) {
+    return <small className="accent">Arriving</small>;
+  } else if (lateDuration < 1) {
+    return OnTime;
+  } else {
+    return (
+      <small className="warning">{`${Math.round(
+        lateDuration
+      )} min late`}</small>
+    );
+  }
 }
