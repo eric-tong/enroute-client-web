@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import WebMercatorViewport from "viewport-mercator-project";
 
-export const PANEL_WIDTH = 32 * 16;
+export const PANEL_WIDTH = 33 * 16;
 
 export default function useViewport() {
   const [viewport, setViewport] = useState<WebMercatorViewport>(

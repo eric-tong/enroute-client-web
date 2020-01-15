@@ -3,13 +3,14 @@
 import "../../../styles/panel.scss";
 
 import { DateTime } from "luxon";
+import DepartureTile from "./DepartureTile.react";
 import MenuButton from "../../misc/MenuButton.react";
 import { PANEL_WIDTH } from "../../../utils/useViewport";
 import React from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
-type BusStop = {
+export type BusStop = {
   id: number,
   name: string,
   street: string,
@@ -49,33 +50,6 @@ export default function Panel() {
         </React.Fragment>
       ))}
     </section>
-  );
-}
-
-function DepartureTile({ id, name, street, direction, departures }: BusStop) {
-  return (
-    <div className="tile">
-      <div className="header">
-        <h2>{name}</h2>
-        <p className="subtitle">
-          <small>{street}</small>
-          <span className="chevron" />
-          <small className="subtle">To {direction}</small>
-        </p>
-      </div>
-      <ul>
-        {departures.map(departure => (
-          <li key={departure.scheduled.toMillis()} className="row">
-            {departure.scheduled.toFormat("hh:mm a")}
-            <small className="accent">
-              {departure.predicted
-                ? departure.predicted.toFormat("hh:mm a")
-                : "On Time"}
-            </small>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }
 
