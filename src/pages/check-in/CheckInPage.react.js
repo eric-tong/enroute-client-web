@@ -5,32 +5,39 @@ import "../../styles/check-in.scss";
 
 import React, { useEffect, useState } from "react";
 
-type Props = {|
-  vehicleId: ?string,
-|};
-/* eslint-disable-next-line no-use-before-define */
-type UserType = $Keys<typeof userTypeNames>;
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/react-hooks";
 
-const userTypes: UserType[] = ["university", "company", "visitor"];
-const userTypeNames: { [UserType]: string } = {
-  university: "University of Oxford employee or student",
-  company: "Begbroke company employee",
-  visitor: "visitor",
-};
+type Props = {| vehicleId: ?string |};
+type UserType = string;
+type Department = {| type: UserType, name: string |};
+
+const DEPARTMENTS = gql`
+  {
+    departments {
+      type
+      name
+    }
+  }
+`;
 
 export default function CheckInPage({ vehicleId }: Props) {
-  const [userType, setUserType] = useUserType();
+  const [userType, userTypes, setUserType] = useUserType();
 
   const header = vehicleId ? `Check in to bus ${vehicleId}` : "No bus found";
   const body = !vehicleId ? (
     undefined
   ) : userType ? (
     <ConfirmationSection
-      userType={userType}
+      userTypeName={userTypes.find(({ type }) => userType === type)?.name}
       onButtonClick={() => setUserType()}
     />
   ) : (
-    <OptionsList vehicleId={vehicleId} onItemClick={setUserType} />
+    <OptionsList
+      options={userTypes}
+      vehicleId={vehicleId}
+      onItemClick={setUserType}
+    />
   );
   return (
     <main className="check-in-container">
@@ -43,11 +50,11 @@ export default function CheckInPage({ vehicleId }: Props) {
 }
 
 function ConfirmationSection({
-  userType,
-  onButtonClick,
+  userTypeName,
+  onButtonClick
 }: {
-  userType: UserType,
-  onButtonClick: () => void,
+  userTypeName: ?string,
+  onButtonClick: () => void
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -67,7 +74,7 @@ function ConfirmationSection({
         <h2>{isLoading ? "Checking in..." : "Check in successful"}</h2>
         {!isLoading && (
           <p>
-            Checked in as a {userTypeNames[userType]}.{" "}
+            Checked in as a {userTypeName}.{" "}
             <button onClick={onButtonClick}>Change.</button>
           </p>
         )}
@@ -85,31 +92,35 @@ function CheckMark({ isLoading }: { isLoading: boolean }) {
 }
 
 function OptionsList({
+  options,
   vehicleId,
-  onItemClick,
+  onItemClick
 }: {
+  options: Department[],
   vehicleId: string,
-  onItemClick: UserType => void,
+  onItemClick: UserType => void
 }) {
   return (
     <section className="options-container">
-      {userTypes.map(type => (
+      {options.map(({ type, name }) => (
         <div
           key={type}
           onClick={() => onItemClick(type)}
           className="option"
-        >{`I'm a ${userTypeNames[type]}`}</div>
+        >{`I'm a ${name}`}</div>
       ))}
     </section>
   );
 }
 
-function useUserType() {
+function useUserType(): [?UserType, Department[], (?UserType) => void] {
   const [userType, setUserType] = useState<?UserType>(
     localStorage.getItem("userType")
   );
+  const { data = { departments: [] } } = useQuery(DEPARTMENTS);
   return [
     userType,
+    data.departments,
     (newUserType: ?UserType) => {
       if (newUserType) {
         localStorage.setItem("userType", newUserType);
@@ -117,6 +128,6 @@ function useUserType() {
         localStorage.removeItem("userType");
       }
       setUserType(newUserType);
-    },
+    }
   ];
 }
