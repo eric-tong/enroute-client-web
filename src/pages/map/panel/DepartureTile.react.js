@@ -14,7 +14,7 @@ export default function DepartureTile({
   return (
     <div className="tile">
       <div className="header">
-        <h2>{name}</h2>
+        <h4>{name}</h4>
         <p className="subtitle">
           <small>{street}</small>
           <span className="chevron" />
