@@ -2,21 +2,13 @@
 
 import "../../../styles/panel.scss";
 
+import type { BusStop } from "./DepartureTile.react";
 import { DateTime } from "luxon";
 import DepartureTile from "./DepartureTile.react";
 import MenuButton from "../../misc/MenuButton.react";
-import { PANEL_WIDTH } from "../../../utils/useViewport";
 import React from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
-
-export type BusStop = {
-  id: number,
-  name: string,
-  street: string,
-  direction: string,
-  departures: { scheduled: DateTime, predicted: ?DateTime }[]
-};
 
 const BUS_STOPS = gql`
   {
@@ -33,10 +25,10 @@ const BUS_STOPS = gql`
   }
 `;
 
-export default function Panel() {
+export default function DepartureBoard() {
   const busStopGroups = useBusStopGroups();
   return (
-    <section id="panel" style={{ width: PANEL_WIDTH }}>
+    <>
       <header>
         <h1>Live Departures</h1>
         <MenuButton />
@@ -49,7 +41,7 @@ export default function Panel() {
           ))}
         </React.Fragment>
       ))}
-    </section>
+    </>
   );
 }
 
