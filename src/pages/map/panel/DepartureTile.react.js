@@ -34,27 +34,32 @@ export default function DepartureTile({
 }
 
 function DepartureStatus({
-  departure
+  departure: { predicted, scheduled }
 }: {
   departure: $ElementType<$PropertyType<BusStop, "departures">, number>
 }) {
   const OnTime = <small className="accent">On Time</small>;
-  if (!departure.predicted) return OnTime;
+  if (!predicted) return OnTime;
 
-  const lateDuration =
-    (departure.predicted.valueOf() - departure.scheduled.valueOf()) / 60000;
+  const lateDuration = (predicted.valueOf() - scheduled.valueOf()) / 60000;
   const now = DateTime.local();
-  const duration = (now.valueOf() - departure.scheduled.valueOf()) / 60000;
+  const timeToPredictedArrival = (now.valueOf() - predicted.valueOf()) / 60000;
 
-  if (duration < 1) {
+  if (timeToPredictedArrival < 1) {
     return <small className="accent">Arriving</small>;
-  } else if (lateDuration < 1) {
-    return OnTime;
-  } else {
+  } else if (lateDuration < -1) {
+    return (
+      <small className="accent">{`${Math.round(
+        lateDuration * -1
+      )} min early`}</small>
+    );
+  } else if (lateDuration > 1) {
     return (
       <small className="warning">{`${Math.round(
         lateDuration
       )} min late`}</small>
     );
+  } else {
+    return OnTime;
   }
 }
