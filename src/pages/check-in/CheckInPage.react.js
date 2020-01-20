@@ -3,7 +3,7 @@
 import "../../styles/checkmark.scss";
 import "../../styles/check-in.scss";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { gql } from "apollo-boost";
@@ -26,9 +26,12 @@ const DEPARTMENTS = gql`
   }
 `;
 const CREATE_NEW_CHECK_IN = gql`
-  mutation createNewCheckIn($userType: String, $vehicleRegistration: String!) {
+  mutation createNewCheckIn(
+    $departmentType: String
+    $vehicleRegistration: String!
+  ) {
     createNewCheckIn(
-      userType: $userType
+      departmentType: $departmentType
       vehicleRegistration: $vehicleRegistration
     )
   }
@@ -51,7 +54,7 @@ export default function CheckInPage({ vehicleRegistration }: Props) {
         departments={departments}
         onItemClick={setDepartment}
       />
-    ) : status === "loading" || status === "departmentsList" ? (
+    ) : status === "loading" || status === "confirmed" ? (
       <ConfirmationSection
         isLoading={status === "loading"}
         departmentName={selectedDepartment?.name ?? ""}
@@ -159,7 +162,10 @@ function useDepartment(
   const onSelectDepartment = (department: ?Department) => {
     if (department) {
       checkIn({
-        variables: { userType: department.type + "xo", vehicleRegistration }
+        variables: {
+          departmentType: department.type,
+          vehicleRegistration
+        }
       });
     }
     setSelectedDepartment(department);
