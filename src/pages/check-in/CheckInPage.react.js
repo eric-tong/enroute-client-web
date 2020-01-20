@@ -51,12 +51,14 @@ export default function CheckInPage({ vehicleRegistration }: Props) {
         departments={departments}
         onItemClick={setDepartment}
       />
-    ) : (
+    ) : status === "loading" || status === "departmentsList" ? (
       <ConfirmationSection
         isLoading={status === "loading"}
         departmentName={selectedDepartment?.name ?? ""}
         onChangeClick={() => setDepartment()}
       />
+    ) : (
+      <ErrorSection />
     );
   return (
     <main className="check-in-container">
@@ -123,6 +125,18 @@ function ConfirmationSection({
   );
 }
 
+function ErrorSection() {
+  return (
+    <section className="confirmation">
+      <div className="half-section"></div>
+      <div className="half-section">
+        <h2>An error has occurred</h2>
+        <p>Refresh this page to try again.</p>
+      </div>
+    </section>
+  );
+}
+
 function useDepartment(
   vehicleRegistration: string
 ): {
@@ -137,13 +151,15 @@ function useDepartment(
 
   const status = selectedDepartment
     ? checkInId
-      ? "confirmed"
+      ? checkInId > 0
+        ? "confirmed"
+        : "error"
       : "loading"
     : "departmentsList";
   const onSelectDepartment = (department: ?Department) => {
     if (department) {
       checkIn({
-        variables: { userType: department.type, vehicleRegistration }
+        variables: { userType: department.type + "xo", vehicleRegistration }
       });
     }
     setSelectedDepartment(department);
