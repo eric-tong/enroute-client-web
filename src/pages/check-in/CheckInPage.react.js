@@ -3,7 +3,7 @@
 import "../../styles/checkmark.scss";
 import "../../styles/check-in.scss";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { gql } from "apollo-boost";
@@ -149,8 +149,23 @@ function useDepartment(
   status: Status
 } {
   const { data: departmentsData = { departments: [] } } = useQuery(DEPARTMENTS);
-  const [selectedDepartment, setSelectedDepartment] = useState<?Department>();
+  const previousDepartmentString = localStorage.getItem("department");
+  const [selectedDepartment, setSelectedDepartment] = useState<?Department>(
+    previousDepartmentString ? JSON.parse(previousDepartmentString) : undefined
+  );
   const [checkIn, checkInId] = useDeferredCheckInId();
+
+  useEffect(() => {
+    if (selectedDepartment) {
+      checkIn({
+        variables: {
+          departmentType: selectedDepartment.type,
+          vehicleRegistration
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const status = selectedDepartment
     ? checkInId
@@ -167,6 +182,7 @@ function useDepartment(
           vehicleRegistration
         }
       });
+      localStorage.setItem("department", JSON.stringify(department));
     }
     setSelectedDepartment(department);
   };
