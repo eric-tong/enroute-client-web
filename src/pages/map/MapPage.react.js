@@ -1,10 +1,14 @@
 // @flow
 
+import "../../styles/panel.scss";
+
 import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 
+import BusStopDetailView from "./panel/BusStopDetailView.react";
 import BusStopsOverlay from "./busStops/BusStopsOverlay.react";
 import DepartureBoard from "./panel/DepartureBoard.react";
+import MenuButton from "../misc/MenuButton.react";
 import { PANEL_WIDTH } from "../../utils/useViewport";
 import ReactMapGL from "react-map-gl";
 import RouteLine from "./RouteLine.react";
@@ -27,7 +31,16 @@ function Map() {
         <BusStopsOverlay />
       </ReactMapGL>
       <section id="panel" style={{ width: PANEL_WIDTH }}>
+        <MenuButton />
         <Switch>
+          <Route
+            path="/stop/:busStopUrl"
+            render={props =>
+              props.match.params.busStopUrl ? (
+                <BusStopDetailView busStopUrl={props.match.params.busStopUrl} />
+              ) : null
+            }
+          />
           <Route path="/" component={DepartureBoard} />
         </Switch>
       </section>
