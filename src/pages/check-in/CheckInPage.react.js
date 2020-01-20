@@ -8,9 +8,14 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { gql } from "apollo-boost";
 
-type Props = {| vehicleRegistration: ?string |};
-type UserType = string;
-type Department = {| type: UserType, name: string |};
+type Props = {|
+  vehicleRegistration: ?string
+|};
+type Department = {|
+  type: string,
+  name: string
+|};
+type Status = "departmentsList" | "loading" | "confirmed" | "error";
 
 const DEPARTMENTS = gql`
   {
@@ -30,75 +35,36 @@ const CREATE_NEW_CHECK_IN = gql`
 `;
 
 export default function CheckInPage({ vehicleRegistration }: Props) {
-  const [userType, checkInId, userTypes, setUserType] = useUserType(
-    vehicleRegistration ?? ""
-  );
+  const {
+    selectedDepartment,
+    departments,
+    setDepartment,
+    status
+  } = useDepartment(vehicleRegistration ?? "");
 
-  const header = vehicleRegistration
-    ? `Check in to bus ${vehicleRegistration}`
-    : "No bus found";
-  const body = !vehicleRegistration ? (
-    undefined
-  ) : userType ? (
-    <ConfirmationSection
-      checkInId={checkInId}
-      userTypeName={userTypes.find(({ type }) => userType === type)?.name}
-      onButtonClick={() => setUserType()}
-    />
-  ) : (
-    <OptionsList options={userTypes} onItemClick={setUserType} />
-  );
+  // TODO check for vehicle validity, return vehicle selection page
+  if (!vehicleRegistration) return "No bus found";
+
+  const body =
+    status === "departmentsList" ? (
+      <DepartmentsListSection
+        departments={departments}
+        onItemClick={setDepartment}
+      />
+    ) : (
+      <ConfirmationSection
+        isLoading={status === "loading"}
+        departmentName={selectedDepartment?.name ?? ""}
+        onChangeClick={() => setDepartment()}
+      />
+    );
   return (
     <main className="check-in-container">
       <header>
-        <h1>{header}</h1>
+        <h1>Check in to bus {vehicleRegistration}</h1>
       </header>
       {body}
     </main>
-  );
-}
-
-function ConfirmationSection({
-  userTypeName,
-  onButtonClick,
-  checkInId
-}: {
-  userTypeName: ?string,
-  onButtonClick: () => void,
-  checkInId: number
-}) {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  useEffect(() => {
-    const id = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(id);
-  }, []);
-
-  if (checkInId === 0)
-    return (
-      <section className="confirmation">
-        <h2>An error has occurred. Please try again.</h2>
-      </section>
-    );
-
-  const showConfirmation = !isLoading && checkInId > -1;
-
-  return (
-    <section className="confirmation">
-      <div className="half-section">
-        <CheckMark isLoading={!showConfirmation} />
-      </div>
-      <div className="half-section">
-        <h2>{showConfirmation ? "Check in successful" : "Checking in..."}</h2>
-        {showConfirmation && (
-          <p>
-            Checked in as a {userTypeName}.{" "}
-            <button onClick={onButtonClick}>Change.</button>
-          </p>
-        )}
-      </div>
-    </section>
   );
 }
 
@@ -110,63 +76,101 @@ function CheckMark({ isLoading }: { isLoading: boolean }) {
   );
 }
 
-function OptionsList({
-  options,
+function DepartmentsListSection({
+  departments,
   onItemClick
 }: {
-  options: Department[],
-  onItemClick: UserType => void
+  departments: Department[],
+  onItemClick: Department => void
 }) {
   return (
     <section className="options-container">
-      {options.map(({ type, name }) => (
+      {departments.map(department => (
         <div
-          key={type}
-          onClick={() => onItemClick(type)}
+          key={department.type}
+          onClick={() => onItemClick(department)}
           className="option"
-        >{`I'm a ${name}`}</div>
+        >{`I'm a ${department.name}`}</div>
       ))}
     </section>
   );
 }
 
-function useUserType(
-  vehicleRegistration: string
-): [?UserType, number, Department[], (?UserType) => void] {
-  const [userType, setUserType] = useState<?UserType>(
-    localStorage.getItem("userType")
+function ConfirmationSection({
+  isLoading,
+  departmentName,
+  onChangeClick
+}: {
+  isLoading: boolean,
+  departmentName: string,
+  onChangeClick: () => void
+}) {
+  return (
+    <section className="confirmation">
+      <div className="half-section">
+        <CheckMark isLoading={isLoading} />
+      </div>
+      <div className="half-section">
+        <h2>{isLoading ? "Checking in..." : "Check in successful"}</h2>
+        {!isLoading && (
+          <p>
+            Checked in as a {departmentName}.{" "}
+            <button onClick={onChangeClick}>Change.</button>
+          </p>
+        )}
+      </div>
+    </section>
   );
+}
+
+function useDepartment(
+  vehicleRegistration: string
+): {
+  selectedDepartment: ?Department,
+  departments: Department[],
+  setDepartment: (?Department) => void,
+  status: Status
+} {
   const { data: departmentsData = { departments: [] } } = useQuery(DEPARTMENTS);
-  const [
-    checkIn,
-    { data: checkInData = { createNewCheckIn: -1 } }
-  ] = useMutation(CREATE_NEW_CHECK_IN);
+  const [selectedDepartment, setSelectedDepartment] = useState<?Department>();
+  const [checkIn, checkInId] = useDeferredCheckInId();
 
-  useEffect(() => {
-    if (userType && vehicleRegistration)
-      checkIn({ variables: { userType, vehicleRegistration } });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  console.log({
-    id: checkInData.createNewCheckIn,
-    userType,
-    vehicleRegistration
-  });
-
-  return [
-    userType,
-    checkInData.createNewCheckIn,
-    departmentsData.departments,
-    (newUserType: ?UserType) => {
-      if (newUserType) {
-        checkIn({ variables: { userType: newUserType, vehicleRegistration } });
-        localStorage.setItem("userType", newUserType);
-      } else {
-        checkIn({ variables: { userType: undefined, vehicleRegistration } });
-        localStorage.removeItem("userType");
-      }
-      setUserType(newUserType);
+  const status = selectedDepartment
+    ? checkInId
+      ? "confirmed"
+      : "loading"
+    : "departmentsList";
+  const onSelectDepartment = (department: ?Department) => {
+    if (department) {
+      checkIn({
+        variables: { userType: department.type, vehicleRegistration }
+      });
     }
-  ];
+    setSelectedDepartment(department);
+  };
+
+  console.log({ selectedDepartment, checkInId, status });
+
+  return {
+    selectedDepartment,
+    departments: departmentsData.departments,
+    setDepartment: onSelectDepartment,
+    status
+  };
+}
+
+function useDeferredCheckInId() {
+  const [checkIn, { data: checkInData }] = useMutation(CREATE_NEW_CHECK_IN);
+  const checkInId = checkInData?.createNewCheckIn;
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const deferredCheckIn = (...args) => {
+    checkIn(...args);
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  };
+
+  return [deferredCheckIn, isLoading ? undefined : checkInId];
 }
