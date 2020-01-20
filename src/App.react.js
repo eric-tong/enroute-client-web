@@ -20,9 +20,11 @@ function App() {
       <Router>
         <Switch>
           <Route
-            path="/checkin/:vehicleId?"
+            path="/checkin/:vehicleRegistration?"
             render={props => (
-              <CheckInPage vehicleId={props.match.params.vehicleId} />
+              <CheckInPage
+                vehicleRegistration={props.match.params.vehicleRegistration}
+              />
             )}
           />
           <Route path="/history" component={HistoryPage} />

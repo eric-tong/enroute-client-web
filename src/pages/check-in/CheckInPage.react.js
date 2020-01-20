@@ -4,11 +4,11 @@ import "../../styles/checkmark.scss";
 import "../../styles/check-in.scss";
 
 import React, { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 
 import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/react-hooks";
 
-type Props = {| vehicleId: ?string |};
+type Props = {| vehicleRegistration: ?string |};
 type UserType = string;
 type Department = {| type: UserType, name: string |};
 
@@ -20,24 +20,33 @@ const DEPARTMENTS = gql`
     }
   }
 `;
+const CREATE_NEW_CHECK_IN = gql`
+  mutation createNewCheckIn($userType: String, $vehicleRegistration: String!) {
+    createNewCheckIn(
+      userType: $userType
+      vehicleRegistration: $vehicleRegistration
+    )
+  }
+`;
 
-export default function CheckInPage({ vehicleId }: Props) {
-  const [userType, userTypes, setUserType] = useUserType();
+export default function CheckInPage({ vehicleRegistration }: Props) {
+  const [userType, checkInId, userTypes, setUserType] = useUserType(
+    vehicleRegistration ?? ""
+  );
 
-  const header = vehicleId ? `Check in to bus ${vehicleId}` : "No bus found";
-  const body = !vehicleId ? (
+  const header = vehicleRegistration
+    ? `Check in to bus ${vehicleRegistration}`
+    : "No bus found";
+  const body = !vehicleRegistration ? (
     undefined
   ) : userType ? (
     <ConfirmationSection
+      checkInId={checkInId}
       userTypeName={userTypes.find(({ type }) => userType === type)?.name}
       onButtonClick={() => setUserType()}
     />
   ) : (
-    <OptionsList
-      options={userTypes}
-      vehicleId={vehicleId}
-      onItemClick={setUserType}
-    />
+    <OptionsList options={userTypes} onItemClick={setUserType} />
   );
   return (
     <main className="check-in-container">
@@ -51,13 +60,14 @@ export default function CheckInPage({ vehicleId }: Props) {
 
 function ConfirmationSection({
   userTypeName,
-  onButtonClick
+  onButtonClick,
+  checkInId
 }: {
   userTypeName: ?string,
-  onButtonClick: () => void
+  onButtonClick: () => void,
+  checkInId: number
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
   useEffect(() => {
     const id = setTimeout(() => {
       setIsLoading(false);
@@ -65,14 +75,23 @@ function ConfirmationSection({
     return () => clearTimeout(id);
   }, []);
 
+  if (checkInId === 0)
+    return (
+      <section className="confirmation">
+        <h2>An error has occurred. Please try again.</h2>
+      </section>
+    );
+
+  const showConfirmation = !isLoading && checkInId > -1;
+
   return (
     <section className="confirmation">
       <div className="half-section">
-        <CheckMark isLoading={isLoading} />
+        <CheckMark isLoading={!showConfirmation} />
       </div>
       <div className="half-section">
-        <h2>{isLoading ? "Checking in..." : "Check in successful"}</h2>
-        {!isLoading && (
+        <h2>{showConfirmation ? "Check in successful" : "Checking in..."}</h2>
+        {showConfirmation && (
           <p>
             Checked in as a {userTypeName}.{" "}
             <button onClick={onButtonClick}>Change.</button>
@@ -93,11 +112,9 @@ function CheckMark({ isLoading }: { isLoading: boolean }) {
 
 function OptionsList({
   options,
-  vehicleId,
   onItemClick
 }: {
   options: Department[],
-  vehicleId: string,
   onItemClick: UserType => void
 }) {
   return (
@@ -113,18 +130,40 @@ function OptionsList({
   );
 }
 
-function useUserType(): [?UserType, Department[], (?UserType) => void] {
+function useUserType(
+  vehicleRegistration: string
+): [?UserType, number, Department[], (?UserType) => void] {
   const [userType, setUserType] = useState<?UserType>(
     localStorage.getItem("userType")
   );
-  const { data = { departments: [] } } = useQuery(DEPARTMENTS);
+  const { data: departmentsData = { departments: [] } } = useQuery(DEPARTMENTS);
+  const [
+    checkIn,
+    { data: checkInData = { createNewCheckIn: -1 } }
+  ] = useMutation(CREATE_NEW_CHECK_IN);
+
+  useEffect(() => {
+    if (userType && vehicleRegistration)
+      checkIn({ variables: { userType, vehicleRegistration } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log({
+    id: checkInData.createNewCheckIn,
+    userType,
+    vehicleRegistration
+  });
+
   return [
     userType,
-    data.departments,
+    checkInData.createNewCheckIn,
+    departmentsData.departments,
     (newUserType: ?UserType) => {
       if (newUserType) {
+        checkIn({ variables: { userType: newUserType, vehicleRegistration } });
         localStorage.setItem("userType", newUserType);
       } else {
+        checkIn({ variables: { userType: undefined, vehicleRegistration } });
         localStorage.removeItem("userType");
       }
       setUserType(newUserType);
