@@ -39,6 +39,11 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
     <>
       <button class="back">Back to Departures</button>
       <h1>{name}</h1>
+      <p>
+        {street}
+        <span className="chevron higher" />
+        <span className="subtle">Towards {direction}</span>
+      </p>
     </>
   );
 }
