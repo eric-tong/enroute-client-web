@@ -27,13 +27,18 @@ const DEPARTMENTS = gql`
 `;
 const CREATE_NEW_CHECK_IN = gql`
   mutation createNewCheckIn(
-    $departmentType: String
+    $departmentType: String!
     $vehicleRegistration: String!
   ) {
     createNewCheckIn(
       departmentType: $departmentType
       vehicleRegistration: $vehicleRegistration
     )
+  }
+`;
+const CHECK_OUT = gql`
+  mutation checkOut($id: Int!) {
+    checkOut(id: $id)
   }
 `;
 
@@ -153,7 +158,7 @@ function useDepartment(
   const [selectedDepartment, setSelectedDepartment] = useState<?Department>(
     previousDepartmentString ? JSON.parse(previousDepartmentString) : undefined
   );
-  const [checkIn, checkInId] = useDeferredCheckInId();
+  const [checkInId, checkIn, checkOut] = useDeferredCheckInId();
 
   useEffect(() => {
     if (selectedDepartment) {
@@ -183,11 +188,12 @@ function useDepartment(
         }
       });
       localStorage.setItem("department", JSON.stringify(department));
+    } else {
+      checkOut();
+      localStorage.removeItem("department");
     }
     setSelectedDepartment(department);
   };
-
-  console.log({ selectedDepartment, checkInId, status });
 
   return {
     selectedDepartment,
@@ -199,6 +205,7 @@ function useDepartment(
 
 function useDeferredCheckInId() {
   const [checkIn, { data: checkInData }] = useMutation(CREATE_NEW_CHECK_IN);
+  const [checkOut, { data: checkOutData }] = useMutation(CHECK_OUT);
   const checkInId = checkInData?.createNewCheckIn;
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -210,5 +217,9 @@ function useDeferredCheckInId() {
     }, 2000);
   };
 
-  return [deferredCheckIn, isLoading ? undefined : checkInId];
+  return [
+    isLoading ? undefined : checkInId,
+    deferredCheckIn,
+    () => checkOut({ variables: { id: checkInId } })
+  ];
 }
