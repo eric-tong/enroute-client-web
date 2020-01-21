@@ -4,6 +4,7 @@ import "../../../styles/detail-view-tile.scss";
 
 import { DateTime } from "luxon";
 import React from "react";
+import { getHumanReadableTime } from "../../../utils/timeUtil";
 
 type Props = {|
   departure: Departure
@@ -21,23 +22,22 @@ export default function BusStopDetailViewTile({
   departure: { scheduled, predicted }
 }: Props) {
   const now = DateTime.local();
-  const estimated = predicted ?? scheduled;
-  const timeToEstimatedDeparture = estimated.toMillis() - now.toMillis();
-  const [hour, minute] = [
-    timeToEstimatedDeparture / 60 / 60 / 1000,
-    (timeToEstimatedDeparture / 60 / 1000) % 60
-  ].map(Math.floor);
+  const delay = (predicted.toMillis() - scheduled.toMillis()) / 60 / 1000;
+  const status = delay > 2 ? "delayed" : delay < -2 ? "early" : "onTime";
 
   return (
     <div className="detail-view-tile">
       <header>
         <div className="subheader left">
-          <h1>{`${hour} hr ${minute} min`}</h1>
+          <h1>{getHumanReadableTime(now, predicted)}</h1>
         </div>
         <div className="subheader right">
-          <p className="warning">
-            {estimated.toFormat("h:mm a")}
-            <span className="tag ghost">Delayed</span>
+          <p>
+            <TimeWithAlertTag
+              predicted={predicted}
+              scheduled={scheduled}
+              showOnTime={true}
+            />
           </p>
           <h3>Scheduled {scheduled.toFormat("h:mm a")}</h3>
         </div>
@@ -56,12 +56,40 @@ export default function BusStopDetailViewTile({
                 </div>
               </div>
               <span className="name">{stop}</span>
-              <span className="time warning">5:15 pm</span>
-              <span className="tag ghost warning">Delayed</span>
+              <TimeWithAlertTag predicted={predicted} scheduled={scheduled} />
             </li>
           ))}
         </ul>
       </div>
     </div>
+  );
+}
+
+function TimeWithAlertTag({
+  predicted,
+  scheduled,
+  showOnTime = false
+}: {
+  predicted: DateTime,
+  scheduled: DateTime,
+  showOnTime?: boolean
+}) {
+  const delay = (predicted.toMillis() - scheduled.toMillis()) / 60 / 1000;
+
+  return delay > 2 ? (
+    <>
+      <span className="time warning">{predicted.toFormat("h:mm a")}</span>
+      <span className="tag ghost warning">Delayed</span>
+    </>
+  ) : delay < -2 ? (
+    <>
+      <span className="time accent">{predicted.toFormat("h:mm a")}</span>
+      <span className="tag ghost accent">Early</span>
+    </>
+  ) : (
+    <>
+      <span className="time">{predicted.toFormat("h:mm a")}</span>
+      {showOnTime && <span className="tag ghost">On Time</span>}
+    </>
   );
 }

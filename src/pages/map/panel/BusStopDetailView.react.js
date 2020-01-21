@@ -34,7 +34,6 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
   // TODO add null state
   return (
     <>
-      <button className="back">Back to Departures</button>
       <h1 className="no-bottom-margin">{name}</h1>
       <p className="direction">
         {street}
