@@ -30,10 +30,10 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
   const { name, street, direction, departures } = data?.busStop;
 
   const STOPS = [
-    "Oxford Town Centre 4:16 pm",
+    "Oxford Town Centre",
     "Department of Materials",
     "Summertown Shops",
-    "Parkway Park &amp; Ride",
+    "Parkway Park & Ride",
     "Begbroke Science Park"
   ];
 
@@ -49,7 +49,17 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
       <h3>Next Departure</h3>
       <div className="unit">
         <header>
-          <h1>4:15 pm</h1>
+          <div className="subheader left">
+            <h1>2 min</h1>
+          </div>
+          <div className="subheader right">
+            <p>4:15 pm</p>
+            <h3>
+              <span className="warning">Delayed</span>
+              <span className="interpunct" />
+              Scheduled 4:17 pm
+            </h3>
+          </div>
         </header>
         <div className="lower-half">
           <h3>Bus Route</h3>
@@ -64,7 +74,9 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
                     <div className="bullet" />
                   </div>
                 </div>
-                {stop}
+                <span className="name">{stop}</span>
+                <span className="time warning">5:15 pm</span>
+                <span className="tag ghost warning">Delayed</span>
               </li>
             ))}
           </ul>

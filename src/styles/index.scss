@@ -133,11 +133,11 @@ small {
 }
 
 .accent {
-  color: var(--accent);
+  color: var(--accent) !important;
 }
 
 .warning {
-  color: var(--warning);
+  color: var(--warning) !important;
 }
 
 span.interpunct {
@@ -146,7 +146,7 @@ span.interpunct {
   width: 0.25em;
   height: 0.25em;
   background: currentColor;
-  margin: 0 0.5rem 0.125rem 0.5rem;
+  margin: 0 0.25rem 0.125rem;
   border-radius: 50%;
   opacity: 60%;
 }
@@ -183,16 +183,16 @@ span.chevron {
 }
 
 .tag {
-  @extend small;
+  font-size: 0.75rem;
   display: inline-block;
   color: var(--background);
   background: var(--accent);
-  padding: 0.25rem 0.5rem;
+  padding: 0.125rem 0.5rem;
   border-radius: 0.75rem;
 
   &.ghost {
-    color: var(--accent);
-    border: 1px solid var(--accent);
+    color: currentColor;
+    border: 1px solid currentColor;
     background: none;
   }
 }

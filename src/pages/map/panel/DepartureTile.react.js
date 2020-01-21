@@ -29,10 +29,10 @@ export default function DepartureTile({
         </p>
       </div>
       <ul>
-        {departures.map(departure => (
-          <li key={departure.scheduled.toMillis()} className="row">
-            {departure.scheduled.toFormat("hh:mm a")}
-            <DepartureStatus departure={departure} />
+        {departures.map(({ predicted, scheduled }) => (
+          <li key={scheduled.toMillis()} className="row">
+            {(predicted ?? scheduled).toFormat("hh:mm a")}
+            <DepartureStatus departure={{ predicted, scheduled }} />
           </li>
         ))}
       </ul>
@@ -45,7 +45,7 @@ function DepartureStatus({
 }: {
   departure: $ElementType<$PropertyType<BusStop, "departures">, number>
 }) {
-  const OnTime = <small className="accent">On Time</small>;
+  const OnTime = <small>On Time</small>;
   if (!predicted) return OnTime;
 
   const lateDuration = (predicted.valueOf() - scheduled.valueOf()) / 60000;

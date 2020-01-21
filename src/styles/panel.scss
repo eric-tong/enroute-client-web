@@ -42,16 +42,31 @@
 
     header {
       border-bottom: 1px solid var(--border);
-      padding: 0.75rem var(--horizontalPadding);
+      padding: var(--horizontalPadding);
       box-sizing: border-box;
       min-height: 5rem;
       overflow: hidden;
       display: flex;
-      justify-content: center;
-      flex-direction: column;
+      align-items: flex-end;
 
-      .subtitle {
-        margin: 0 0;
+      .subheader {
+        &.left {
+          min-width: 55%;
+        }
+
+        &.right {
+          margin-bottom: 0.125rem;
+
+          p {
+            font-size: 1em;
+            font-weight: 600;
+          }
+        }
+      }
+
+      h1,
+      h3 {
+        margin: 0.125rem 0;
       }
     }
 
@@ -64,7 +79,7 @@
     }
 
     ul.route {
-      --row-height: 1.5rem;
+      --row-height: 1.75rem;
       margin-left: calc(var(--row-height) / -2);
 
       li {
@@ -78,6 +93,7 @@
           width: var(--row-height);
           margin-right: calc(var(--horizontalPadding) - var(--row-height) / 2);
           color: var(--subtle);
+
           .wrapper {
             height: var(--row-height);
             width: var(--row-height);
@@ -100,6 +116,20 @@
             height: var(--bullet-size);
             border-radius: calc(var(--bullet-size) / 2);
           }
+        }
+
+        .name {
+          min-width: 50%;
+          margin-right: 1rem;
+        }
+
+        .time {
+          font-size: 0.875em;
+          font-weight: 600;
+        }
+
+        .tag {
+          margin: 0 1rem;
         }
 
         &:first-of-type {
