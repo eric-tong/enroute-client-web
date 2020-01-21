@@ -1,0 +1,130 @@
+.detail-view-tile {
+  --horizontalPadding: 1.5rem;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-sizing: border-box;
+  margin: 1rem 0;
+
+  h1 {
+    font-weight: normal;
+    color: inherit;
+  }
+
+  h3 {
+    margin: 0.5rem 0;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem var(--horizontalPadding);
+    box-sizing: border-box;
+    min-height: 5rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    .subheader {
+      &.left {
+        min-width: 55%;
+      }
+
+      &.right {
+        margin-bottom: 0.125rem;
+
+        p {
+          font-size: 1em;
+          font-weight: 600;
+        }
+      }
+    }
+
+    h1,
+    h3 {
+      margin: 0 !important;
+    }
+  }
+
+  .lower-half {
+    margin: 1rem 0;
+
+    h3 {
+      margin: 0 var(--horizontalPadding) 0.5rem;
+    }
+  }
+
+  ul.route {
+    --row-height: 1.75rem;
+    margin-left: calc(var(--row-height) / -2);
+
+    li {
+      display: flex;
+      align-items: center;
+      height: var(--row-height);
+
+      .icon {
+        position: relative;
+        display: inline-block;
+        height: var(--row-height);
+        width: var(--row-height);
+        margin-right: calc(var(--horizontalPadding) - var(--row-height) / 2);
+        color: var(--subtle);
+
+        .wrapper {
+          height: var(--row-height);
+          width: var(--row-height);
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .bar {
+          background: currentColor;
+          width: 0.25rem;
+          align-self: stretch;
+        }
+
+        .bullet {
+          --bullet-size: 0.75rem;
+          background: currentColor;
+          width: var(--bullet-size);
+          height: var(--bullet-size);
+          border-radius: calc(var(--bullet-size) / 2);
+        }
+      }
+
+      .name {
+        min-width: 50%;
+        margin-right: 1rem;
+      }
+
+      .time {
+        font-size: 0.875em;
+        font-weight: 600;
+      }
+
+      .tag {
+        margin: 0 1rem;
+      }
+
+      &:first-of-type {
+        .icon {
+          .bar {
+            height: calc(var(--row-height) / 2);
+            align-self: flex-end;
+          }
+        }
+      }
+
+      &:last-of-type {
+        .icon {
+          .bar {
+            height: calc(var(--row-height) / 2);
+            align-self: flex-start;
+          }
+        }
+      }
+    }
+  }
+}

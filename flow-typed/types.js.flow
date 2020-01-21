@@ -1,0 +1,16 @@
+// @flow
+
+import { DateTime } from "luxon";
+
+declare type BusStop = {
+  id: number,
+  name: string,
+  street: string,
+  direction: string,
+  departures: Departure[]
+};
+
+declare type Departure = {
+  scheduled: typeof DateTime,
+  predicted: typeof DateTime
+};

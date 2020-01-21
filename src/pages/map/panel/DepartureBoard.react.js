@@ -1,6 +1,5 @@
 // @flow
 
-import type { BusStop } from "./DepartureTile.react";
 import { DateTime } from "luxon";
 import DepartureTile from "./DepartureTile.react";
 import React from "react";

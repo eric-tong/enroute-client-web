@@ -3,14 +3,6 @@
 import { DateTime } from "luxon";
 import React from "react";
 
-export type BusStop = {
-  id: number,
-  name: string,
-  street: string,
-  direction: string,
-  departures: { scheduled: DateTime, predicted: ?DateTime }[]
-};
-
 export default function DepartureTile({
   id,
   name,
