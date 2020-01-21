@@ -42,9 +42,9 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
         <header>
           <h1>4:15 pm</h1>
         </header>
-        <div className="route">
+        <div className="lower-half">
           <h3>Bus Route</h3>
-          <ul>
+          <ul className="route">
             <li>Oxford Town Centre 4:16 pm</li>
             <li>Department of Materials</li>
             <li>Summertown Shops</li>

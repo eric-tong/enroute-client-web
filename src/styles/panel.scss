@@ -20,7 +20,6 @@
     border: 1px solid var(--border);
     border-radius: 0.75rem;
     box-sizing: border-box;
-    overflow: hidden;
     margin: 1rem 0;
 
     h1 {
@@ -47,8 +46,26 @@
       }
     }
 
-    .route {
-      padding: 0.75rem;
+    .lower-half {
+      --padding: 1.5rem;
+      padding: 0.75rem var(--padding);
+    }
+
+    ul.route {
+      margin-left: calc(var(--padding) * -1 - 0.5px);
+      --bullet-size: 0.75em;
+      li {
+        &:before {
+          content: " ";
+          display: inline-block;
+          height: var(--bullet-size);
+          width: var(--bullet-size);
+          background: var(--subtle);
+          border-radius: calc(var(--bullet-size) / 2);
+          margin-right: calc(var(--padding) - var(--bullet-size) / 2);
+          margin-left: calc(var(--bullet-size) / 2 * -1);
+        }
+      }
     }
   }
 
