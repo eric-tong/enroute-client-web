@@ -15,7 +15,16 @@
     margin-bottom: 0.75rem;
   }
 
+  .direction {
+    margin-bottom: 1rem;
+  }
+
+  .no-bottom-margin {
+    margin-bottom: 0 !important;
+  }
+
   .unit {
+    --horizontalPadding: 1.5rem;
     width: 100%;
     border: 1px solid var(--border);
     border-radius: 0.75rem;
@@ -33,7 +42,7 @@
 
     header {
       border-bottom: 1px solid var(--border);
-      padding: 0.75rem;
+      padding: 0.75rem var(--horizontalPadding);
       box-sizing: border-box;
       min-height: 5rem;
       overflow: hidden;
@@ -47,11 +56,10 @@
     }
 
     .lower-half {
-      --horizontalPadding: 1.5rem;
       margin: 1rem 0;
 
       h3 {
-        margin: 0 var(--horizontalPadding);
+        margin: 0 var(--horizontalPadding) 0.5rem;
       }
     }
 
@@ -132,6 +140,21 @@
       box-sizing: border-box;
       height: 15.5rem;
       overflow: hidden;
+
+      .header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 0 0.625rem;
+        box-sizing: border-box;
+        height: 5rem;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        .subtitle {
+          margin: 0 0;
+        }
+      }
 
       .row {
         margin: 0.5rem 0;

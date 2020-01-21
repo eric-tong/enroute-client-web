@@ -40,12 +40,13 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
   return (
     <>
       <button class="back">Back to Departures</button>
-      <h1>{name}</h1>
-      <p>
+      <h1 className="no-bottom-margin">{name}</h1>
+      <p className="direction">
         {street}
         <span className="chevron higher" />
         <span className="subtle">Towards {direction}</span>
       </p>
+      <h3>Next Departure</h3>
       <div className="unit">
         <header>
           <h1>4:15 pm</h1>
