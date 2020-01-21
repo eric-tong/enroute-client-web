@@ -14,7 +14,7 @@ const BUS_STOPS = gql`
       name
       street
       direction
-      departures {
+      departures(maxLength: 5) {
         scheduled
         predicted
       }
