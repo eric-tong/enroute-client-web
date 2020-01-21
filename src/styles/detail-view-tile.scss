@@ -26,15 +26,20 @@
 
     .subheader {
       &.left {
-        min-width: 55%;
+        min-width: 61%;
       }
 
       &.right {
-        margin-bottom: 0.125rem;
-
         p {
+          display: flex;
           font-size: 1em;
           font-weight: 600;
+          align-items: center;
+        }
+
+        .tag {
+          margin-left: 0.75rem;
+          margin-bottom: 0.125rem;
         }
       }
     }

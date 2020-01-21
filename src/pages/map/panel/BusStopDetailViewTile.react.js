@@ -35,9 +35,9 @@ export default function BusStopDetailViewTile({
           <h1>{`${hour} hr ${minute} min`}</h1>
         </div>
         <div className="subheader right">
-          <p>
+          <p className="warning">
             {estimated.toFormat("h:mm a")}
-            <span className="tag ghost warning">Delayed</span>
+            <span className="tag ghost">Delayed</span>
           </p>
           <h3>Scheduled {scheduled.toFormat("h:mm a")}</h3>
         </div>
