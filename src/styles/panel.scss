@@ -47,23 +47,69 @@
     }
 
     .lower-half {
-      --padding: 1.5rem;
-      padding: 0.75rem var(--padding);
+      --horizontalPadding: 1.5rem;
+      margin: 1rem 0;
+
+      h3 {
+        margin: 0 var(--horizontalPadding);
+      }
     }
 
     ul.route {
-      margin-left: calc(var(--padding) * -1 - 0.5px);
-      --bullet-size: 0.75em;
+      --row-height: 1.5rem;
+      margin-left: calc(var(--row-height) / -2);
+
       li {
-        &:before {
-          content: " ";
+        display: flex;
+        align-items: center;
+        height: var(--row-height);
+
+        .icon {
           display: inline-block;
-          height: var(--bullet-size);
-          width: var(--bullet-size);
-          background: var(--subtle);
-          border-radius: calc(var(--bullet-size) / 2);
-          margin-right: calc(var(--padding) - var(--bullet-size) / 2);
-          margin-left: calc(var(--bullet-size) / 2 * -1);
+          height: var(--row-height);
+          width: var(--row-height);
+          margin-right: calc(var(--horizontalPadding) - var(--row-height) / 2);
+          color: var(--subtle);
+          .wrapper {
+            height: var(--row-height);
+            width: var(--row-height);
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .bar {
+            background: currentColor;
+            width: 0.25rem;
+            align-self: stretch;
+          }
+
+          .bullet {
+            --bullet-size: 0.75rem;
+            background: currentColor;
+            width: var(--bullet-size);
+            height: var(--bullet-size);
+            border-radius: calc(var(--bullet-size) / 2);
+          }
+        }
+
+        &:first-of-type {
+          .icon {
+            .bar {
+              height: calc(var(--row-height) / 2);
+              align-self: flex-end;
+            }
+          }
+        }
+
+        &:last-of-type {
+          .icon {
+            .bar {
+              height: calc(var(--row-height) / 2);
+              align-self: flex-start;
+            }
+          }
         }
       }
     }

@@ -29,6 +29,14 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
 
   const { name, street, direction, departures } = data?.busStop;
 
+  const STOPS = [
+    "Oxford Town Centre 4:16 pm",
+    "Department of Materials",
+    "Summertown Shops",
+    "Parkway Park &amp; Ride",
+    "Begbroke Science Park"
+  ];
+
   return (
     <>
       <button class="back">Back to Departures</button>
@@ -45,11 +53,19 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
         <div className="lower-half">
           <h3>Bus Route</h3>
           <ul className="route">
-            <li>Oxford Town Centre 4:16 pm</li>
-            <li>Department of Materials</li>
-            <li>Summertown Shops</li>
-            <li>Parkway Park &amp; Ride</li>
-            <li>Begbroke Science Park</li>
+            {STOPS.map(stop => (
+              <li>
+                <div className="icon">
+                  <div className="wrapper">
+                    <div className="bar" />
+                  </div>
+                  <div className="wrapper">
+                    <div className="bullet" />
+                  </div>
+                </div>
+                {stop}
+              </li>
+            ))}
           </ul>
         </div>
       </div>
