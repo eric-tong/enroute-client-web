@@ -15,7 +15,10 @@ type Props = {|
   |}[]
 |};
 
+const DEPARTURE_BUFFER = 120 * 1000;
+
 export default function BusRoute({ departures }: Props) {
+  const now = DateTime.local();
   const activeBusStop = useContext(ActiveBusStopContext);
   const activeIndex = departures.findIndex(
     ({ busStop }) => activeBusStop && activeBusStop.id === busStop.id
@@ -24,6 +27,9 @@ export default function BusRoute({ departures }: Props) {
     <ul className="bus-route">
       {departures.map((departure, index) => {
         const isActive = index === activeIndex;
+        const isPast =
+          DateTime.fromSQL(departure.predicted).toMillis() + DEPARTURE_BUFFER <
+          now.toMillis();
 
         return (
           <li key={departure.scheduled} className={isActive ? "active" : ""}>
@@ -35,10 +41,13 @@ export default function BusRoute({ departures }: Props) {
                 <div className="bullet" />
               </div>
             </div>
-            <span className="name">{departure.busStop.name}</span>
+            <span className={["name", isPast ? "disabled" : ""].join(" ")}>
+              {departure.busStop.name}
+            </span>
             <TimeWithAlertTag
               predicted={DateTime.fromSQL(departure.predicted)}
               scheduled={DateTime.fromSQL(departure.scheduled)}
+              disabled={isPast}
             />
           </li>
         );

@@ -1,32 +1,42 @@
 // @flow
 
 import React from "react";
+import { getClass } from "../../../utils/jsxUtil";
 
 export default function TimeWithAlertTag({
   predicted,
   scheduled,
-  showOnTime = false
+  showOnTime = false,
+  disabled = false
 }: {
   predicted: DateTime,
   scheduled: DateTime,
-  showOnTime?: boolean
+  showOnTime?: boolean,
+  disabled?: boolean
 }) {
   const delay = (predicted.toMillis() - scheduled.toMillis()) / 60 / 1000;
+  const status = delay > 2 ? "late" : delay < -2 ? "early" : "onTime";
 
-  return delay > 2 ? (
+  const timeClass = getClass(
+    "time",
+    status === "late" ? "warning" : status === "early" ? "accent" : undefined,
+    disabled ? "disabled" : undefined
+  );
+  const tagClass = getClass(
+    "tag",
+    "ghost",
+    status === "late" ? "warning" : status === "early" ? "accent" : undefined
+  );
+  const tagText =
+    status === "late" ? "Delayed" : status === "early" ? "Early" : "On Time";
+
+  return (
     <>
-      <span className="time warning">{predicted.toFormat("h:mm a")}</span>
-      <span className="tag ghost warning">Delayed</span>
-    </>
-  ) : delay < -2 ? (
-    <>
-      <span className="time accent">{predicted.toFormat("h:mm a")}</span>
-      <span className="tag ghost accent">Early</span>
-    </>
-  ) : (
-    <>
-      <span className="time">{predicted.toFormat("h:mm a")}</span>
-      {showOnTime && <span className="tag ghost">On Time</span>}
+      <span className={timeClass}>{predicted.toFormat("h:mm a")}</span>
+      {!disabled &&
+        (status !== "onTime" || (status === "onTime" && showOnTime)) && (
+          <span className={tagClass}>{tagText}</span>
+        )}
     </>
   );
 }
