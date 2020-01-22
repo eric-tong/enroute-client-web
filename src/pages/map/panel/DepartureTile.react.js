@@ -18,7 +18,7 @@ export default function DepartureTile({
   departures
 }: Props) {
   return (
-    <NavLink to={`/stop/${url}`} className="tile">
+    <NavLink to={`/stop/${url}`} className="tile clickable-tile">
       <div className="header">
         <h4>{name}</h4>
         <p className="subtitle">
@@ -54,7 +54,7 @@ function DepartureStatus({
   console.log(predicted);
 
   if (timeToPredictedArrival < 1.5) {
-    return <small className="accent">Arriving</small>;
+    return <small className="accent">Departing</small>;
   } else if (lateDuration < -1) {
     return (
       <small className="accent">{`${Math.round(

@@ -9,6 +9,18 @@ import { useQuery } from "@apollo/react-hooks";
 type Props = {|
   busStopUrl: string
 |};
+type QueryResult = {|
+  ...BusStop,
+  departures: {|
+    ...DepartureString,
+    trip: {|
+      departures: {|
+        ...DepartureString,
+        busStop: BusStop
+      |}[]
+    |}
+  |}[]
+|};
 
 const BUS_STOP = gql`
   query getBusStop($url: String!) {
@@ -56,7 +68,10 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
         {departures.length > 0 && (
           <>
             <h3>Next Departure</h3>
-            <BusStopDetailViewTile departure={departures[0]} />
+            <BusStopDetailViewTile
+              departure={departures[0]}
+              collapsible={false}
+            />
           </>
         )}
         {departures.length > 1 && (
@@ -74,19 +89,6 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
     </>
   );
 }
-
-type QueryResult = {|
-  ...BusStop,
-  departures: {|
-    ...DepartureString,
-    trip: {|
-      departures: {|
-        ...DepartureString,
-        busStop: BusStop
-      |}[]
-    |}
-  |}[]
-|};
 
 function useBusStop(busStopUrl): ?QueryResult {
   const { data } = useQuery(BUS_STOP, {

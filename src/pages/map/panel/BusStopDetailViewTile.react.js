@@ -2,9 +2,10 @@
 
 import "../../../styles/detail-view-tile.scss";
 
+import React, { useState } from "react";
+
 import BusRoute from "./BusRoute.react";
 import { DateTime } from "luxon";
-import React from "react";
 import TimeWithAlertTag from "./TimeWithAlertTag.react";
 import { getHumanReadableTime } from "../../../utils/timeUtil";
 
@@ -17,7 +18,8 @@ type Props = {|
         busStop: BusStop
       |}[]
     |}
-  |}
+  |},
+  collapsible?: boolean
 |};
 
 export default function BusStopDetailViewTile({
@@ -25,14 +27,24 @@ export default function BusStopDetailViewTile({
     scheduled,
     predicted,
     trip: { departures: tripDepartures }
-  }
+  },
+  collapsible = true
 }: Props) {
+  const [isCollapsed, setIsCollapsed] = useState(collapsible);
+
   const now = DateTime.local();
   const scheduledTime = DateTime.fromSQL(scheduled);
   const predictedTime = DateTime.fromSQL(predicted);
 
   return (
-    <div className="detail-view-tile">
+    <div
+      className={`detail-view-tile
+      ${collapsible ? "clickable-tile" : ""}
+      ${isCollapsed ? "collapsed" : ""}`}
+      onClick={
+        collapsible ? () => setIsCollapsed(isCollapsed => !isCollapsed) : null
+      }
+    >
       <header>
         <div className="subheader left">
           <h1>{getHumanReadableTime(now, predictedTime)}</h1>
@@ -48,10 +60,12 @@ export default function BusStopDetailViewTile({
           <h3>Scheduled {scheduledTime.toFormat("h:mm a")}</h3>
         </div>
       </header>
-      <div className="lower-half">
-        <h3>Bus Route</h3>
-        <BusRoute departures={tripDepartures} />
-      </div>
+      {!isCollapsed && (
+        <div className="lower-half">
+          <h3>Bus Route</h3>
+          <BusRoute departures={tripDepartures} />
+        </div>
+      )}
     </div>
   );
 }
