@@ -6,6 +6,19 @@ ul.bus-route {
     align-items: center;
     height: var(--row-height);
 
+    &.active {
+      .icon {
+        .bullet {
+          border: 0.25rem solid var(--background);
+          background: var(--font);
+        }
+      }
+
+      .name {
+        font-weight: bold;
+      }
+    }
+
     .icon {
       position: relative;
       display: inline-block;
@@ -34,7 +47,7 @@ ul.bus-route {
         background: currentColor;
         width: var(--bullet-size);
         height: var(--bullet-size);
-        border-radius: calc(var(--bullet-size) / 2);
+        border-radius: var(--bullet-size);
       }
     }
 

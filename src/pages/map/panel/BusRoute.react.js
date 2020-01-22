@@ -2,8 +2,10 @@
 
 import "../../../styles/bus-route.scss";
 
+import React, { useContext } from "react";
+
+import { ActiveBusStopContext } from "./BusStopDetailView.react";
 import { DateTime } from "luxon";
-import React from "react";
 import TimeWithAlertTag from "./TimeWithAlertTag.react";
 
 type Props = {|
@@ -14,25 +16,33 @@ type Props = {|
 |};
 
 export default function BusRoute({ departures }: Props) {
+  const activeBusStop = useContext(ActiveBusStopContext);
+  const activeIndex = departures.findIndex(
+    ({ busStop }) => activeBusStop && activeBusStop.id === busStop.id
+  );
   return (
     <ul className="bus-route">
-      {departures.map(departure => (
-        <li key={departure.scheduled}>
-          <div className="icon">
-            <div className="wrapper">
-              <div className="bar" />
+      {departures.map((departure, index) => {
+        const isActive = index === activeIndex;
+
+        return (
+          <li key={departure.scheduled} className={isActive ? "active" : ""}>
+            <div className="icon">
+              <div className="wrapper">
+                <div className="bar" />
+              </div>
+              <div className="wrapper">
+                <div className="bullet" />
+              </div>
             </div>
-            <div className="wrapper">
-              <div className="bullet" />
-            </div>
-          </div>
-          <span className="name">{departure.busStop.name}</span>
-          <TimeWithAlertTag
-            predicted={DateTime.fromSQL(departure.predicted)}
-            scheduled={DateTime.fromSQL(departure.scheduled)}
-          />
-        </li>
-      ))}
+            <span className="name">{departure.busStop.name}</span>
+            <TimeWithAlertTag
+              predicted={DateTime.fromSQL(departure.predicted)}
+              scheduled={DateTime.fromSQL(departure.scheduled)}
+            />
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -3,10 +3,11 @@
 html {
   height: 100%;
   font-size: 16px;
-  color: #0000009a;
-  background: #ededed;
+  color: var(--font);
+  background: var(--background);
 
   --background: #fafafa;
+  --font: #636363;
   --accent: #0cd390;
   --warning: #ff9800;
   --subtle: #b0bec5;

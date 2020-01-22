@@ -25,6 +25,7 @@ const BUS_STOP = gql`
             scheduled
             predicted
             busStop {
+              id
               name
             }
           }
@@ -33,6 +34,7 @@ const BUS_STOP = gql`
     }
   }
 `;
+export const ActiveBusStopContext = React.createContext<?QueryResult>();
 
 export default function BusStopDetailView({ busStopUrl }: Props) {
   const busStop = useBusStop(busStopUrl);
@@ -50,23 +52,25 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
         <span className="chevron higher" />
         <span className="subtle">Towards {direction}</span>
       </p>
-      {departures.length > 0 && (
-        <>
-          <h3>Next Departure</h3>
-          <BusStopDetailViewTile departure={departures[0]} />
-        </>
-      )}
-      {departures.length > 1 && (
-        <>
-          <h3>Upcoming Departures</h3>
-          {departures.slice(1).map(departure => (
-            <BusStopDetailViewTile
-              key={departure.scheduled}
-              departure={departure}
-            />
-          ))}
-        </>
-      )}
+      <ActiveBusStopContext.Provider value={busStop}>
+        {departures.length > 0 && (
+          <>
+            <h3>Next Departure</h3>
+            <BusStopDetailViewTile departure={departures[0]} />
+          </>
+        )}
+        {departures.length > 1 && (
+          <>
+            <h3>Upcoming Departures</h3>
+            {departures.slice(1).map(departure => (
+              <BusStopDetailViewTile
+                key={departure.scheduled}
+                departure={departure}
+              />
+            ))}
+          </>
+        )}
+      </ActiveBusStopContext.Provider>
     </>
   );
 }
