@@ -58,78 +58,7 @@
     }
   }
 
-  ul.route {
-    --row-height: 1.75rem;
+  .bus-route {
     margin-left: calc(var(--row-height) / -2);
-
-    li {
-      display: flex;
-      align-items: center;
-      height: var(--row-height);
-
-      .icon {
-        position: relative;
-        display: inline-block;
-        height: var(--row-height);
-        width: var(--row-height);
-        margin-right: calc(var(--horizontalPadding) - var(--row-height) / 2);
-        color: var(--subtle);
-
-        .wrapper {
-          height: var(--row-height);
-          width: var(--row-height);
-          position: absolute;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .bar {
-          background: currentColor;
-          width: 0.25rem;
-          align-self: stretch;
-        }
-
-        .bullet {
-          --bullet-size: 0.75rem;
-          background: currentColor;
-          width: var(--bullet-size);
-          height: var(--bullet-size);
-          border-radius: calc(var(--bullet-size) / 2);
-        }
-      }
-
-      .name {
-        min-width: 50%;
-        margin-right: 1rem;
-      }
-
-      .time {
-        font-size: 0.875em;
-        font-weight: 600;
-      }
-
-      .tag {
-        margin: 0 1rem;
-      }
-
-      &:first-of-type {
-        .icon {
-          .bar {
-            height: calc(var(--row-height) / 2);
-            align-self: flex-end;
-          }
-        }
-      }
-
-      &:last-of-type {
-        .icon {
-          .bar {
-            height: calc(var(--row-height) / 2);
-            align-self: flex-start;
-          }
-        }
-      }
-    }
   }
 }
