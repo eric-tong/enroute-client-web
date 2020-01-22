@@ -1,0 +1,17 @@
+.back {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 0.75rem;
+  margin-left: -0.125rem;
+  color: var(--subtle);
+
+  .arrow {
+    fill: currentColor;
+    margin-right: 0.25rem;
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+}

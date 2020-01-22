@@ -1,5 +1,6 @@
 // @flow
 
+import BackButton from "../../misc/BackButton.react";
 import BusStopDetailViewTile from "./BusStopDetailViewTile.react";
 import React from "react";
 import { gql } from "apollo-boost";
@@ -42,7 +43,8 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
   // TODO add null state
   return (
     <>
-      <h1 className="no-bottom-margin">{name}</h1>
+      <BackButton />
+      <h2 className="no-bottom-margin">{name}</h2>
       <p className="direction">
         {street}
         <span className="chevron higher" />

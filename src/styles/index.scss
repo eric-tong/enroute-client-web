@@ -93,21 +93,6 @@ button {
     color: #aaa;
     cursor: default;
   }
-
-  &.back {
-    padding-left: 0;
-
-    &::before {
-      content: "‹";
-      font-size: 1.25em;
-      font-weight: 600;
-      margin-right: 0.25em;
-    }
-  }
-
-  &:hover {
-    opacity: 0.7;
-  }
 }
 
 li {

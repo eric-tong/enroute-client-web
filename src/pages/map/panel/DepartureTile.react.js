@@ -53,7 +53,7 @@ function DepartureStatus({
 
   console.log(predicted);
 
-  if (Math.abs(timeToPredictedArrival) < 1) {
+  if (timeToPredictedArrival < 1.5) {
     return <small className="accent">Arriving</small>;
   } else if (lateDuration < -1) {
     return (
