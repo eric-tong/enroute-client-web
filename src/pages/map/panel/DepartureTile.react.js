@@ -54,7 +54,7 @@ function DepartureStatus({
   console.log(predicted);
 
   if (timeToPredictedArrival < 1.5) {
-    return <small className="accent">Departing</small>;
+    return <small className="accent">Now</small>;
   } else if (lateDuration < -1) {
     return (
       <small className="accent">{`${Math.round(
