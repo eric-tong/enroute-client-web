@@ -29,10 +29,6 @@ export default function BusStopDetailViewTile({
   const scheduledTime = DateTime.fromSQL(scheduled);
   const predictedTime = DateTime.fromSQL(predicted);
 
-  const delay =
-    (predictedTime.toMillis() - scheduledTime.toMillis()) / 60 / 1000;
-  const status = delay > 2 ? "delayed" : delay < -2 ? "early" : "onTime";
-
   return (
     <div className="detail-view-tile">
       <header>
@@ -54,7 +50,7 @@ export default function BusStopDetailViewTile({
         <h3>Bus Route</h3>
         <ul className="route">
           {tripDepartures.map(tripDeparture => (
-            <li>
+            <li key={tripDeparture.scheduled}>
               <div className="icon">
                 <div className="wrapper">
                   <div className="bar" />
