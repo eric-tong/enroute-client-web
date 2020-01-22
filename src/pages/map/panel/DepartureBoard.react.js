@@ -40,18 +40,23 @@ export default function DepartureBoard() {
   );
 }
 
-function useBusStopGroups(): { direction: string, busStops: BusStop[] }[] {
+function useBusStopGroups(): {
+  direction: string,
+  busStops: { ...BusStop, departures: Departure[] }[]
+}[] {
   const { data = { busStops: [] } } = useQuery<BusStop>(BUS_STOPS, {
     pollInterval: 15000
   });
 
-  const busStops: BusStop[] = data.busStops.map(busStop => ({
-    ...busStop,
-    departures: busStop.departures.map(departure => ({
-      scheduled: DateTime.fromSQL(departure.scheduled),
-      predicted: departure.predicted && DateTime.fromSQL(departure.predicted)
-    }))
-  }));
+  const busStops: { ...BusStop, departures: Departure[] }[] = data.busStops.map(
+    busStop => ({
+      ...busStop,
+      departures: busStop.departures.map(departure => ({
+        scheduled: DateTime.fromSQL(departure.scheduled),
+        predicted: departure.predicted && DateTime.fromSQL(departure.predicted)
+      }))
+    })
+  );
 
   const directions = new Set(busStops.map(busStop => busStop.direction));
   const busStopsByDirection = Array.from(directions).map(direction => ({

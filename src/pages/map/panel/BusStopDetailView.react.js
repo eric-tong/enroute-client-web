@@ -1,7 +1,6 @@
 // @flow
 
 import BusStopDetailViewTile from "./BusStopDetailViewTile.react";
-import { DateTime } from "luxon";
 import React from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
@@ -20,6 +19,15 @@ const BUS_STOP = gql`
       departures {
         scheduled
         predicted
+        trip {
+          departures {
+            scheduled
+            predicted
+            busStop {
+              name
+            }
+          }
+        }
       }
     }
   }
@@ -51,7 +59,7 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
           <h3>Upcoming Departures</h3>
           {departures.slice(1).map(departure => (
             <BusStopDetailViewTile
-              key={departure.scheduled.toSQL()}
+              key={departure.scheduled}
               departure={departure}
             />
           ))}
@@ -61,7 +69,20 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
   );
 }
 
-function useBusStop(busStopUrl): ?BusStop {
+type QueryResult = {|
+  ...BusStop,
+  departures: {|
+    ...DepartureString,
+    trip: {|
+      departures: {|
+        ...DepartureString,
+        busStop: BusStop
+      |}[]
+    |}
+  |}[]
+|};
+
+function useBusStop(busStopUrl): ?QueryResult {
   const { data } = useQuery(BUS_STOP, {
     pollInterval: 15000,
     variables: { url: busStopUrl }
@@ -69,11 +90,5 @@ function useBusStop(busStopUrl): ?BusStop {
   const busStop = data?.busStop;
   if (!busStop) return;
 
-  return {
-    ...busStop,
-    departures: busStop.departures.map(departure => ({
-      scheduled: DateTime.fromSQL(departure.scheduled),
-      predicted: departure.predicted && DateTime.fromSQL(departure.predicted)
-    }))
-  };
+  return busStop;
 }

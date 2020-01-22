@@ -2,15 +2,24 @@
 
 import { DateTime } from "luxon";
 
-declare type BusStop = {
+export type BusStop = {|
   id: number,
   name: string,
   street: string,
+  icon: string,
+  url: string,
   direction: string,
-  departures: Departure[]
-};
+  latitude: number,
+  longitude: number,
+  roadAngle: number
+|};
 
-declare type Departure = {
+declare type Departure = {|
   scheduled: typeof DateTime,
   predicted: typeof DateTime
-};
+|};
+
+declare type DepartureString = {|
+  scheduled: string,
+  predicted: string
+|};

@@ -3,13 +3,18 @@
 import { DateTime } from "luxon";
 import React from "react";
 
+type Props = {|
+  ...BusStop,
+  departures: Departure[]
+|};
+
 export default function DepartureTile({
   id,
   name,
   street,
   direction,
   departures
-}: BusStop) {
+}: Props) {
   return (
     <div className="tile">
       <div className="header">
@@ -35,14 +40,16 @@ export default function DepartureTile({
 function DepartureStatus({
   departure: { predicted, scheduled }
 }: {
-  departure: $ElementType<$PropertyType<BusStop, "departures">, number>
+  departure: Departure
 }) {
   const OnTime = <small>On Time</small>;
   if (!predicted) return OnTime;
 
   const lateDuration = (predicted.valueOf() - scheduled.valueOf()) / 60000;
   const now = DateTime.local();
-  const timeToPredictedArrival = (now.valueOf() - predicted.valueOf()) / 60000;
+  const timeToPredictedArrival = (predicted.valueOf() - now.valueOf()) / 60000;
+
+  console.log(predicted);
 
   if (timeToPredictedArrival < 1) {
     return <small className="accent">Arriving</small>;
