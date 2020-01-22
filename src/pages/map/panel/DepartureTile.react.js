@@ -1,6 +1,7 @@
 // @flow
 
 import { DateTime } from "luxon";
+import { NavLink } from "react-router-dom";
 import React from "react";
 
 type Props = {|
@@ -10,13 +11,14 @@ type Props = {|
 
 export default function DepartureTile({
   id,
+  url,
   name,
   street,
   direction,
   departures
 }: Props) {
   return (
-    <div className="tile">
+    <NavLink to={`/stop/${url}`} className="tile">
       <div className="header">
         <h4>{name}</h4>
         <p className="subtitle">
@@ -33,7 +35,7 @@ export default function DepartureTile({
           </li>
         ))}
       </ul>
-    </div>
+    </NavLink>
   );
 }
 
@@ -51,7 +53,7 @@ function DepartureStatus({
 
   console.log(predicted);
 
-  if (timeToPredictedArrival < 1) {
+  if (Math.abs(timeToPredictedArrival) < 1) {
     return <small className="accent">Arriving</small>;
   } else if (lateDuration < -1) {
     return (

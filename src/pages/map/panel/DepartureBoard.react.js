@@ -10,6 +10,7 @@ const BUS_STOPS = gql`
   {
     busStops {
       id
+      url
       name
       street
       direction
