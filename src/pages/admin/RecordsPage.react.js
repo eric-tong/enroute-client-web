@@ -11,7 +11,7 @@ import { useTable } from "react-table";
 
 const AVLS = gql`
   query getAvls($date: String!) {
-    avls(date: $date, full: true) {
+    avls(date: $date) {
       id
       priority
       timestamp

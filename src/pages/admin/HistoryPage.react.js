@@ -15,7 +15,7 @@ import useViewport from "../../utils/useViewport";
 
 const AVLS = gql`
   query getAvls($date: String!) {
-    avls(date: $date, full: true) {
+    avls(date: $date) {
       timestamp
       latitude
       longitude
