@@ -2,7 +2,7 @@
 
 import { DateTime } from "luxon";
 
-export type BusStop = {|
+declare type BusStop = {|
   id: number,
   name: string,
   street: string,

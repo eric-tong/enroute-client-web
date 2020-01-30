@@ -27,16 +27,18 @@ export default function VehiclesOverlay() {
     console.log(error);
     return null;
   } else {
-    return data.vehicles.map(vehicle => {
-      const { longitude, latitude, angle } = vehicle.avl;
-      return (
-        <VehicleMarker
-          key={vehicle.id}
-          latitude={latitude}
-          longitude={longitude}
-          bearing={angle}
-        />
-      );
-    });
+    return data.vehicles
+      .filter(vehicle => vehicle.avl)
+      .map(vehicle => {
+        const { longitude, latitude, angle } = vehicle.avl;
+        return (
+          <VehicleMarker
+            key={vehicle.id}
+            latitude={latitude}
+            longitude={longitude}
+            bearing={angle}
+          />
+        );
+      });
   }
 }

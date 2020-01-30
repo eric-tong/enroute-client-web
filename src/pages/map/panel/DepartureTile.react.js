@@ -51,8 +51,6 @@ function DepartureStatus({
   const now = DateTime.local();
   const timeToPredictedArrival = (predicted.valueOf() - now.valueOf()) / 60000;
 
-  console.log(predicted);
-
   if (timeToPredictedArrival < 1.5) {
     return <small className="accent">Now</small>;
   } else if (lateDuration < -1) {
