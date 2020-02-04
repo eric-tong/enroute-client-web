@@ -61,8 +61,6 @@ function useBusStopGroups(): {
     })
   );
 
-  console.log({ busStops });
-
   const directions = new Set(busStops.map(busStop => busStop.direction));
   const busStopsByDirection = Array.from(directions).map(direction => ({
     direction,
