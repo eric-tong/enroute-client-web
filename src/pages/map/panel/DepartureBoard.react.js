@@ -15,8 +15,8 @@ const BUS_STOPS = gql`
       street
       direction
       departures(maxLength: 5) {
-        scheduled
-        predicted
+        scheduledTimestamp
+        predictedTimestamp
       }
     }
   }
@@ -53,11 +53,15 @@ function useBusStopGroups(): {
     busStop => ({
       ...busStop,
       departures: busStop.departures.map(departure => ({
-        scheduled: DateTime.fromSQL(departure.scheduled),
-        predicted: departure.predicted && DateTime.fromSQL(departure.predicted)
+        scheduled: DateTime.fromSQL(departure.scheduledTimestamp),
+        predicted: departure.predictedTimestamp
+          ? DateTime.fromSQL(departure.predictedTimestamp)
+          : undefined
       }))
     })
   );
+
+  console.log({ busStops });
 
   const directions = new Set(busStops.map(busStop => busStop.direction));
   const busStopsByDirection = Array.from(directions).map(direction => ({

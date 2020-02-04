@@ -20,6 +20,6 @@ declare type Departure = {|
 |};
 
 declare type DepartureString = {|
-  scheduled: string,
-  predicted: string
+  scheduledTimestamp: string,
+  predictedTimestamp: string
 |};

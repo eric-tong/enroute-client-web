@@ -24,8 +24,8 @@ type Props = {|
 
 export default function BusStopDetailViewTile({
   departure: {
-    scheduled,
-    predicted,
+    scheduledTimestamp,
+    predictedTimestamp,
     trip: { departures: tripDepartures }
   },
   collapsible = true
@@ -33,8 +33,10 @@ export default function BusStopDetailViewTile({
   const [isCollapsed, setIsCollapsed] = useState(collapsible);
 
   const now = DateTime.local();
-  const scheduledTime = DateTime.fromSQL(scheduled);
-  const predictedTime = DateTime.fromSQL(predicted);
+  const scheduledTime = DateTime.fromSQL(scheduledTimestamp);
+  const predictedTime = DateTime.fromSQL(
+    predictedTimestamp ?? scheduledTimestamp
+  );
 
   return (
     <div

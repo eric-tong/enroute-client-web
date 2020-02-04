@@ -28,11 +28,15 @@ export default function BusRoute({ departures }: Props) {
       {departures.map((departure, index) => {
         const isActive = index === activeIndex;
         const isPast =
-          DateTime.fromSQL(departure.predicted).toMillis() + DEPARTURE_BUFFER <
+          DateTime.fromSQL(departure.predictedTimestamp).toMillis() +
+            DEPARTURE_BUFFER <
           now.toMillis();
 
         return (
-          <li key={departure.scheduled} className={isActive ? "active" : ""}>
+          <li
+            key={departure.scheduledTimestamp}
+            className={isActive ? "active" : ""}
+          >
             <div className="icon">
               <div className="wrapper">
                 <div className="bar" />
@@ -45,8 +49,10 @@ export default function BusRoute({ departures }: Props) {
               {departure.busStop.name}
             </span>
             <TimeWithAlertTag
-              predicted={DateTime.fromSQL(departure.predicted)}
-              scheduled={DateTime.fromSQL(departure.scheduled)}
+              predicted={DateTime.fromSQL(
+                departure.predictedTimestamp ?? departure.scheduledTimestamp
+              )}
+              scheduled={DateTime.fromSQL(departure.scheduledTimestamp)}
               disabled={isPast}
             />
           </li>

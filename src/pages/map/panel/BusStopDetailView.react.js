@@ -30,12 +30,12 @@ const BUS_STOP = gql`
       street
       direction
       departures {
-        scheduled
-        predicted
+        scheduledTimestamp
+        predictedTimestamp
         trip {
           departures {
-            scheduled
-            predicted
+            scheduledTimestamp
+            predictedTimestamp
             busStop {
               id
               name
@@ -79,7 +79,7 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
             <h3>Upcoming Departures</h3>
             {departures.slice(1).map(departure => (
               <BusStopDetailViewTile
-                key={departure.scheduled}
+                key={departure.scheduledTimestamp}
                 departure={departure}
               />
             ))}
