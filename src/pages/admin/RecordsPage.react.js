@@ -122,7 +122,7 @@ function useAvl(date: DateTime) {
   if (!loading && !error) {
     return data.avls.map(avl => ({
       ...avl,
-      timestamp: DateTime.fromMillis(parseInt(avl.timestamp)).toISO()
+      timestamp: DateTime.fromSQL(avl.timestamp).toSQL()
     }));
   }
 }

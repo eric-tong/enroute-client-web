@@ -52,14 +52,12 @@ export default function HistoryPage() {
           </h2>
           <p>
             {avl
-              ? DateTime.fromMillis(parseInt(avl.timestamp, 10)).toLocaleString(
-                  {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    hour12: true
-                  }
-                )
+              ? DateTime.fromSQL(avl.timestamp).toLocaleString({
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  hour12: true
+                })
               : "Loading..."}
           </p>
           <TimeTravelSlider
