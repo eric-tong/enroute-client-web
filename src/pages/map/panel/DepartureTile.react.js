@@ -1,6 +1,5 @@
 // @flow
 
-import { DateTime } from "luxon";
 import { NavLink } from "react-router-dom";
 import React from "react";
 
@@ -28,10 +27,10 @@ export default function DepartureTile({
         </p>
       </div>
       <ul>
-        {departures.map(({ predicted, scheduled }) => (
-          <li key={scheduled.toMillis()} className="row">
-            {(predicted ?? scheduled).toFormat("hh:mm a")}
-            <DepartureStatus departure={{ predicted, scheduled }} />
+        {departures.map(departure => (
+          <li key={departure.scheduledTime.toMillis()} className="row">
+            {departure.relevantTime.toFormat("HH:mm")}
+            <DepartureStatus departure={departure} />
           </li>
         ))}
       </ul>
@@ -40,32 +39,32 @@ export default function DepartureTile({
 }
 
 function DepartureStatus({
-  departure: { predicted, scheduled }
+  departure: { predictionDelta, status }
 }: {
   departure: Departure
 }) {
-  const OnTime = <small>On Time</small>;
-  if (!predicted) return OnTime;
-
-  const lateDuration = (predicted.valueOf() - scheduled.valueOf()) / 60000;
-  const now = DateTime.local();
-  const timeToPredictedArrival = (predicted.valueOf() - now.valueOf()) / 60000;
-
-  if (timeToPredictedArrival < 1.5) {
-    return <small className="accent">Now</small>;
-  } else if (lateDuration < -1) {
-    return (
-      <small className="accent">{`${Math.round(
-        lateDuration * -1
-      )} min early`}</small>
-    );
-  } else if (lateDuration > 1) {
-    return (
-      <small className="warning">{`${Math.round(
-        lateDuration
-      )} min late`}</small>
-    );
-  } else {
-    return OnTime;
+  switch (status) {
+    case "onTime":
+      return <small>On Time</small>;
+    case "arriving":
+      return <small className="accent">Arriving</small>;
+    case "early":
+      return (
+        <small className="accent">{`${predictionDelta ??
+          "?"} min early`}</small>
+      );
+    case "late":
+      return (
+        <small className="warning">{`${predictionDelta ??
+          "?"} min late`}</small>
+      );
+    case "now":
+      return <small className="accent">Now</small>;
+    case "skipped":
+      return <small>Skipped</small>;
+    case "departed":
+      return <small>Departed</small>;
+    default:
+      return <small>Scheduled</small>;
   }
 }

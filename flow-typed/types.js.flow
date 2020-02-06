@@ -1,6 +1,6 @@
 // @flow
 
-import { DateTime } from "luxon";
+import typeof { DateTime } from "luxon";
 
 declare type BusStop = {|
   id: number,
@@ -15,11 +15,35 @@ declare type BusStop = {|
 |};
 
 declare type Departure = {|
-  scheduled: typeof DateTime,
-  predicted: typeof DateTime
+  scheduledTime: DateTime,
+  predictedTime: DateTime,
+  actualTime: DateTime,
+  relevantTime: DateTime,
+  predictionDelta: ?number,
+  status: string
 |};
 
-declare type DepartureString = {|
+declare type DepartureStatus =
+  | "onTime"
+  | "now"
+  | "arriving"
+  | "early"
+  | "late"
+  | "skipped"
+  | "departed"
+  | "none";
+
+declare type DepartureData = {|
   scheduledTimestamp: string,
-  predictedTimestamp: string
+  predictedTimestamp: ?string,
+  actualTimestamp: ?string,
+  status: DepartureDataStatus
 |};
+
+declare type DepartureDataStatus =
+  | "arriving"
+  | "now"
+  | "departed"
+  | "skipped"
+  | "inTerminal"
+  | "unknown";
