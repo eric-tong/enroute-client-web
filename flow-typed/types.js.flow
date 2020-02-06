@@ -20,7 +20,7 @@ declare type Departure = {|
   actualTime: DateTime,
   relevantTime: DateTime,
   predictionDelta: ?number,
-  status: string
+  status: DepartureStatus
 |};
 
 declare type DepartureStatus =

@@ -2,6 +2,7 @@
 
 import { NavLink } from "react-router-dom";
 import React from "react";
+import { TIME_FORMAT } from "../../../constants";
 
 type Props = {|
   ...BusStop,
@@ -29,7 +30,7 @@ export default function DepartureTile({
       <ul>
         {departures.map(departure => (
           <li key={departure.scheduledTime.toMillis()} className="row">
-            {departure.relevantTime.toFormat("HH:mm")}
+            {departure.relevantTime.toFormat(TIME_FORMAT)}
             <DepartureStatus departure={departure} />
           </li>
         ))}

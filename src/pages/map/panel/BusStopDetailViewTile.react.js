@@ -6,6 +6,7 @@ import React, { useState } from "react";
 
 import BusRoute from "./BusRoute.react";
 import { DateTime } from "luxon";
+import { TIME_FORMAT } from "../../../constants";
 import TimeWithAlertTag from "./TimeWithAlertTag.react";
 import { getHumanReadableTime } from "../../../utils/timeUtil";
 
@@ -23,12 +24,7 @@ type Props = {|
 |};
 
 export default function BusStopDetailViewTile({
-  departure: {
-    predictedTime,
-    scheduledTime,
-    relevantTime,
-    trip: { departures: tripDepartures }
-  },
+  departure: { trip, ...departure },
   collapsible = true
 }: Props) {
   const [isCollapsed, setIsCollapsed] = useState(collapsible);
@@ -46,23 +42,19 @@ export default function BusStopDetailViewTile({
     >
       <header>
         <div className="subheader left">
-          <h1>{getHumanReadableTime(now, relevantTime)}</h1>
+          <h1>{getHumanReadableTime(now, departure.relevantTime)}</h1>
         </div>
         <div className="subheader right">
           <p>
-            <TimeWithAlertTag
-              predicted={relevantTime}
-              scheduled={scheduledTime}
-              showOnTime={true}
-            />
+            <TimeWithAlertTag departure={departure} detailed={true} />
           </p>
-          <h3>Scheduled {scheduledTime.toFormat("h:mm a")}</h3>
+          <h3>Scheduled {departure.scheduledTime.toFormat(TIME_FORMAT)}</h3>
         </div>
       </header>
       {!isCollapsed && (
         <div className="lower-half">
           <h3>Bus Route</h3>
-          <BusRoute departures={tripDepartures} />
+          <BusRoute departures={trip.departures} />
         </div>
       )}
     </div>

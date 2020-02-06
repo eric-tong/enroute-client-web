@@ -24,7 +24,7 @@ export default function BusRoute({ departures }: Props) {
   );
   return (
     <ul className="bus-route">
-      {departures.map((departure, index) => {
+      {departures.map(({ busStop, ...departure }, index) => {
         const isActive = index === activeIndex;
         const isPast =
           DateTime.fromSQL(departure.predictedTime).toMillis() +
@@ -45,13 +45,9 @@ export default function BusRoute({ departures }: Props) {
               </div>
             </div>
             <span className={["name", isPast ? "disabled" : ""].join(" ")}>
-              {departure.busStop.name}
+              {busStop.name}
             </span>
-            <TimeWithAlertTag
-              predicted={departure.predictedTime ?? departure.scheduledTime}
-              scheduled={departure.scheduledTime}
-              disabled={isPast}
-            />
+            <TimeWithAlertTag departure={departure} disabled={isPast} />
           </li>
         );
       })}

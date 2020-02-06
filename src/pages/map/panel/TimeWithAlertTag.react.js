@@ -1,48 +1,70 @@
 // @flow
 
-import { ON_TIME_BUFFER } from "../../../constants";
+import { ON_TIME_BUFFER, TIME_FORMAT } from "../../../constants";
+
 import React from "react";
 import { getClass } from "../../../utils/jsxUtil";
 
 export default function TimeWithAlertTag({
-  predicted,
-  scheduled,
-  showOnTime = false,
+  departure: { status, relevantTime },
+  detailed = false,
   disabled = false
 }: {
-  predicted: DateTime,
-  scheduled: DateTime,
-  showOnTime?: boolean,
+  departure: Departure,
+  detailed?: boolean,
   disabled?: boolean
 }) {
-  const delay = predicted.toMillis() - scheduled.toMillis();
-  const status =
-    delay > ON_TIME_BUFFER
-      ? "late"
-      : delay < -1 * ON_TIME_BUFFER
-      ? "early"
-      : "onTime";
-
   const timeClass = getClass(
     "time",
-    status === "late" ? "warning" : status === "early" ? "accent" : undefined,
+    status === "late"
+      ? "warning"
+      : status === "early" || status === "now"
+      ? "accent"
+      : undefined,
     disabled ? "disabled" : undefined
   );
-  const tagClass = getClass(
-    "tag",
-    "ghost",
-    status === "late" ? "warning" : status === "early" ? "accent" : undefined
-  );
-  const tagText =
-    status === "late" ? "Delayed" : status === "early" ? "Early" : "On Time";
 
   return (
     <>
-      <span className={timeClass}>{predicted.toFormat("h:mm a")}</span>
-      {!disabled &&
-        (status !== "onTime" || (status === "onTime" && showOnTime)) && (
-          <span className={tagClass}>{tagText}</span>
-        )}
+      <span className={timeClass}>{relevantTime.toFormat(TIME_FORMAT)}</span>
+      <Tag status={status} detailed={detailed} />
     </>
   );
+}
+
+const STATUSES_TO_INCLUDE_ONLY_IF_DETAILED: DepartureStatus[] = [
+  "onTime",
+  "arriving",
+  "departed",
+  "none"
+];
+
+function Tag({
+  status,
+  detailed
+}: {
+  status: DepartureStatus,
+  detailed: boolean
+}) {
+  if (!detailed && STATUSES_TO_INCLUDE_ONLY_IF_DETAILED.includes(status)) {
+    return null;
+  }
+  switch (status) {
+    case "onTime":
+      return <div className="tag ghost">On Time</div>;
+    case "arriving":
+      return <div className="tag ghost accent">Arriving</div>;
+    case "early":
+      return <div className="tag ghost accent">Early</div>;
+    case "late":
+      return <div className="tag ghost warning">Delayed</div>;
+    case "now":
+      return <div className="tag ghost accent">Now</div>;
+    case "skipped":
+      return <div className="tag ghost">Skipped</div>;
+    case "departed":
+      return <div className="tag ghost">Departed</div>;
+    default:
+      return <div className="tag ghost">Scheduled</div>;
+  }
 }
