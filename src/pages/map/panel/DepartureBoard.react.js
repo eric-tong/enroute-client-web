@@ -62,10 +62,12 @@ function useBusStopGroups(): {
   );
 
   const directions = new Set(busStops.map(busStop => busStop.direction));
-  const busStopsByDirection = Array.from(directions).map(direction => ({
-    direction,
-    busStops: busStops.filter(busStop => busStop.direction === direction)
-  }));
+  const busStopsByDirection = Array.from(directions)
+    .map(direction => ({
+      direction,
+      busStops: busStops.filter(busStop => busStop.direction === direction)
+    }))
+    .reverse();
 
   return busStopsByDirection;
 }

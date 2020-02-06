@@ -6,6 +6,7 @@ import React, { useContext } from "react";
 
 import { ActiveBusStopContext } from "./BusStopDetailView.react";
 import { DateTime } from "luxon";
+import { ON_TIME_BUFFER } from "../../../constants";
 import TimeWithAlertTag from "./TimeWithAlertTag.react";
 
 type Props = {|
@@ -14,8 +15,6 @@ type Props = {|
     busStop: BusStop
   |}[]
 |};
-
-const DEPARTURE_BUFFER = 120 * 1000;
 
 export default function BusRoute({ departures }: Props) {
   const now = DateTime.local();
@@ -29,7 +28,7 @@ export default function BusRoute({ departures }: Props) {
         const isActive = index === activeIndex;
         const isPast =
           DateTime.fromSQL(departure.predictedTimestamp).toMillis() +
-            DEPARTURE_BUFFER <
+            ON_TIME_BUFFER <
           now.toMillis();
 
         return (
