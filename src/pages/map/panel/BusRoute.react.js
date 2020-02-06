@@ -11,7 +11,7 @@ import TimeWithAlertTag from "./TimeWithAlertTag.react";
 
 type Props = {|
   departures: {|
-    ...DepartureString,
+    ...Departure,
     busStop: BusStop
   |}[]
 |};
@@ -27,13 +27,13 @@ export default function BusRoute({ departures }: Props) {
       {departures.map((departure, index) => {
         const isActive = index === activeIndex;
         const isPast =
-          DateTime.fromSQL(departure.predictedTimestamp).toMillis() +
+          DateTime.fromSQL(departure.predictedTime).toMillis() +
             ON_TIME_BUFFER <
           now.toMillis();
 
         return (
           <li
-            key={departure.scheduledTimestamp}
+            key={departure.scheduledTime}
             className={isActive ? "active" : ""}
           >
             <div className="icon">
@@ -48,10 +48,8 @@ export default function BusRoute({ departures }: Props) {
               {departure.busStop.name}
             </span>
             <TimeWithAlertTag
-              predicted={DateTime.fromSQL(
-                departure.predictedTimestamp ?? departure.scheduledTimestamp
-              )}
-              scheduled={DateTime.fromSQL(departure.scheduledTimestamp)}
+              predicted={departure.predictedTime ?? departure.scheduledTime}
+              scheduled={departure.scheduledTime}
               disabled={isPast}
             />
           </li>

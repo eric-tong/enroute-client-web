@@ -11,10 +11,10 @@ import { getHumanReadableTime } from "../../../utils/timeUtil";
 
 type Props = {|
   departure: {|
-    ...DepartureString,
+    ...Departure,
     trip: {|
       departures: {|
-        ...DepartureString,
+        ...Departure,
         busStop: BusStop
       |}[]
     |}
@@ -24,8 +24,9 @@ type Props = {|
 
 export default function BusStopDetailViewTile({
   departure: {
-    scheduledTimestamp,
-    predictedTimestamp,
+    predictedTime,
+    scheduledTime,
+    relevantTime,
     trip: { departures: tripDepartures }
   },
   collapsible = true
@@ -33,10 +34,6 @@ export default function BusStopDetailViewTile({
   const [isCollapsed, setIsCollapsed] = useState(collapsible);
 
   const now = DateTime.local();
-  const scheduledTime = DateTime.fromSQL(scheduledTimestamp);
-  const predictedTime = DateTime.fromSQL(
-    predictedTimestamp ?? scheduledTimestamp
-  );
 
   return (
     <div
@@ -49,12 +46,12 @@ export default function BusStopDetailViewTile({
     >
       <header>
         <div className="subheader left">
-          <h1>{getHumanReadableTime(now, predictedTime)}</h1>
+          <h1>{getHumanReadableTime(now, relevantTime)}</h1>
         </div>
         <div className="subheader right">
           <p>
             <TimeWithAlertTag
-              predicted={predictedTime}
+              predicted={relevantTime}
               scheduled={scheduledTime}
               showOnTime={true}
             />

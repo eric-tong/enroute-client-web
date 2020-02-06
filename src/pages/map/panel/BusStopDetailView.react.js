@@ -3,6 +3,7 @@
 import BackButton from "../../misc/BackButton.react";
 import BusStopDetailViewTile from "./BusStopDetailViewTile.react";
 import React from "react";
+import { formatDepartureData } from "../../../utils/departureUtil";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
@@ -12,10 +13,10 @@ type Props = {|
 type QueryResult = {|
   ...BusStop,
   departures: {|
-    ...DepartureString,
+    ...Departure,
     trip: {|
       departures: {|
-        ...DepartureString,
+        ...Departure,
         busStop: BusStop
       |}[]
     |}
@@ -32,10 +33,14 @@ const BUS_STOP = gql`
       departures {
         scheduledTimestamp
         predictedTimestamp
+        actualTimestamp
+        status
         trip {
           departures {
             scheduledTimestamp
             predictedTimestamp
+            actualTimestamp
+            status
             busStop {
               id
               name
@@ -79,7 +84,7 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
             <h3>Upcoming Departures</h3>
             {departures.slice(1).map(departure => (
               <BusStopDetailViewTile
-                key={departure.scheduledTimestamp}
+                key={departure.scheduledTime.toMillis()}
                 departure={departure}
               />
             ))}
@@ -98,5 +103,23 @@ function useBusStop(busStopUrl): ?QueryResult {
   const busStop = data?.busStop;
   if (!busStop) return;
 
-  return busStop;
+  const { departures, ...busStopContent } = busStop;
+  const processedDepartures = departures.map(departure => {
+    const { trip, ...departureContent } = departure;
+
+    const processedTripDepartures = trip.departures.map(tripDeparture => {
+      const { busStop, ...tripDeparturesContent } = tripDeparture;
+      return {
+        ...formatDepartureData(tripDeparturesContent),
+        busStop
+      };
+    });
+
+    return {
+      ...formatDepartureData(departureContent),
+      trip: { departures: processedTripDepartures }
+    };
+  });
+
+  return { ...busStopContent, departures: processedDepartures };
 }
