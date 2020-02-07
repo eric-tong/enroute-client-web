@@ -4,9 +4,13 @@ import React from "react";
 import { TIME_FORMAT } from "../../../constants";
 import { getClass } from "../../../utils/jsxUtil";
 
-const ALWAYS_SHOW_TAG_STATUSES = ["skipped"];
 const ACCENT_TEXT_STATUSES = ["early", "arriving", "now"];
 const WARNING_TEXT_STATUSES = ["late"];
+const STATUSES_TO_INCLUDE_ONLY_IF_DETAILED: DepartureStatus[] = [
+  "onTime",
+  "departed",
+  "none"
+];
 
 export default function TimeWithAlertTag({
   departure: { status, relevantTime },
@@ -17,7 +21,7 @@ export default function TimeWithAlertTag({
   detailed?: boolean,
   disabled?: boolean
 }) {
-  const showTag = ALWAYS_SHOW_TAG_STATUSES.includes(status) || !disabled;
+  const showTag = !disabled;
   const timeClass = getClass(
     "time",
     showTag && WARNING_TEXT_STATUSES.includes(status) ? "warning" : undefined,
@@ -32,13 +36,6 @@ export default function TimeWithAlertTag({
     </>
   );
 }
-
-const STATUSES_TO_INCLUDE_ONLY_IF_DETAILED: DepartureStatus[] = [
-  "onTime",
-  "arriving",
-  "departed",
-  "none"
-];
 
 function Tag({
   status,

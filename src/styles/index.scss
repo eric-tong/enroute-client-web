@@ -11,6 +11,7 @@ html {
   --accent: #0cd390;
   --warning: #ff9800;
   --subtle: #b0bec5;
+  --disabled: #aaa;
   --highlight: #b0bec515;
 
   --shadow: #0000001a;
@@ -91,7 +92,7 @@ button {
   cursor: pointer;
 
   &.disabled {
-    color: #aaa;
+    color: var(--disabled);
     cursor: default;
   }
 }
