@@ -17,13 +17,13 @@ export default function TimeWithAlertTag({
   detailed?: boolean,
   disabled?: boolean
 }) {
+  const showTag = ALWAYS_SHOW_TAG_STATUSES.includes(status) || !disabled;
   const timeClass = getClass(
     "time",
-    WARNING_TEXT_STATUSES.includes(status) ? "warning" : undefined,
-    ACCENT_TEXT_STATUSES.includes(status) ? "accent" : undefined,
+    showTag && WARNING_TEXT_STATUSES.includes(status) ? "warning" : undefined,
+    showTag && ACCENT_TEXT_STATUSES.includes(status) ? "accent" : undefined,
     disabled ? "disabled" : undefined
   );
-  const showTag = ALWAYS_SHOW_TAG_STATUSES.includes(status) || !disabled;
 
   return (
     <>
