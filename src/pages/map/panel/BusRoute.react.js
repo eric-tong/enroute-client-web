@@ -14,7 +14,7 @@ type Props = {|
   |}[]
 |};
 
-const disabledStatuses = ["departed"];
+const disabledStatuses = ["departed", "skipped"];
 
 export default function BusRoute({ departures }: Props) {
   const activeBusStop = useContext(ActiveBusStopContext);
@@ -44,6 +44,9 @@ export default function BusRoute({ departures }: Props) {
               {busStop.name}
             </span>
             <TimeWithAlertTag departure={departure} disabled={isPast} />
+            {departure.status === "skipped" && (
+              <small className="note">Skipped</small>
+            )}
           </li>
         );
       })}
