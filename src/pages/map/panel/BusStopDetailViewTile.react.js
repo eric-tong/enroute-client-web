@@ -45,9 +45,9 @@ export default function BusStopDetailViewTile({
           <h1>{getHumanReadableTime(now, departure.relevantTime)}</h1>
         </div>
         <div className="subheader right">
-          <p>
+          <div className="tag-container">
             <TimeWithAlertTag departure={departure} detailed={true} />
-          </p>
+          </div>
           <h3>Scheduled {departure.scheduledTime.toFormat(TIME_FORMAT)}</h3>
         </div>
       </header>

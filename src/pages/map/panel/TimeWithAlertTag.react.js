@@ -19,9 +19,7 @@ export default function TimeWithAlertTag({
 }) {
   const timeClass = getClass(
     "time",
-    WARNING_TEXT_STATUSES.includes(WARNING_TEXT_STATUSES)
-      ? "warning"
-      : undefined,
+    WARNING_TEXT_STATUSES.includes(status) ? "warning" : undefined,
     ACCENT_TEXT_STATUSES.includes(status) ? "accent" : undefined,
     disabled ? "disabled" : undefined
   );

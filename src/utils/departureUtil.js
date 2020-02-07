@@ -36,7 +36,7 @@ export function formatDepartureData({
       break;
     case "skipped":
     case "departed":
-      relevantTime = predictedTime;
+      relevantTime = predictedTime ?? actualTime ?? scheduledTime;
       break;
     default:
       relevantTime = scheduledTime;
@@ -58,10 +58,10 @@ function getStatus(
   scheduledTime: DateTime,
   predictedTime: ?DateTime
 ): DepartureStatus {
-  if (!predictedTime) return "none";
-
   switch (dataStatus) {
     case "arriving":
+      if (!predictedTime) return "none";
+
       const now = DateTime.local();
       const timeToArrival = predictedTime.valueOf() - now.valueOf();
       if (timeToArrival < ON_TIME_BUFFER) return "arriving";
