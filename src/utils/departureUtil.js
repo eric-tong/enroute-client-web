@@ -80,8 +80,6 @@ function getStatus(
       return "departed";
     case "skipped":
       return "skipped";
-    case "inTerminal":
-      return "departed";
     default:
       return "none";
   }

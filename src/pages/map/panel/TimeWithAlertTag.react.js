@@ -1,9 +1,12 @@
 // @flow
 
-import { ON_TIME_BUFFER, TIME_FORMAT } from "../../../constants";
-
 import React from "react";
+import { TIME_FORMAT } from "../../../constants";
 import { getClass } from "../../../utils/jsxUtil";
+
+const ALWAYS_SHOW_TAG_STATUSES = ["skipped"];
+const ACCENT_TEXT_STATUSES = ["early", "arriving", "now"];
+const WARNING_TEXT_STATUSES = ["late"];
 
 export default function TimeWithAlertTag({
   departure: { status, relevantTime },
@@ -16,18 +19,18 @@ export default function TimeWithAlertTag({
 }) {
   const timeClass = getClass(
     "time",
-    status === "late"
+    WARNING_TEXT_STATUSES.includes(WARNING_TEXT_STATUSES)
       ? "warning"
-      : status === "early" || status === "now"
-      ? "accent"
       : undefined,
+    ACCENT_TEXT_STATUSES.includes(status) ? "accent" : undefined,
     disabled ? "disabled" : undefined
   );
+  const showTag = ALWAYS_SHOW_TAG_STATUSES.includes(status) || !disabled;
 
   return (
     <>
       <span className={timeClass}>{relevantTime.toFormat(TIME_FORMAT)}</span>
-      <Tag status={status} detailed={detailed} />
+      {showTag && <Tag status={status} detailed={detailed} />}
     </>
   );
 }

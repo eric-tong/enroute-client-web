@@ -5,8 +5,6 @@ import "../../../styles/bus-route.scss";
 import React, { useContext } from "react";
 
 import { ActiveBusStopContext } from "./BusStopDetailView.react";
-import { DateTime } from "luxon";
-import { ON_TIME_BUFFER } from "../../../constants";
 import TimeWithAlertTag from "./TimeWithAlertTag.react";
 
 type Props = {|
@@ -16,8 +14,9 @@ type Props = {|
   |}[]
 |};
 
+const disabledStatuses = ["departed"];
+
 export default function BusRoute({ departures }: Props) {
-  const now = DateTime.local();
   const activeBusStop = useContext(ActiveBusStopContext);
   const activeIndex = departures.findIndex(
     ({ busStop }) => activeBusStop && activeBusStop.id === busStop.id
@@ -26,10 +25,7 @@ export default function BusRoute({ departures }: Props) {
     <ul className="bus-route">
       {departures.map(({ busStop, ...departure }, index) => {
         const isActive = index === activeIndex;
-        const isPast =
-          DateTime.fromSQL(departure.predictedTime).toMillis() +
-            ON_TIME_BUFFER <
-          now.toMillis();
+        const isPast = disabledStatuses.includes(departure.status);
 
         return (
           <li

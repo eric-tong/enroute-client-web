@@ -45,5 +45,4 @@ declare type DepartureDataStatus =
   | "now"
   | "departed"
   | "skipped"
-  | "inTerminal"
   | "unknown";
