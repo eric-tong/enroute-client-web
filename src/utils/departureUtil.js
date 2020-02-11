@@ -36,7 +36,7 @@ export function formatDepartureData({
       break;
     case "skipped":
     case "departed":
-      relevantTime = predictedTime ?? actualTime ?? scheduledTime;
+      relevantTime = actualTime ?? predictedTime ?? scheduledTime;
       break;
     default:
       relevantTime = scheduledTime;
