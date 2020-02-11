@@ -9,7 +9,9 @@ const WARNING_TEXT_STATUSES = ["late"];
 const STATUSES_TO_INCLUDE_ONLY_IF_DETAILED: DepartureStatus[] = [
   "onTime",
   "departed",
-  "none"
+  "none",
+  "now",
+  "arriving"
 ];
 
 export default function TimeWithAlertTag({
@@ -21,32 +23,25 @@ export default function TimeWithAlertTag({
   detailed?: boolean,
   disabled?: boolean
 }) {
-  const showTag = !disabled;
+  const hideTag =
+    disabled ||
+    (!detailed && STATUSES_TO_INCLUDE_ONLY_IF_DETAILED.includes(status));
   const timeClass = getClass(
     "time",
-    showTag && WARNING_TEXT_STATUSES.includes(status) ? "warning" : undefined,
-    showTag && ACCENT_TEXT_STATUSES.includes(status) ? "accent" : undefined,
+    !hideTag && WARNING_TEXT_STATUSES.includes(status) ? "warning" : undefined,
+    !hideTag && ACCENT_TEXT_STATUSES.includes(status) ? "accent" : undefined,
     disabled ? "disabled" : undefined
   );
 
   return (
     <>
       <span className={timeClass}>{relevantTime.toFormat(TIME_FORMAT)}</span>
-      {showTag && <Tag status={status} detailed={detailed} />}
+      {!hideTag && <Tag status={status} detailed={detailed} />}
     </>
   );
 }
 
-function Tag({
-  status,
-  detailed
-}: {
-  status: DepartureStatus,
-  detailed: boolean
-}) {
-  if (!detailed && STATUSES_TO_INCLUDE_ONLY_IF_DETAILED.includes(status)) {
-    return null;
-  }
+function Tag({ status }: { status: DepartureStatus }) {
   switch (status) {
     case "onTime":
       return <div className="tag ghost">On Time</div>;
