@@ -8,8 +8,8 @@ import RouteLine from "./RouteLine.react";
 import VehiclesOverlay from "./vehicles/VehiclesOverlay.react";
 import useViewport from "../../utils/useViewport";
 
-export default function Map() {
-  const [viewport, setViewport] = useViewport();
+export default function Map({ fullWidth = false }: { fullWidth?: boolean }) {
+  const [viewport, setViewport] = useViewport(fullWidth);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {

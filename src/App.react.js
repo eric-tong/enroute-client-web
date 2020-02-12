@@ -6,6 +6,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import CheckInPage from "./pages/check-in/CheckInPage.react";
 import HistoryPage from "./pages/admin/HistoryPage.react";
+import Map from "./pages/map/Map.react";
 import MapPage from "./pages/map/MapPage.react";
 import React from "react";
 import RecordsPage from "./pages/admin/RecordsPage.react";
@@ -27,6 +28,7 @@ function App() {
               />
             )}
           />
+          <Route path="/map" render={() => <Map fullWidth={true} />} />
           <Route path="/history" component={HistoryPage} />
           <Route path="/records" component={RecordsPage} />
           <Route path="/" component={MapPage} />

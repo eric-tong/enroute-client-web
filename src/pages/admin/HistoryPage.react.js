@@ -25,7 +25,7 @@ const AVLS = gql`
 `;
 
 export default function HistoryPage() {
-  const [viewport, setViewport] = useViewport();
+  const [viewport, setViewport] = useViewport(true);
   const { date, increment, decrement } = useDate();
   const { avl, steps, index, setIndex } = useAvl(date);
 
