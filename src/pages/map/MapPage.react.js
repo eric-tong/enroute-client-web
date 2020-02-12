@@ -6,8 +6,8 @@ import { Route, Switch } from "react-router-dom";
 
 import BusStopDetailView from "./panel/BusStopDetailView.react";
 import DepartureBoard from "./panel/DepartureBoard.react";
+import LiveMapButton from "../misc/LiveMapButton.react";
 import Map from "./Map.react";
-import MenuButton from "../misc/MenuButton.react";
 import { PANEL_WIDTH } from "../../utils/useViewport";
 import React from "react";
 
@@ -16,7 +16,7 @@ function MapPage() {
     <>
       <Map />
       <section id="panel" style={{ width: PANEL_WIDTH }}>
-        <MenuButton />
+        <LiveMapButton />
         <Switch>
           <Route
             path="/stop/:busStopUrl"

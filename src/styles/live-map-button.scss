@@ -1,0 +1,31 @@
+@import "./mixins.scss";
+
+.live-map-button {
+  padding: 0.25rem 0.5rem;
+  display: none;
+  align-items: center;
+  position: absolute;
+  top: 2.75rem;
+  right: 5vw;
+  border: 1px solid currentColor;
+  color: var(--accent);
+  border-radius: 0.25rem;
+  font-size: 0.75em;
+  font-weight: 600;
+  z-index: 2;
+  background: var(--background);
+
+  @include small {
+    top: 0.5rem;
+  }
+
+  @include medium {
+    display: flex;
+  }
+
+  .icon {
+    margin-right: 0.5em;
+    height: 1.25em;
+    width: 1.25em;
+  }
+}

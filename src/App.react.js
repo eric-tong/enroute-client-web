@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
+import { Back } from "./pages/misc/LiveMapButton.react";
 import CheckInPage from "./pages/check-in/CheckInPage.react";
 import HistoryPage from "./pages/admin/HistoryPage.react";
 import Map from "./pages/map/Map.react";
@@ -28,7 +29,15 @@ function App() {
               />
             )}
           />
-          <Route path="/map" render={() => <Map fullWidth={true} />} />
+          <Route
+            path="/livemap"
+            render={() => (
+              <>
+                <Back />
+                <Map fullWidth={true} />
+              </>
+            )}
+          />
           <Route path="/history" component={HistoryPage} />
           <Route path="/records" component={RecordsPage} />
           <Route path="/" component={MapPage} />
