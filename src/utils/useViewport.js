@@ -16,6 +16,7 @@ export default function useViewport(fullWidth: boolean) {
     const resetViewport = () => setViewport(getDefaultViewport);
     window.addEventListener("resize", resetViewport);
     return () => window.removeEventListener("resize", resetViewport);
+    // eslint-disable-next-line
   }, []);
 
   return [viewport, setViewport];

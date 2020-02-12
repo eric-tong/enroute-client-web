@@ -23,8 +23,8 @@ export default function DepartureTile({
         <h4>{name}</h4>
         <p className="subtitle">
           <small>{street}</small>
-          <span className="chevron" />
-          <small className="subtle">To {direction}</small>
+          <span className="chevron hide-small-medium" />
+          <small className="subtle hide-small-medium">To {direction}</small>
         </p>
       </div>
       <ul>

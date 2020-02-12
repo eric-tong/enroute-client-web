@@ -1,3 +1,4 @@
+@import "./mixins.scss";
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap");
 
 html {
@@ -190,4 +191,10 @@ span.chevron {
   background: var(--background);
   border-radius: 1rem;
   box-shadow: 0 0.25rem 0.75rem 0 var(--shadow);
+}
+
+.hide-small-medium {
+  @include small-medium-only {
+    display: none;
+  }
 }

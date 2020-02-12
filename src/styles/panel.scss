@@ -1,3 +1,5 @@
+@import "./mixins.scss";
+
 #panel {
   position: relative;
   background: var(--background);
@@ -10,6 +12,10 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  @include medium {
+    padding: 1.5rem 5vw;
+  }
 
   h1 {
     margin-top: 0.5rem;
@@ -30,6 +36,15 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     grid-gap: 0.75rem;
+
+    @include small {
+      display: flex;
+      flex-direction: column;
+
+      .tile {
+        margin: 0.5rem 0;
+      }
+    }
 
     h3 {
       grid-column: 1 / 3;

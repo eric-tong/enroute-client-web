@@ -1,12 +1,21 @@
-$screen-small: 576px;
+$screen-small: 410px;
 $screen-medium: 768px;
 $screen-large: 992px;
+
+$small-medium: ($screen-small + $screen-medium) / 2;
 
 @mixin rwd($screen) {
   @media only screen and (max-width: $screen) {
     @content;
   }
 }
+
+@mixin rwdExclusive($screenMax, $screenMin) {
+  @media only screen and (max-width: $screenMax) and (min-width: $screenMin) {
+    @content;
+  }
+}
+
 @mixin small {
   @include rwd(#{$screen-small}) {
     @content;
@@ -19,6 +28,12 @@ $screen-large: 992px;
 }
 @mixin large {
   @include rwd(#{$screen-large}) {
+    @content;
+  }
+}
+
+@mixin small-medium-only {
+  @include rwdExclusive(#{$small-medium}, #{$screen-small}) {
     @content;
   }
 }
