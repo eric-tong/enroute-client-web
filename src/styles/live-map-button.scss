@@ -15,7 +15,7 @@
   z-index: 2;
   background: var(--background);
 
-  @include small {
+  @include small-medium {
     top: 0.5rem;
   }
 

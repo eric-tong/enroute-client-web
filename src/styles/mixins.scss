@@ -2,7 +2,7 @@ $screen-small: 410px;
 $screen-medium: 768px;
 $screen-large: 992px;
 
-$small-medium: ($screen-small + $screen-medium) / 2;
+$screen-small-medium: ($screen-small + $screen-medium) / 2;
 
 @mixin rwd($screen) {
   @media only screen and (max-width: $screen) {
@@ -21,6 +21,11 @@ $small-medium: ($screen-small + $screen-medium) / 2;
     @content;
   }
 }
+@mixin small-medium {
+  @include rwd(#{$screen-small-medium}) {
+    @content;
+  }
+}
 @mixin medium {
   @include rwd(#{$screen-medium}) {
     @content;
@@ -33,7 +38,7 @@ $small-medium: ($screen-small + $screen-medium) / 2;
 }
 
 @mixin small-medium-only {
-  @include rwdExclusive(#{$small-medium}, #{$screen-small}) {
+  @include rwdExclusive(#{$screen-small-medium}, #{$screen-small}) {
     @content;
   }
 }
