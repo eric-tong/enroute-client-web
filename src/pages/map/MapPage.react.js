@@ -2,7 +2,7 @@
 
 import "../../styles/panel.scss";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 
 import BusStopDetailView from "./panel/BusStopDetailView.react";
@@ -19,17 +19,25 @@ function Map() {
   const [viewport, setViewport] = useViewport();
   const [isLoaded, setIsLoaded] = useState(false);
 
+  useEffect(() => {
+    if (!viewport) {
+      setIsLoaded(false);
+    }
+  }, [viewport]);
+
   return (
     <>
-      <ReactMapGL
-        {...viewport}
-        onViewportChange={setViewport}
-        onLoad={() => setIsLoaded(true)}
-      >
-        {isLoaded && <RouteLine />}
-        <VehiclesOverlay />
-        <BusStopsOverlay />
-      </ReactMapGL>
+      {viewport && (
+        <ReactMapGL
+          {...viewport}
+          onViewportChange={setViewport}
+          onLoad={() => setIsLoaded(true)}
+        >
+          {isLoaded && <RouteLine />}
+          <VehiclesOverlay />
+          <BusStopsOverlay />
+        </ReactMapGL>
+      )}
       <section id="panel" style={{ width: PANEL_WIDTH }}>
         <MenuButton />
         <Switch>

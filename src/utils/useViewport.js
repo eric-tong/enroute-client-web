@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import WebMercatorViewport from "viewport-mercator-project";
 
 export const PANEL_WIDTH = 33 * 16;
+const MEDIUMSCREEN_WIDTH = 768;
 
 export default function useViewport() {
-  const [viewport, setViewport] = useState<WebMercatorViewport>(
+  const [viewport, setViewport] = useState<?WebMercatorViewport>(
     getDefaultViewport()
   );
 
@@ -20,7 +21,9 @@ export default function useViewport() {
   return [viewport, setViewport];
 }
 
-function getDefaultViewport(defaultViewport?: WebMercatorViewport) {
+function getDefaultViewport(defaultViewport?: ?WebMercatorViewport) {
+  if (window.innerWidth < MEDIUMSCREEN_WIDTH) return null;
+
   const padding = 64;
   const width = Math.max(window.innerWidth - PANEL_WIDTH, padding * 3);
   const height = window.innerHeight;
