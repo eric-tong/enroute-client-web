@@ -45,7 +45,12 @@ function getDefaultViewport(
       [-1.2556090514719926, 51.75453480503126]
     ],
     {
-      padding
+      padding: {
+        top: padding,
+        left: padding,
+        right: padding,
+        bottom: fullWidth ? padding * 2 : padding
+      }
     }
   );
 }
