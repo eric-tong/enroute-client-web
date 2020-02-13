@@ -11,10 +11,10 @@ type Props = {
 };
 
 export default function BusStopMarker({ longitude, latitude, icon }: Props) {
-  const markerStyle = useMarkerStyle(longitude, latitude, [35, 50]);
+  const markerStyle = useMarkerStyle(longitude, latitude, [35, 35]);
 
   return (
-    <div className="map-icon-container" style={markerStyle}>
+    <div className="map-icon-container bus-stop" style={markerStyle}>
       <BusStopIcon text={icon} />
     </div>
   );
