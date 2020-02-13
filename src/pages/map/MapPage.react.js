@@ -28,7 +28,6 @@ function MapPage({ mapOnly = false }: Props) {
 function Panel() {
   return (
     <section id="panel" style={{ width: PANEL_WIDTH }}>
-      <LiveMapButton />
       <Switch>
         <Route
           path="/stop/:busStopUrl"

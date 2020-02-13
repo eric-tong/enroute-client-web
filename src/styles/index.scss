@@ -18,6 +18,10 @@ html {
 
   --shadow: #0000001a;
   --border: #0000001a;
+
+  @include small-medium-only {
+    font-size: 14px;
+  }
 }
 
 body {
