@@ -63,7 +63,12 @@ function useBusStopGroups(): {
     departures: Departure[]
   }[] = data.busStops.map(({ departures, ...busStop }) => ({
     ...busStop,
-    departures: departures.map(formatDepartureData)
+    departures: departures
+      .map(formatDepartureData)
+      .sort(
+        (d1: Departure, d2: Departure) =>
+          d1.relevantTime.toMillis() - d2.relevantTime.toMillis()
+      )
   }));
 
   const directions = new Set(busStops.map(busStop => busStop.direction));

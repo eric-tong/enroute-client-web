@@ -113,22 +113,27 @@ function useBusStop(busStopUrl): ?QueryResult {
   if (!busStop) return;
 
   const { departures, ...busStopContent } = busStop;
-  const processedDepartures = departures.map(departure => {
-    const { trip, ...departureContent } = departure;
+  const processedDepartures = departures
+    .map(departure => {
+      const { trip, ...departureContent } = departure;
 
-    const processedTripDepartures = trip.departures.map(tripDeparture => {
-      const { busStop, ...tripDeparturesContent } = tripDeparture;
+      const processedTripDepartures = trip.departures.map(tripDeparture => {
+        const { busStop, ...tripDeparturesContent } = tripDeparture;
+        return {
+          ...formatDepartureData(tripDeparturesContent),
+          busStop
+        };
+      });
+
       return {
-        ...formatDepartureData(tripDeparturesContent),
-        busStop
+        ...formatDepartureData(departureContent),
+        trip: { departures: processedTripDepartures }
       };
-    });
-
-    return {
-      ...formatDepartureData(departureContent),
-      trip: { departures: processedTripDepartures }
-    };
-  });
+    })
+    .sort(
+      (d1: Departure, d2: Departure) =>
+        d1.relevantTime.toMillis() - d2.relevantTime.toMillis()
+    );
 
   return { ...busStopContent, departures: processedDepartures };
 }
