@@ -1,5 +1,7 @@
 // @flow
 
+import "../../styles/map-icon.scss";
+
 import React, { useEffect, useState } from "react";
 
 import BusStopsOverlay from "./busStops/BusStopsOverlay.react";

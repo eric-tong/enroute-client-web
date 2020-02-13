@@ -1,7 +1,5 @@
 // @flow
 
-import "../../../styles/map-icon.scss";
-
 import React from "react";
 import VehicleIcon from "./VehicleIcon.react";
 import useMarkerStyle from "../../../utils/useMarkerStyle";
