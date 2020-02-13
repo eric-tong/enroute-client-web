@@ -1,6 +1,6 @@
 // @flow
 
-import DepartureBoardLoadingState from "../../loading-states/DepartureBoardLoadingState.react";
+import DepartureBoardLoadingState from "../../edge-states/DepartureBoardLoadingState.react";
 import DepartureTile from "./DepartureTile.react";
 import React from "react";
 import { formatDepartureData } from "../../../utils/departureUtil";

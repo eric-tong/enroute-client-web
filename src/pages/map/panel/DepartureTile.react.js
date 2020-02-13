@@ -1,5 +1,6 @@
 // @flow
 
+import DeparturesEmptyState from "../../edge-states/DeparturesEmptyState.react";
 import { NavLink } from "react-router-dom";
 import React from "react";
 import { TIME_FORMAT } from "../../../constants";
@@ -28,6 +29,7 @@ export default function DepartureTile({
         </p>
       </div>
       <ul>
+        {departures.length < 1 && <DeparturesEmptyState />}
         {departures.map(departure => (
           <li key={departure.scheduledTime.toMillis()} className="row">
             {departure.relevantTime.toFormat(TIME_FORMAT)}
