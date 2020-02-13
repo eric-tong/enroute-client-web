@@ -1,0 +1,13 @@
+.is-loading {
+  border: none !important;
+  animation: beating-background 0.8s linear infinite alternate;
+}
+
+@keyframes beating-background {
+  from {
+    background-color: var(--background);
+  }
+  to {
+    background-color: #f3f3f3;
+  }
+}

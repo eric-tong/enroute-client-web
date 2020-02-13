@@ -1,8 +1,8 @@
 // @flow
 
+import "../../styles/loading-state.scss";
+
 import React from "react";
-import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/react-hooks";
 
 export default function DepartureBoardLoadingState() {
   return (
@@ -25,9 +25,5 @@ export default function DepartureBoardLoadingState() {
 }
 
 function DepartureTile() {
-  return (
-    <div className="tile clickable-tile">
-      <div className="header"></div>
-    </div>
-  );
+  return <div className="tile clickable-tile is-loading" />;
 }
