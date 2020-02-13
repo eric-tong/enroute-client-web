@@ -14,7 +14,7 @@ export default function BusStopMarker({ longitude, latitude, icon }: Props) {
   const markerStyle = useMarkerStyle(longitude, latitude, [35, 50]);
 
   return (
-    <div style={markerStyle}>
+    <div className="map-icon-container" style={markerStyle}>
       <BusStopIcon text={icon} />
     </div>
   );

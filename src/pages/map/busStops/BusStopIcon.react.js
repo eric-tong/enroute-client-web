@@ -3,16 +3,15 @@
 import React from "react";
 
 type Props = {
-  text: string,
+  text: string
 };
 
-export default function BusStopIcon({ text }: Props) {
+export default function BusStopIcon() {
   return (
     <svg
       version="1.1"
       id="bus-stop"
-      width="70px"
-      height="70px"
+      className="icon"
       x="0px"
       y="0px"
       viewBox="0 0 70 70"
@@ -65,17 +64,6 @@ export default function BusStopIcon({ text }: Props) {
           d="M35,2.2c10.8,0,19.5,9.5,19.5,21.3C54.5,41.5,35,50,35,50s-19.5-8.5-19.5-26.4
 		C15.5,11.8,24.2,2.2,35,2.2z"
         />
-        <text
-          fill="#FFFFFF"
-          fontFamily="MyriadPro-Bold, Helvetica, Arial, sans-serif"
-          fontWeight="bold"
-          fontSize="27px"
-          textAnchor="middle"
-          x="50%"
-          y="46%"
-        >
-          {text}
-        </text>
       </g>
     </svg>
   );

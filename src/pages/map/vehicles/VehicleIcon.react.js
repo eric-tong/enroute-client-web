@@ -4,7 +4,7 @@ import React from "react";
 
 export default function VehicleIcon({ bearing }: { bearing: number }) {
   return (
-    <svg width="70px" height="70px" viewBox="0 0 70 70" version="1.1">
+    <svg className="icon" viewBox="0 0 70 70" version="1.1">
       <defs>
         <circle id="path-1" cx="19" cy="33" r="19"></circle>
         <filter
