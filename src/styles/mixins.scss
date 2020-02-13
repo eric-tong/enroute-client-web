@@ -10,6 +10,12 @@ $screen-small-medium: ($screen-small + $screen-medium) / 2;
   }
 }
 
+@mixin rwdHeight($screen) {
+  @media only screen and (max-height: $screen) {
+    @content;
+  }
+}
+
 @mixin rwdExclusive($screenMax, $screenMin) {
   @media only screen and (max-width: $screenMax) and (min-width: $screenMin) {
     @content;
@@ -33,6 +39,22 @@ $screen-small-medium: ($screen-small + $screen-medium) / 2;
 }
 @mixin large {
   @include rwd(#{$screen-large}) {
+    @content;
+  }
+}
+
+@mixin small-height {
+  @include rwdHeight(#{$screen-small}) {
+    @content;
+  }
+}
+@mixin small-medium-height {
+  @include rwdHeight(#{$screen-small-medium}) {
+    @content;
+  }
+}
+@mixin medium-height {
+  @include rwdHeight(#{$screen-medium}) {
     @content;
   }
 }
