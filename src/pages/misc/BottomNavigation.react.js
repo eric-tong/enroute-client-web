@@ -11,16 +11,20 @@ type IconProps = {|
 |};
 
 export default function BottomNavigation() {
-  const location = useLocation().pathname;
+  const path = useLocation().pathname;
 
   return (
     <div className="bottom-navigation">
-      <NavLink to="/" className="navigation-item" exact={true}>
-        <DepartureIcon filled={location === "/"} />
+      <NavLink
+        to="/"
+        className="navigation-item"
+        isActive={() => path === "/" || path.startsWith("/stop")}
+      >
+        <DepartureIcon filled={path === "/" || path.startsWith("/stop")} />
         <p>Departures</p>
       </NavLink>
       <NavLink to="/livemap" className="navigation-item">
-        <MapIcon filled={location === "/livemap"} />
+        <MapIcon filled={path === "/livemap"} />
         <p>Live Map</p>
       </NavLink>
       <a
