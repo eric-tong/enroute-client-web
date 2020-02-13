@@ -7,10 +7,14 @@
   background: var(--primary);
   box-shadow: 0 -0.5rem 0.75rem 0 var(--shadow);
   color: var(--background);
-  display: flex;
   justify-content: center;
   z-index: 2;
   box-sizing: border-box;
+
+  display: none;
+  @include medium {
+    display: flex;
+  }
 
   .navigation-item {
     flex-grow: 1;
