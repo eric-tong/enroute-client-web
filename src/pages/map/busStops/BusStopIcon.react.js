@@ -2,10 +2,6 @@
 
 import React from "react";
 
-type Props = {
-  text: string
-};
-
 export default function BusStopIcon() {
   return (
     <svg
