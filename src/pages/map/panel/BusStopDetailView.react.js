@@ -1,6 +1,7 @@
 // @flow
 
 import BackButton from "../../misc/BackButton.react";
+import BusDetailLoadingState from "../../loading-states/BusDetailLoadingState.react";
 import BusStopDetailViewTile from "./BusStopDetailViewTile.react";
 import React from "react";
 import { formatDepartureData } from "../../../utils/departureUtil";
@@ -55,7 +56,13 @@ export const ActiveBusStopContext = React.createContext<?QueryResult>();
 
 export default function BusStopDetailView({ busStopUrl }: Props) {
   const busStop = useBusStop(busStopUrl);
-  if (!busStop) return "Loading...";
+  if (!busStop)
+    return (
+      <>
+        <BackButton />
+        <BusDetailLoadingState />
+      </>
+    );
 
   const { name, street, direction, departures } = busStop;
 

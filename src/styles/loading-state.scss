@@ -1,3 +1,17 @@
+.mock-text {
+  min-width: 50%;
+  min-height: 1.25em;
+
+  &.long {
+    min-width: 75%;
+  }
+}
+
+.mock-tile {
+  height: 15rem;
+  width: 100%;
+}
+
 .is-loading {
   border: none !important;
   animation: beating-background 0.8s linear infinite alternate;
