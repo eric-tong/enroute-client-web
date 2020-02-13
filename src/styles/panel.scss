@@ -15,6 +15,7 @@
 
   @include medium {
     padding: 1.5rem 5vw;
+    box-shadow: none;
   }
 
   h1 {
@@ -54,14 +55,14 @@
       border: 1px solid var(--border);
       border-radius: 0.75rem;
       box-sizing: border-box;
-      height: 15.5rem;
+      height: 14.75rem;
       overflow: hidden;
 
       .header {
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         padding: 0 0.625rem;
         box-sizing: border-box;
-        height: 5rem;
+        height: 4.5rem;
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -73,7 +74,7 @@
       }
 
       .row {
-        margin: 0.5rem 0;
+        margin: 0.625rem 0;
         padding: 0 0.625rem;
         display: flex;
         align-items: center;
