@@ -1,8 +1,9 @@
 // @flow
 
 import BackButton from "../../misc/BackButton.react";
-import BusDetailLoadingState from "../../loading-states/BusDetailLoadingState.react";
+import BusDetailLoadingState from "../../edge-states/BusDetailLoadingState.react";
 import BusStopDetailViewTile from "./BusStopDetailViewTile.react";
+import DeparturesEmptyState from "../../edge-states/DeparturesEmptyState.react";
 import React from "react";
 import { formatDepartureData } from "../../../utils/departureUtil";
 import { gql } from "apollo-boost";
@@ -76,6 +77,7 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
         <span className="chevron higher" />
         <span className="subtle">Towards {direction}</span>
       </p>
+      {departures.length < 1 && <DeparturesEmptyState />}
       <ActiveBusStopContext.Provider value={busStop}>
         {departures.length > 0 && (
           <>
