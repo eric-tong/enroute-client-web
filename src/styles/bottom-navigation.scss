@@ -1,0 +1,30 @@
+@import "./mixins.scss";
+
+.bottom-navigation {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background: var(--primary);
+  box-shadow: 0 -0.5rem 0.75rem 0 var(--shadow);
+  color: var(--background);
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+  box-sizing: border-box;
+
+  .navigation-item {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 0;
+
+    .icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: currentColor;
+      margin-bottom: 0.25rem;
+    }
+  }
+}

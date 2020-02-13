@@ -2,9 +2,9 @@
 
 import "../../styles/panel.scss";
 
-import LiveMapButton, { Back } from "../misc/LiveMapButton.react";
 import { Route, Switch } from "react-router-dom";
 
+import BottomNavigation from "../misc/BottomNavigation.react";
 import BusStopDetailView from "./panel/BusStopDetailView.react";
 import DepartureBoard from "./panel/DepartureBoard.react";
 import Map from "./Map.react";
@@ -19,8 +19,8 @@ function MapPage({ mapOnly = false }: Props) {
   return (
     <>
       <Map fullWidth={mapOnly} />
-      {mapOnly && <Back />}
       {!mapOnly && <Panel />}
+      <BottomNavigation />
     </>
   );
 }
