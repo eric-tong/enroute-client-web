@@ -11,8 +11,10 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  height: 100vh;
 
   @include medium {
+    height: auto;
     padding: 1.5rem 5vw 6rem;
     box-shadow: none;
   }
