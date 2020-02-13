@@ -5,7 +5,6 @@ import "../../styles/bottom-navigation.scss";
 import { NavLink, useLocation } from "react-router-dom";
 
 import React from "react";
-import { getClass } from "../../utils/jsxUtil";
 
 type IconProps = {|
   filled: boolean
@@ -16,31 +15,19 @@ export default function BottomNavigation() {
 
   return (
     <div className="bottom-navigation">
-      <NavLink
-        to="/"
-        className={getClass(
-          "navigation-item",
-          location === "/" ? "active" : undefined
-        )}
-      >
+      <NavLink to="/" className="navigation-item" exact={true}>
         <DepartureIcon filled={location === "/"} />
         <p>Departures</p>
       </NavLink>
-      <NavLink
-        to="/livemap"
-        className={getClass(
-          "navigation-item",
-          location === "/livemap" ? "active" : undefined
-        )}
-      >
+      <NavLink to="/livemap" className="navigation-item">
         <MapIcon filled={location === "/livemap"} />
         <p>Live Map</p>
       </NavLink>
       <a
         href="http://www.begbroke.ox.ac.uk/wp-content/uploads/2019/04/Minibus-Timetable-1.4.19.png"
         target="_blank"
-        className="navigation-item"
         rel="noopener noreferrer"
+        className="navigation-item"
       >
         <TableIcon filled={false} />
         <p>Timetable</p>
