@@ -32,7 +32,7 @@ export default function DepartureBoard() {
   else
     return (
       <>
-        <h1>Live Departures Beta</h1>
+        <h1>Live Departures</h1>
         <div className="grid">
           {busStopGroups.map(({ direction, busStops }) => (
             <React.Fragment key={direction}>
