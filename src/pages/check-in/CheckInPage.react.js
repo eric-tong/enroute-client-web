@@ -3,11 +3,13 @@
 import "../../styles/checkmark.scss";
 import "../../styles/check-in.scss";
 
-import React from "react";
+import React, { useState } from "react";
+
 import useCheckIn from "../../utils/useCheckIn";
 
 export default function CheckInPage() {
   const checkIn = useCheckIn();
+  console.log(checkIn);
 
   const body = (() => {
     switch (checkIn.status) {
@@ -54,20 +56,33 @@ function UserIdSection({
   onSubmit: number => void,
   onSelectGuest: () => void
 }) {
+  const [userId, setUserId] = useState<string>("");
   return (
     <>
-      <input type="number" placeholder="User Id" />
-      <button onClick={onSubmit}>Continue</button>
+      <input
+        type="number"
+        placeholder="User Id"
+        value={userId}
+        onChange={event => setUserId(event.target.value)}
+      />
+      <button onClick={() => onSubmit(parseInt(userId))}>Continue</button>
       <button onClick={onSelectGuest}>Sign in as guest</button>
     </>
   );
 }
 
 function GuestSection({ onSubmit }: { onSubmit: string => void }) {
+  const [guestCompany, setGuestCompany] = useState<string>("");
+
   return (
     <>
-      <input type="text" placeholder="Company name" />
-      <button onClick={onSubmit}>Continue</button>
+      <input
+        type="text"
+        placeholder="Company name"
+        value={guestCompany}
+        onChange={event => setGuestCompany(event.target.value)}
+      />
+      <button onClick={() => onSubmit(guestCompany)}>Continue</button>
     </>
   );
 }
