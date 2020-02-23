@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
+import BottomNavigation from "./pages/misc/BottomNavigation.react";
 import CheckInPage from "./pages/check-in/CheckInPage.react";
 import HistoryPage from "./pages/admin/HistoryPage.react";
 import MapPage from "./pages/map/MapPage.react";
@@ -32,6 +33,7 @@ function App() {
           <Route path="/records" component={RecordsPage} />
           <Route path="/" component={MapPage} />
         </Switch>
+        <BottomNavigation />
       </Router>
     </ApolloProvider>
   );

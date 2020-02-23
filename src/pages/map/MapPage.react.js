@@ -4,7 +4,6 @@ import "../../styles/panel.scss";
 
 import { Route, Switch } from "react-router-dom";
 
-import BottomNavigation from "../misc/BottomNavigation.react";
 import BusStopDetailView from "./panel/BusStopDetailView.react";
 import DepartureBoard from "./panel/DepartureBoard.react";
 import Map from "./Map.react";
@@ -20,7 +19,6 @@ function MapPage({ mapOnly = false }: Props) {
     <>
       <Map fullWidth={mapOnly} />
       {!mapOnly && <Panel />}
-      <BottomNavigation />
     </>
   );
 }
