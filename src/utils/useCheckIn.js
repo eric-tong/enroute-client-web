@@ -1,8 +1,9 @@
 // @flow
 
+import { useEffect, useState } from "react";
+
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
-import { useState } from "react";
 
 type Status =
   | "user"
@@ -45,7 +46,6 @@ export default function useCheckIn(): {
   setOrigin: BusStop => void,
   setDestination: BusStop => void,
   changeUser: () => void,
-  submit: () => void,
   undo: () => void
 } {
   const previousUserId = localStorage.getItem("userId");
@@ -76,15 +76,24 @@ export default function useCheckIn(): {
     setUserId();
     setGuestCompany();
   };
-  const submit = () => {
-    checkIn({
-      userId,
-      originId: origin?.id,
-      destinationId: destination?.id,
-      remarks: guestCompany
-    });
+  const undo = () => {
+    checkOut();
+    setOrigin();
+    setDestination();
   };
-  const undo = checkOut;
+
+  useEffect(() => {
+    if (typeof userId !== "undefined" && origin && destination)
+      checkIn({
+        variables: {
+          userId,
+          originId: parseInt(origin?.id),
+          destinationId: parseInt(destination?.id),
+          remarks: guestCompany
+        }
+      });
+    // eslint-disable-next-line
+  }, [userId, origin, destination]);
 
   return {
     status,
@@ -97,7 +106,6 @@ export default function useCheckIn(): {
     setOrigin,
     setDestination,
     changeUser,
-    submit,
     undo
   };
 }
@@ -109,8 +117,8 @@ function useDeferredCheckInId() {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const deferredCheckIn = (...args) => {
-    checkIn(...args);
     setIsLoading(true);
+    checkIn(...args);
     setTimeout(() => {
       setIsLoading(false);
     }, 1500);
@@ -122,6 +130,9 @@ function useDeferredCheckInId() {
   return [
     isLoading ? undefined : checkInId,
     deferredCheckIn,
-    () => checkOut({ variables: { id: checkInId } })
+    () => {
+      setIsLoading(true);
+      checkOut({ variables: { id: checkInId } });
+    }
   ];
 }

@@ -5,11 +5,13 @@ import "../../styles/check-in.scss";
 
 import React, { useState } from "react";
 
+import useBusStops from "../../utils/useBusStops";
 import useCheckIn from "../../utils/useCheckIn";
 
 export default function CheckInPage() {
   const checkIn = useCheckIn();
-  console.log(checkIn);
+  const busStops = useBusStops();
+  console.log({ checkIn });
 
   const body = (() => {
     switch (checkIn.status) {
@@ -23,9 +25,19 @@ export default function CheckInPage() {
       case "guest":
         return <GuestSection onSubmit={checkIn.setGuestCompany} />;
       case "origin":
-        return "origin";
+        return (
+          <BusStopsSection
+            busStops={busStops}
+            onBusStopClick={checkIn.setOrigin}
+          />
+        );
       case "destination":
-        return "destination";
+        return (
+          <BusStopsSection
+            busStops={busStops}
+            onBusStopClick={checkIn.setDestination}
+          />
+        );
       case "loading":
         return (
           <ConfirmationSection isLoading={true} onUndoClick={checkIn.undo} />
@@ -85,6 +97,20 @@ function GuestSection({ onSubmit }: { onSubmit: string => void }) {
       <button onClick={() => onSubmit(guestCompany)}>Continue</button>
     </>
   );
+}
+
+function BusStopsSection({
+  busStops,
+  onBusStopClick
+}: {
+  busStops: BusStop[],
+  onBusStopClick: BusStop => void
+}) {
+  return busStops.map(busStop => (
+    <button key={busStop.id} onClick={() => onBusStopClick(busStop)}>
+      {busStop.name}
+    </button>
+  ));
 }
 
 function ConfirmationSection({
