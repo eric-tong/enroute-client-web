@@ -20,14 +20,7 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <Switch>
-          <Route
-            path="/checkin/:vehicleRegistration?"
-            render={props => (
-              <CheckInPage
-                vehicleRegistration={props.match.params.vehicleRegistration}
-              />
-            )}
-          />
+          <Route path="/checkin" component={CheckInPage} />
           <Route path="/livemap" render={() => <MapPage mapOnly={true} />} />
           <Route path="/history" component={HistoryPage} />
           <Route path="/records" component={RecordsPage} />

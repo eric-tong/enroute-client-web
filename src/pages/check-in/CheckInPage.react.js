@@ -3,86 +3,81 @@
 import "../../styles/checkmark.scss";
 import "../../styles/check-in.scss";
 
-import type { Department } from "../../utils/useDepartment";
 import React from "react";
-import useDepartment from "../../utils/useDepartment";
+import useCheckIn from "../../utils/useCheckIn";
 
-type Props = {|
-  vehicleRegistration: ?string
-|};
+export default function CheckInPage() {
+  const checkIn = useCheckIn();
 
-export default function CheckInPage({ vehicleRegistration }: Props) {
-  const {
-    selectedDepartment,
-    departments,
-    setDepartment,
-    status
-  } = useDepartment(vehicleRegistration ?? "");
+  const body = (() => {
+    switch (checkIn.status) {
+      case "user":
+        return (
+          <UserIdSection
+            onSubmit={checkIn.setUserId}
+            onSelectGuest={() => checkIn.setUserId(0)}
+          />
+        );
+      case "guest":
+        return <GuestSection onSubmit={checkIn.setGuestCompany} />;
+      case "origin":
+        return "origin";
+      case "destination":
+        return "destination";
+      case "loading":
+        return (
+          <ConfirmationSection isLoading={true} onUndoClick={checkIn.undo} />
+        );
+      case "confirmed":
+        return (
+          <ConfirmationSection isLoading={false} onUndoClick={checkIn.undo} />
+        );
+      default:
+        return <ErrorSection />;
+    }
+  })();
 
-  // TODO check for vehicle validity, return vehicle selection page
-  if (!vehicleRegistration) return "No bus found";
-
-  const body =
-    status === "departmentsList" ? (
-      <DepartmentsListSection
-        departments={departments}
-        onItemClick={setDepartment}
-      />
-    ) : status === "loading" || status === "confirmed" ? (
-      <ConfirmationSection
-        isLoading={status === "loading"}
-        departmentName={selectedDepartment?.name ?? ""}
-        onChangeClick={() => setDepartment()}
-      />
-    ) : (
-      <ErrorSection />
-    );
   return (
     <main className="check-in-container">
       <header>
-        <h1>Check in to bus {vehicleRegistration}</h1>
+        <h1>Check in</h1>
       </header>
       {body}
     </main>
   );
 }
 
-function CheckMark({ isLoading }: { isLoading: boolean }) {
+function UserIdSection({
+  onSubmit,
+  onSelectGuest
+}: {
+  onSubmit: number => void,
+  onSelectGuest: () => void
+}) {
   return (
-    <div className={`circle-loader ${!isLoading ? "load-complete" : ""}`}>
-      {!isLoading && <div className="checkmark draw"></div>}
-    </div>
+    <>
+      <input type="number" placeholder="User Id" />
+      <button onClick={onSubmit}>Continue</button>
+      <button onClick={onSelectGuest}>Sign in as guest</button>
+    </>
   );
 }
 
-function DepartmentsListSection({
-  departments,
-  onItemClick
-}: {
-  departments: Department[],
-  onItemClick: Department => void
-}) {
+function GuestSection({ onSubmit }: { onSubmit: string => void }) {
   return (
-    <section className="options-container">
-      {departments.map(department => (
-        <div
-          key={department.type}
-          onClick={() => onItemClick(department)}
-          className="option"
-        >{`I'm a ${department.name}`}</div>
-      ))}
-    </section>
+    <>
+      <input type="text" placeholder="Company name" />
+      <button onClick={onSubmit}>Continue</button>
+    </>
   );
 }
 
 function ConfirmationSection({
   isLoading,
-  departmentName,
-  onChangeClick
+  onUndoClick
 }: {
   isLoading: boolean,
-  departmentName: string,
-  onChangeClick: () => void
+  onUndoClick: () => void
 }) {
   return (
     <section className="confirmation">
@@ -93,8 +88,8 @@ function ConfirmationSection({
         <h2>{isLoading ? "Checking in..." : "Check in successful"}</h2>
         {!isLoading && (
           <p>
-            Checked in as a {departmentName}.{" "}
-            <button onClick={onChangeClick}>Change.</button>
+            Checked in successfully.{" "}
+            <button onClick={onUndoClick}>Change.</button>
           </p>
         )}
       </div>
@@ -111,5 +106,13 @@ function ErrorSection() {
         <p>Refresh this page to try again.</p>
       </div>
     </section>
+  );
+}
+
+function CheckMark({ isLoading }: { isLoading: boolean }) {
+  return (
+    <div className={`circle-loader ${!isLoading ? "load-complete" : ""}`}>
+      {!isLoading && <div className="checkmark draw"></div>}
+    </div>
   );
 }
