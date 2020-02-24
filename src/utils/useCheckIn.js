@@ -14,6 +14,20 @@ type Status =
   | "confirmed"
   | "error";
 
+export type CheckIn = {
+  status: Status,
+  userId: ?number,
+  guestCompany: ?string,
+  origin: ?BusStop,
+  destination: ?BusStop,
+  setUserId: number => void,
+  setGuestCompany: string => void,
+  setOrigin: BusStop => void,
+  setDestination: BusStop => void,
+  changeUser: () => void,
+  undo: () => void
+};
+
 const CREATE_NEW_CHECK_IN = gql`
   mutation createNewCheckIn(
     $userId: Int!
@@ -35,19 +49,7 @@ const CHECK_OUT = gql`
   }
 `;
 
-export default function useCheckIn(): {
-  status: Status,
-  userId: ?number,
-  guestCompany: ?string,
-  origin: ?BusStop,
-  destination: ?BusStop,
-  setUserId: number => void,
-  setGuestCompany: string => void,
-  setOrigin: BusStop => void,
-  setDestination: BusStop => void,
-  changeUser: () => void,
-  undo: () => void
-} {
+export default function useCheckIn(): CheckIn {
   const previousUserId = localStorage.getItem("userId");
   const previousGuestCompany = localStorage.getItem("guestCompany");
 
