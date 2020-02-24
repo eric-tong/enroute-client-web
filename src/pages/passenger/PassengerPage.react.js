@@ -1,8 +1,11 @@
 // @flow
 
+import "../../styles/passenger.scss";
+
 import React, { useState } from "react";
 
 import CheckInPage from "./CheckInPage.react";
+import { getClass } from "../../utils/jsxUtil";
 import useBusStops from "../../utils/useBusStops";
 import useCheckIn from "../../utils/useCheckIn";
 
@@ -28,12 +31,10 @@ export default function PassengerPage() {
   })();
 
   return (
-    <main className="check-in-container">
-      <header>
-        <h1>Check in</h1>
-      </header>
+    <section id="panel" className="passenger">
+      <h1>Passenger</h1>
       {body}
-    </main>
+    </section>
   );
 }
 
@@ -45,16 +46,57 @@ function UserIdSection({
   onSelectGuest: () => void
 }) {
   const [userId, setUserId] = useState<string>("");
+  const [warning, setWarning] = useState<boolean>(false);
+
+  const submit = event => {
+    event.preventDefault();
+    const id = parseInt(userId, 10);
+    if (userId.length === 0 || id < 1 || id > 1e6) {
+      setWarning(true);
+    } else {
+      onSubmit(parseInt(userId));
+    }
+  };
+
   return (
     <>
-      <input
-        type="number"
-        placeholder="User Id"
-        value={userId}
-        onChange={event => setUserId(event.target.value)}
-      />
-      <button onClick={() => onSubmit(parseInt(userId))}>Continue</button>
-      <button onClick={onSelectGuest}>Sign in as guest</button>
+      <h2>
+        To provide the best service, we require passengers to check in when
+        using the Minibus service.
+      </h2>
+      <p>
+        Please enter your Passenger ID as shown on the Minibus Card issued to
+        you.
+      </p>
+      <p
+        className={getClass(
+          "input-message",
+          "warning",
+          warning ? "visible" : undefined
+        )}
+      >
+        Enter a valid ID
+      </p>
+      <form className="center" onSubmit={submit}>
+        <input
+          type="number"
+          placeholder="Enter Passenger ID"
+          className={getClass(
+            "large-input",
+            "center",
+            warning ? "warning" : undefined
+          )}
+          value={userId}
+          onChange={event => setUserId(event.target.value)}
+        />
+      </form>
+      <button className="big center" onClick={submit}>
+        Continue
+      </button>
+      <p className="center guest-sign-in">
+        No Minibus Card?{" "}
+        <button onClick={onSelectGuest}>Sign in as guest</button>
+      </p>
     </>
   );
 }

@@ -2,11 +2,8 @@
 
 import "../../styles/checkmark.scss";
 
-import React, { useState } from "react";
-
 import type { CheckIn } from "../../utils/useCheckIn";
-import useBusStops from "../../utils/useBusStops";
-import useCheckIn from "../../utils/useCheckIn";
+import React from "react";
 
 export default function CheckInPage({
   checkIn,

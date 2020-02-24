@@ -5,7 +5,6 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import BottomNavigation from "./pages/misc/BottomNavigation.react";
-import CheckInPage from "./pages/passenger/CheckInPage.react";
 import HistoryPage from "./pages/admin/HistoryPage.react";
 import MapPage from "./pages/map/MapPage.react";
 import PassengerPage from "./pages/passenger/PassengerPage.react";

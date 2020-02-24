@@ -1,0 +1,53 @@
+.passenger {
+  p,
+  h2 {
+    line-height: 1.5em;
+  }
+
+  .center {
+    align-self: center;
+  }
+
+  form {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .input-message {
+    margin-top: 2rem;
+    visibility: hidden;
+
+    &.visible {
+      visibility: visible;
+    }
+  }
+
+  .large-input {
+    width: 100%;
+    font-size: 2rem;
+    border: 1px solid currentColor;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: var(--accent);
+    transition: box-shadow 200ms;
+    box-sizing: border-box;
+
+    &.warning {
+      &:focus {
+        box-shadow: 0 0 0.75rem 0 var(--focus-warning);
+      }
+    }
+
+    &:focus {
+      box-shadow: 0 0 0.75rem 0 var(--focus);
+    }
+
+    &::placeholder {
+      color: var(--subtle);
+    }
+  }
+
+  .guest-sign-in {
+    margin: 5rem 0;
+  }
+}
