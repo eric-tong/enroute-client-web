@@ -19,6 +19,7 @@ export type CheckIn = {
   status: Status,
   userId: ?number,
   guestCompany: ?string,
+  direction: ?string,
   origin: ?BusStop,
   destination: ?BusStop,
   setDirection: (?string) => void,
@@ -95,6 +96,7 @@ export default function useCheckIn(): CheckIn {
     status,
     userId,
     guestCompany,
+    direction,
     origin,
     destination,
     setDirection,
@@ -121,9 +123,13 @@ export default function useCheckIn(): CheckIn {
       localStorage.removeItem("guestCompany");
       setUserId();
       setGuestCompany();
+      setDirection();
+      setOrigin();
+      setDestination();
     },
     undo: () => {
       checkOut();
+      setDirection();
       setOrigin();
       setDestination();
     }

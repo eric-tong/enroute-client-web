@@ -12,27 +12,39 @@ export default function CheckInPage({
   checkIn: CheckIn,
   busStops: BusStop[]
 |}) {
+  const terminal = busStops.find(busStop => busStop.isTerminal) ?? busStops[0];
   const body = (() => {
     switch (checkIn.status) {
       case "direction":
+        const setDirection = direction => {
+          if (direction === terminal.direction) {
+            checkIn.setOrigin(terminal);
+          } else {
+            checkIn.setDestination(terminal);
+          }
+          checkIn.setDirection(direction);
+        };
+
         return (
           <DirectionSection
             directions={busStops.map(busStop => busStop.direction)}
-            onSelectDirection={checkIn.setDirection}
+            onSelectDirection={setDirection}
           />
         );
       case "origin":
         return (
           <BusStopsSection
-            busStops={busStops}
+            busStops={getRelevantBusStops(busStops, checkIn.direction)}
             onBusStopClick={checkIn.setOrigin}
+            type="origin"
           />
         );
       case "destination":
         return (
           <BusStopsSection
-            busStops={busStops}
+            busStops={getRelevantBusStops(busStops, checkIn.direction)}
             onBusStopClick={checkIn.setDestination}
+            type="destination"
           />
         );
       case "confirmed":
@@ -66,7 +78,7 @@ function DirectionSection({
   const uniqueDirections = Array.from(new Set(directions));
   return (
     <>
-      <h4>Select your direction of travel.</h4>
+      <h4>Which direction are you heading?</h4>
       {uniqueDirections.map(direction => (
         <div
           key={direction}
@@ -82,18 +94,28 @@ function DirectionSection({
 
 function BusStopsSection({
   busStops,
-  onBusStopClick
+  onBusStopClick,
+  type
 }: {
   busStops: BusStop[],
-  onBusStopClick: BusStop => void
+  onBusStopClick: BusStop => void,
+  type: "origin" | "destination"
 }) {
   return (
     <>
-      <h2>New check in</h2>
-      {busStops.map<React$Element<"button">>(busStop => (
-        <button key={busStop.id} onClick={() => onBusStopClick(busStop)}>
-          {busStop.name}
-        </button>
+      <h4>
+        {type === "origin"
+          ? "Where did you board the bus?"
+          : "Where will you be alighting?"}
+      </h4>
+      {busStops.map(busStop => (
+        <div
+          className="tile clickable-tile"
+          key={busStop.id}
+          onClick={() => onBusStopClick(busStop)}
+        >
+          <div className="content option">{busStop.name}</div>
+        </div>
       ))}
     </>
   );
@@ -115,8 +137,8 @@ function ConfirmationSection({
         <h2>{isLoading ? "Checking in..." : "Check in successful"}</h2>
         {!isLoading && (
           <p>
-            Checked in successfully.{" "}
-            <button onClick={onUndoClick}>Change.</button>
+            Your check in has been recorded.{" "}
+            <button onClick={onUndoClick}>Undo.</button>
           </p>
         )}
       </div>
@@ -142,4 +164,23 @@ function ErrorSection() {
       </div>
     </section>
   );
+}
+
+function getRelevantBusStops(busStops: BusStop[], direction: ?string) {
+  const relevantBusStops = [];
+  for (const busStop of busStops) {
+    if (busStop.isTerminal) continue;
+
+    if (
+      busStops.find(
+        otherBusStop =>
+          otherBusStop.id !== busStop.id && otherBusStop.name === busStop.name
+      )
+    ) {
+      if (busStop.direction === direction) relevantBusStops.push(busStop);
+    } else {
+      relevantBusStops.push(busStop);
+    }
+  }
+  return relevantBusStops;
 }
