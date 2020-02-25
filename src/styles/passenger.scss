@@ -6,6 +6,10 @@
     line-height: 1.5em;
   }
 
+  h4 {
+    margin-bottom: 1rem;
+  }
+
   .center {
     align-self: center;
   }
@@ -14,6 +18,10 @@
     display: inherit;
     flex-direction: inherit;
     margin: auto 0;
+
+    &.option {
+      font-size: 1.5rem !important;
+    }
   }
 
   form {

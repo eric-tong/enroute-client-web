@@ -8,6 +8,7 @@ import { useMutation } from "@apollo/react-hooks";
 type Status =
   | "user"
   | "guest"
+  | "direction"
   | "origin"
   | "destination"
   | "loading"
@@ -20,6 +21,7 @@ export type CheckIn = {
   guestCompany: ?string,
   origin: ?BusStop,
   destination: ?BusStop,
+  setDirection: (?string) => void,
   setUserId: (?number) => void,
   setGuestCompany: (?string) => void,
   setOrigin: BusStop => void,
@@ -59,6 +61,7 @@ export default function useCheckIn(): CheckIn {
   const [guestCompany, setGuestCompany] = useState<?string>(
     previousGuestCompany ?? undefined
   );
+  const [direction, setDirection] = useState<?string>();
   const [origin, setOrigin] = useState<?BusStop>();
   const [destination, setDestination] = useState<?BusStop>();
 
@@ -67,6 +70,7 @@ export default function useCheckIn(): CheckIn {
   const status: Status = (() => {
     if (typeof userId === "undefined") return "user";
     if (userId === 0 && typeof guestCompany === "undefined") return "guest";
+    if (!direction) return "direction";
     if (!origin) return "origin";
     if (!destination) return "destination";
     if (!checkInId) return "loading";
@@ -93,6 +97,7 @@ export default function useCheckIn(): CheckIn {
     guestCompany,
     origin,
     destination,
+    setDirection,
     setUserId: userId => {
       if (userId || userId === 0) {
         localStorage.setItem("userId", userId.toString(10));

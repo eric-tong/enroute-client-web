@@ -12,32 +12,72 @@ export default function CheckInPage({
   checkIn: CheckIn,
   busStops: BusStop[]
 |}) {
-  switch (checkIn.status) {
-    case "origin":
-      return (
-        <BusStopsSection
-          busStops={busStops}
-          onBusStopClick={checkIn.setOrigin}
-        />
-      );
-    case "destination":
-      return (
-        <BusStopsSection
-          busStops={busStops}
-          onBusStopClick={checkIn.setDestination}
-        />
-      );
-    case "confirmed":
-      return (
-        <ConfirmationSection isLoading={false} onUndoClick={checkIn.undo} />
-      );
-    case "loading":
-      return (
-        <ConfirmationSection isLoading={true} onUndoClick={checkIn.undo} />
-      );
-    default:
-      return <ErrorSection />;
-  }
+  const body = (() => {
+    switch (checkIn.status) {
+      case "direction":
+        return (
+          <DirectionSection
+            directions={busStops.map(busStop => busStop.direction)}
+            onSelectDirection={checkIn.setDirection}
+          />
+        );
+      case "origin":
+        return (
+          <BusStopsSection
+            busStops={busStops}
+            onBusStopClick={checkIn.setOrigin}
+          />
+        );
+      case "destination":
+        return (
+          <BusStopsSection
+            busStops={busStops}
+            onBusStopClick={checkIn.setDestination}
+          />
+        );
+      case "confirmed":
+        return (
+          <ConfirmationSection isLoading={false} onUndoClick={checkIn.undo} />
+        );
+      case "loading":
+        return (
+          <ConfirmationSection isLoading={true} onUndoClick={checkIn.undo} />
+        );
+      default:
+        return <ErrorSection />;
+    }
+  })();
+
+  return (
+    <>
+      <h2>New check in</h2>
+      {body}
+    </>
+  );
+}
+
+function DirectionSection({
+  directions,
+  onSelectDirection
+}: {
+  directions: string[],
+  onSelectDirection: string => void
+}) {
+  const uniqueDirections = Array.from(new Set(directions));
+  return (
+    <>
+      <h4>Select your direction of travel.</h4>
+      {uniqueDirections.map(direction => (
+        <div
+          key={direction}
+          className="tile clickable-tile"
+          onClick={() => onSelectDirection(direction)}
+        >
+          <div className="content option">Towards {direction}</div>
+        </div>
+      ))}
+    </>
+  );
 }
 
 function BusStopsSection({
@@ -49,7 +89,7 @@ function BusStopsSection({
 }) {
   return (
     <>
-      <h2>Check in</h2>
+      <h2>New check in</h2>
       {busStops.map<React$Element<"button">>(busStop => (
         <button key={busStop.id} onClick={() => onBusStopClick(busStop)}>
           {busStop.name}

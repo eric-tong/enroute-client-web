@@ -8,6 +8,7 @@ const BUS_STOPS = gql`
     busStops {
       id
       name
+      direction
       isTerminal
     }
   }
