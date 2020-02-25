@@ -17,13 +17,13 @@ export default function BottomNavigation() {
     <div className="bottom-navigation">
       <NavLink
         to="/"
-        className="navigation-item"
+        className="tab"
         isActive={() => path === "/" || path.startsWith("/stop")}
       >
         <DepartureIcon filled={path === "/" || path.startsWith("/stop")} />
         <p>Departures</p>
       </NavLink>
-      <NavLink to="/livemap" className="navigation-item">
+      <NavLink to="/livemap" className="tab">
         <MapIcon filled={path === "/livemap"} />
         <p>Live Map</p>
       </NavLink>
@@ -31,12 +31,12 @@ export default function BottomNavigation() {
         href="http://www.begbroke.ox.ac.uk/wp-content/uploads/2019/04/Minibus-Timetable-1.4.19.png"
         target="_blank"
         rel="noopener noreferrer"
-        className="navigation-item"
+        className="tab"
       >
         <TableIcon filled={false} />
         <p>Timetable</p>
       </a>
-      <NavLink to="/passenger" className="navigation-item">
+      <NavLink to="/passenger" className="tab">
         <PassengerIcon filled={path === "/passenger"} />
         <p>Passenger</p>
       </NavLink>

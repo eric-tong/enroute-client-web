@@ -12,7 +12,6 @@ import useCheckIn from "../../utils/useCheckIn";
 export default function PassengerPage() {
   const checkIn = useCheckIn();
   const busStops = useBusStops();
-  console.log({ checkIn });
 
   const body = (() => {
     switch (checkIn.status) {
