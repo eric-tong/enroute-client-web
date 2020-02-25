@@ -171,7 +171,7 @@ function PreviousTripsTile({
   else
     return (
       <div className="tile">
-        <h3>Previous Trips</h3>
+        <h3>Recent Trips</h3>
         {previousCheckIns.map(([origin, destination]) => (
           <TripRow
             key={`${origin.id} ${destination.id}`}
