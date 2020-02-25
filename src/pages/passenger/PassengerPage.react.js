@@ -33,7 +33,16 @@ export default function PassengerPage() {
           />
         );
       default:
-        return <CheckInPage checkIn={checkIn} busStops={busStops} />;
+        return (
+          <>
+            <SignedInHeader
+              passengerId={checkIn.userId}
+              guestCompany={checkIn.guestCompany}
+              onChange={checkIn.changeUser}
+            />
+            <CheckInPage checkIn={checkIn} busStops={busStops} />
+          </>
+        );
     }
   })();
 
@@ -60,7 +69,7 @@ function UserIdSection({
   const submit = event => {
     event.preventDefault();
     const id = parseInt(value, 10);
-    if (value.length === 0 || id < 1 || id > 1e6) {
+    if (value.length === 0 || id < 1 || id > 1e7) {
       setWarning(true);
     } else {
       onSubmit(value);
@@ -69,7 +78,7 @@ function UserIdSection({
 
   return (
     <div className="content">
-      <h2>Check in {status === "user" ? "with Passenger ID" : "as a guest"}</h2>
+      <h2>Sign in {status === "user" ? "with Passenger ID" : "as a guest"}</h2>
       <p>
         To improve our service, we require passengers to check in when using the
         Minibus service.{" "}
@@ -111,5 +120,31 @@ function UserIdSection({
         </button>
       </p>
     </div>
+  );
+}
+
+function SignedInHeader({
+  passengerId,
+  guestCompany,
+  onChange
+}: {
+  passengerId: ?number,
+  guestCompany: ?string,
+  onChange: () => void
+}) {
+  const content = guestCompany ? (
+    <>
+      Guest <span className="details">{guestCompany}</span>
+    </>
+  ) : (
+    <>
+      Passenger ID <span className="details">{passengerId}</span>
+    </>
+  );
+  return (
+    <h3 className="signed-in-header">
+      {content}
+      <button onClick={onChange}>Change</button>
+    </h3>
   );
 }

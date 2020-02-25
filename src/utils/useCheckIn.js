@@ -21,7 +21,7 @@ export type CheckIn = {
   origin: ?BusStop,
   destination: ?BusStop,
   setUserId: (?number) => void,
-  setGuestCompany: string => void,
+  setGuestCompany: (?string) => void,
   setOrigin: BusStop => void,
   setDestination: BusStop => void,
   changeUser: () => void,
@@ -74,16 +74,6 @@ export default function useCheckIn(): CheckIn {
     return "error";
   })();
 
-  const changeUser = () => {
-    setUserId();
-    setGuestCompany();
-  };
-  const undo = () => {
-    checkOut();
-    setOrigin();
-    setDestination();
-  };
-
   useEffect(() => {
     if (typeof userId !== "undefined" && origin && destination)
       checkIn({
@@ -103,12 +93,35 @@ export default function useCheckIn(): CheckIn {
     guestCompany,
     origin,
     destination,
-    setUserId,
-    setGuestCompany,
+    setUserId: userId => {
+      if (userId || userId === 0) {
+        localStorage.setItem("userId", userId.toString(10));
+      } else {
+        localStorage.removeItem("userId");
+      }
+      setUserId(userId);
+    },
+    setGuestCompany: guestCompany => {
+      if (guestCompany) {
+        localStorage.setItem("guestCompany", guestCompany);
+      } else {
+        localStorage.removeItem("guestCompany");
+      }
+      setGuestCompany(guestCompany);
+    },
     setOrigin,
     setDestination,
-    changeUser,
-    undo
+    changeUser: () => {
+      localStorage.removeItem("userId");
+      localStorage.removeItem("guestCompany");
+      setUserId();
+      setGuestCompany();
+    },
+    undo: () => {
+      checkOut();
+      setOrigin();
+      setDestination();
+    }
   };
 }
 
