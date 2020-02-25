@@ -186,7 +186,6 @@ function addPreviousCheckIn(origin: BusStop, destination: BusStop) {
         previous[0].id !== origin.id && previous[1].id !== destination.id
     )
   ) {
-    console.log({ previousCheckIn, origin, destination });
     previousCheckIn.unshift([origin, destination]);
     localStorage.setItem(
       "checkIns",
