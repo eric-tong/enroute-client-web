@@ -19,12 +19,19 @@ export default function PassengerPage() {
       case "user":
         return (
           <UserIdSection
-            onSubmit={checkIn.setUserId}
-            onSelectGuest={() => checkIn.setUserId(0)}
+            onSubmit={value => checkIn.setUserId(parseInt(value, 10))}
+            onToggleInputType={() => checkIn.setUserId(0)}
+            status="user"
           />
         );
       case "guest":
-        return <GuestSection onSubmit={checkIn.setGuestCompany} />;
+        return (
+          <UserIdSection
+            onSubmit={checkIn.setGuestCompany}
+            onToggleInputType={() => checkIn.setUserId(undefined)}
+            status="guest"
+          />
+        );
       default:
         return <CheckInPage checkIn={checkIn} busStops={busStops} />;
     }
@@ -40,33 +47,35 @@ export default function PassengerPage() {
 
 function UserIdSection({
   onSubmit,
-  onSelectGuest
+  onToggleInputType,
+  status
 }: {
-  onSubmit: number => void,
-  onSelectGuest: () => void
+  onSubmit: string => void,
+  onToggleInputType: () => void,
+  status: "user" | "guest"
 }) {
-  const [userId, setUserId] = useState<string>("");
+  const [value, setValue] = useState<string>("");
   const [warning, setWarning] = useState<boolean>(false);
 
   const submit = event => {
     event.preventDefault();
-    const id = parseInt(userId, 10);
-    if (userId.length === 0 || id < 1 || id > 1e6) {
+    const id = parseInt(value, 10);
+    if (value.length === 0 || id < 1 || id > 1e6) {
       setWarning(true);
     } else {
-      onSubmit(parseInt(userId));
+      onSubmit(value);
     }
   };
 
   return (
-    <>
-      <h2>
-        To provide the best service, we require passengers to check in when
-        using the Minibus service.
-      </h2>
+    <div className="content">
+      <h2>Check in {status === "user" ? "with Passenger ID" : "as a guest"}</h2>
       <p>
-        Please enter your Passenger ID as shown on the Minibus Card issued to
-        you.
+        To improve our service, we require passengers to check in when using the
+        Minibus service.{" "}
+        {status === "user"
+          ? "Please enter your Passenger ID as shown on the Minibus Card issued to you."
+          : "Please enter the name of the company or department you are meeting with today."}
       </p>
       <p
         className={getClass(
@@ -75,44 +84,32 @@ function UserIdSection({
           warning ? "visible" : undefined
         )}
       >
-        Enter a valid ID
+        Enter a valid {status === "user" ? "ID" : "Company name"}.
       </p>
       <form className="center" onSubmit={submit}>
         <input
-          type="number"
-          placeholder="Enter Passenger ID"
+          type={status === "user" ? "number" : "text"}
+          placeholder={
+            status === "user" ? "Enter Passenger ID" : "Enter company name"
+          }
           className={getClass(
             "large-input",
             "center",
             warning ? "warning" : undefined
           )}
-          value={userId}
-          onChange={event => setUserId(event.target.value)}
+          value={value}
+          onChange={event => setValue(event.target.value)}
         />
       </form>
       <button className="big center" onClick={submit}>
         Continue
       </button>
       <p className="center guest-sign-in">
-        No Minibus Card?{" "}
-        <button onClick={onSelectGuest}>Sign in as guest</button>
+        {status === "user" ? "No" : "Have a"} Minibus Card?{" "}
+        <button onClick={onToggleInputType}>
+          Sign in {status === "user" ? "as guest" : "with your ID"}
+        </button>
       </p>
-    </>
-  );
-}
-
-function GuestSection({ onSubmit }: { onSubmit: string => void }) {
-  const [guestCompany, setGuestCompany] = useState<string>("");
-
-  return (
-    <>
-      <input
-        type="text"
-        placeholder="Company name"
-        value={guestCompany}
-        onChange={event => setGuestCompany(event.target.value)}
-      />
-      <button onClick={() => onSubmit(guestCompany)}>Continue</button>
-    </>
+    </div>
   );
 }

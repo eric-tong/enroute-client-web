@@ -20,7 +20,7 @@ export type CheckIn = {
   guestCompany: ?string,
   origin: ?BusStop,
   destination: ?BusStop,
-  setUserId: number => void,
+  setUserId: (?number) => void,
   setGuestCompany: string => void,
   setOrigin: BusStop => void,
   setDestination: BusStop => void,

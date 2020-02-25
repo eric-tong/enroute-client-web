@@ -1,4 +1,6 @@
 .passenger {
+  min-height: 100vh !important;
+
   p,
   h2 {
     line-height: 1.5em;
@@ -6,6 +8,12 @@
 
   .center {
     align-self: center;
+  }
+
+  .content {
+    display: inherit;
+    flex-direction: inherit;
+    margin: auto 0;
   }
 
   form {
@@ -48,6 +56,6 @@
   }
 
   .guest-sign-in {
-    margin: 5rem 0;
+    margin: 5rem 0 0;
   }
 }
