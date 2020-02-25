@@ -13,59 +13,59 @@ export default function CheckInPage({
   busStops: BusStop[]
 |}) {
   const terminal = busStops.find(busStop => busStop.isTerminal) ?? busStops[0];
-  const body = (() => {
-    switch (checkIn.status) {
-      case "direction":
-        const setDirection = direction => {
-          if (direction === terminal.direction) {
-            checkIn.setOrigin(terminal);
-          } else {
-            checkIn.setDestination(terminal);
-          }
-          checkIn.setDirection(direction);
-        };
+  switch (checkIn.status) {
+    case "direction":
+      const setDirection = direction => {
+        if (direction === terminal.direction) {
+          checkIn.setOrigin(terminal);
+        } else {
+          checkIn.setDestination(terminal);
+        }
+        checkIn.setDirection(direction);
+      };
 
-        return (
+      return (
+        <>
+          <h2>New check in</h2>
           <DirectionSection
             directions={busStops.map(busStop => busStop.direction)}
             onSelectDirection={setDirection}
           />
-        );
-      case "origin":
-        return (
+        </>
+      );
+    case "origin":
+      return (
+        <>
+          <h2>New check in</h2>
           <BusStopsSection
             busStops={getRelevantBusStops(busStops, checkIn.direction)}
             onBusStopClick={checkIn.setOrigin}
             type="origin"
           />
-        );
-      case "destination":
-        return (
+        </>
+      );
+    case "destination":
+      return (
+        <>
+          <h2>New check in</h2>
           <BusStopsSection
             busStops={getRelevantBusStops(busStops, checkIn.direction)}
             onBusStopClick={checkIn.setDestination}
             type="destination"
           />
-        );
-      case "confirmed":
-        return (
-          <ConfirmationSection isLoading={false} onUndoClick={checkIn.undo} />
-        );
-      case "loading":
-        return (
-          <ConfirmationSection isLoading={true} onUndoClick={checkIn.undo} />
-        );
-      default:
-        return <ErrorSection />;
-    }
-  })();
-
-  return (
-    <>
-      <h2>New check in</h2>
-      {body}
-    </>
-  );
+        </>
+      );
+    case "confirmed":
+      return (
+        <ConfirmationSection isLoading={false} onUndoClick={checkIn.undo} />
+      );
+    case "loading":
+      return (
+        <ConfirmationSection isLoading={true} onUndoClick={checkIn.undo} />
+      );
+    default:
+      return <ErrorSection />;
+  }
 }
 
 function DirectionSection({

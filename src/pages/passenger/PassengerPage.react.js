@@ -35,11 +35,12 @@ export default function PassengerPage() {
       default:
         return (
           <>
-            <SignedInHeader
+            <PassengerIdTile
               passengerId={checkIn.userId}
               guestCompany={checkIn.guestCompany}
               onChange={checkIn.changeUser}
             />
+            <PreviousTripsTile previousCheckIns={checkIn.previousCheckIns} />
             <CheckInPage checkIn={checkIn} busStops={busStops} />
           </>
         );
@@ -123,7 +124,7 @@ function UserIdSection({
   );
 }
 
-function SignedInHeader({
+function PassengerIdTile({
   passengerId,
   guestCompany,
   onChange
@@ -149,6 +150,49 @@ function SignedInHeader({
       <div className="content">
         {passengerId ? passengerId.toString().padStart(5, "0") : null}
       </div>
+    </div>
+  );
+}
+
+function PreviousTripsTile({
+  previousCheckIns
+}: {
+  previousCheckIns: [BusStop, BusStop][]
+}) {
+  if (!previousCheckIns.length) return null;
+  else
+    return (
+      <div className="tile">
+        <h3>Previous Trips</h3>
+        {previousCheckIns.map(checkIn => (
+          <TripRow
+            key={`${checkIn[0].id} ${checkIn[1].id}`}
+            origin={checkIn[0]}
+            destination={checkIn[1]}
+          />
+        ))}
+      </div>
+    );
+}
+
+function TripRow({
+  origin,
+  destination
+}: {
+  origin: BusStop,
+  destination: BusStop
+}) {
+  return (
+    <div className="trip">
+      <div className="rows">
+        <div className="row">
+          From: <span>{origin.name}</span>
+        </div>
+        <div className="row">
+          To: <span>{destination.name}</span>
+        </div>
+      </div>
+      <button>Check in again</button>
     </div>
   );
 }

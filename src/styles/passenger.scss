@@ -98,4 +98,18 @@
   .guest-sign-in {
     margin: 5rem 0 0;
   }
+
+  .trip {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+
+    .row {
+      line-height: 1.5em;
+
+      span {
+        font-weight: bold;
+      }
+    }
+  }
 }

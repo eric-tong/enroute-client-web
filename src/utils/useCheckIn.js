@@ -22,6 +22,7 @@ export type CheckIn = {
   direction: ?string,
   origin: ?BusStop,
   destination: ?BusStop,
+  previousCheckIns: [BusStop, BusStop][],
   setDirection: (?string) => void,
   setUserId: (?number) => void,
   setGuestCompany: (?string) => void,
@@ -66,6 +67,10 @@ export default function useCheckIn(): CheckIn {
   const [origin, setOrigin] = useState<?BusStop>();
   const [destination, setDestination] = useState<?BusStop>();
 
+  const [previousCheckIns] = useState<[BusStop, BusStop][]>(
+    getPreviousCheckIn()
+  );
+
   const [checkInId, checkIn, checkOut] = useDeferredCheckInId();
 
   const status: Status = (() => {
@@ -80,7 +85,7 @@ export default function useCheckIn(): CheckIn {
   })();
 
   useEffect(() => {
-    if (typeof userId !== "undefined" && origin && destination)
+    if (typeof userId !== "undefined" && origin && destination) {
       checkIn({
         variables: {
           userId,
@@ -89,6 +94,8 @@ export default function useCheckIn(): CheckIn {
           remarks: guestCompany
         }
       });
+      addPreviousCheckIn(origin, destination);
+    }
     // eslint-disable-next-line
   }, [userId, origin, destination]);
 
@@ -99,6 +106,7 @@ export default function useCheckIn(): CheckIn {
     direction,
     origin,
     destination,
+    previousCheckIns,
     setDirection,
     setUserId: userId => {
       if (userId || userId === 0) {
@@ -161,4 +169,25 @@ function useDeferredCheckInId() {
       checkOut({ variables: { id: checkInId } });
     }
   ];
+}
+
+function getPreviousCheckIn(): [BusStop, BusStop][] {
+  const previousCheckInJson = localStorage.getItem("checkIns");
+  return previousCheckInJson ? JSON.parse(previousCheckInJson) : [];
+}
+
+function addPreviousCheckIn(origin: BusStop, destination: BusStop) {
+  const previousCheckIn = getPreviousCheckIn();
+  if (
+    !previousCheckIn.find(
+      previous =>
+        previous[0].id !== origin.id && previous[1].id !== destination.id
+    )
+  ) {
+    previousCheckIn.unshift([origin, destination]);
+    localStorage.setItem(
+      "checkIns",
+      JSON.stringify(previousCheckIn.slice(0, 2))
+    );
+  }
 }
