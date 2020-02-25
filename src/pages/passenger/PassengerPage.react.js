@@ -132,19 +132,23 @@ function SignedInHeader({
   guestCompany: ?string,
   onChange: () => void
 }) {
-  const content = guestCompany ? (
-    <>
-      Guest <span className="details">{guestCompany}</span>
-    </>
+  return guestCompany ? (
+    <div className="tile">
+      <div className="header">
+        <h3>Guest</h3>
+        <button onClick={onChange}>Sign out</button>
+      </div>
+      <div className="content">{guestCompany}</div>
+    </div>
   ) : (
-    <>
-      Passenger ID <span className="details">{passengerId}</span>
-    </>
-  );
-  return (
-    <h3 className="signed-in-header">
-      {content}
-      <button onClick={onChange}>Change</button>
-    </h3>
+    <div className="tile">
+      <div className="header">
+        <h3>Passenger ID</h3>
+        <button onClick={onChange}>Sign out</button>
+      </div>
+      <div className="content">
+        {passengerId ? passengerId.toString().padStart(5, "0") : null}
+      </div>
+    </div>
   );
 }

@@ -55,10 +55,33 @@
     }
   }
 
-  .guest-sign-in {
-    margin: 5rem 0 0;
+  .tile {
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    padding: 1rem 1rem;
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      justify-content: space-between;
+
+      h3 {
+        margin: 0;
+      }
+    }
+
+    .content {
+      font-size: 2rem;
+      margin-top: 0.25rem;
+    }
   }
 
-  .sign-in-header {
+  .guest-sign-in {
+    margin: 5rem 0 0;
   }
 }

@@ -47,11 +47,16 @@ function BusStopsSection({
   busStops: BusStop[],
   onBusStopClick: BusStop => void
 }) {
-  return busStops.map<React$Element<"button">>(busStop => (
-    <button key={busStop.id} onClick={() => onBusStopClick(busStop)}>
-      {busStop.name}
-    </button>
-  ));
+  return (
+    <>
+      <h2>Check in</h2>
+      {busStops.map<React$Element<"button">>(busStop => (
+        <button key={busStop.id} onClick={() => onBusStopClick(busStop)}>
+          {busStop.name}
+        </button>
+      ))}
+    </>
+  );
 }
 
 function ConfirmationSection({
