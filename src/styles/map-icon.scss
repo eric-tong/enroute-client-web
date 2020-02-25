@@ -22,6 +22,12 @@
     align-items: flex-start;
     position: relative;
 
+    .active {
+      .icon {
+        color: var(--accent);
+      }
+    }
+
     .icon {
       width: 35px;
       height: 35px;

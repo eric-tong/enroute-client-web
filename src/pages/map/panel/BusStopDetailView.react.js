@@ -105,12 +105,12 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
 }
 
 function useBusStop(busStopUrl): ?QueryResult {
-  const { data } = useQuery(BUS_STOP, {
+  const { loading, data } = useQuery(BUS_STOP, {
     pollInterval: 15000,
     variables: { url: busStopUrl }
   });
   const busStop = data?.busStop;
-  if (!busStop) return;
+  if (loading || !busStop) return;
 
   const { departures, ...busStopContent } = busStop;
   const processedDepartures = departures
