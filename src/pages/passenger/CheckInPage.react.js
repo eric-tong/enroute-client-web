@@ -12,6 +12,9 @@ export default function CheckInPage({
   checkIn: CheckIn,
   busStops: BusStop[]
 |}) {
+  if (!busStops.length)
+    return <ConfirmationSection isLoading={true} onUndoClick={() => {}} />;
+
   const terminal = busStops.find(busStop => busStop.isTerminal) ?? busStops[0];
   switch (checkIn.status) {
     case "direction":
