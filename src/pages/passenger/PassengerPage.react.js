@@ -40,7 +40,14 @@ export default function PassengerPage() {
               guestCompany={checkIn.guestCompany}
               onChange={checkIn.changeUser}
             />
-            <PreviousTripsTile previousCheckIns={checkIn.previousCheckIns} />
+            <PreviousTripsTile
+              previousCheckIns={checkIn.previousCheckIns}
+              onButtonPress={(origin, destination) => {
+                checkIn.setDirection(origin.direction);
+                checkIn.setOrigin(origin);
+                checkIn.setDestination(destination);
+              }}
+            />
             <CheckInPage checkIn={checkIn} busStops={busStops} />
           </>
         );
@@ -155,20 +162,23 @@ function PassengerIdTile({
 }
 
 function PreviousTripsTile({
-  previousCheckIns
+  previousCheckIns,
+  onButtonPress
 }: {
-  previousCheckIns: [BusStop, BusStop][]
+  previousCheckIns: [BusStop, BusStop][],
+  onButtonPress: (BusStop, BusStop) => void
 }) {
   if (!previousCheckIns.length) return null;
   else
     return (
       <div className="tile">
         <h3>Previous Trips</h3>
-        {previousCheckIns.map(checkIn => (
+        {previousCheckIns.map(([origin, destination]) => (
           <TripRow
-            key={`${checkIn[0].id} ${checkIn[1].id}`}
-            origin={checkIn[0]}
-            destination={checkIn[1]}
+            key={`${origin.id} ${destination.id}`}
+            origin={origin}
+            destination={destination}
+            onButtonPress={() => onButtonPress(origin, destination)}
           />
         ))}
       </div>
@@ -177,10 +187,12 @@ function PreviousTripsTile({
 
 function TripRow({
   origin,
-  destination
+  destination,
+  onButtonPress
 }: {
   origin: BusStop,
-  destination: BusStop
+  destination: BusStop,
+  onButtonPress: () => void
 }) {
   return (
     <div className="trip">
@@ -192,7 +204,7 @@ function TripRow({
           To: <span>{destination.name}</span>
         </div>
       </div>
-      <button>Check in again</button>
+      <button onClick={onButtonPress}>Check in again</button>
     </div>
   );
 }

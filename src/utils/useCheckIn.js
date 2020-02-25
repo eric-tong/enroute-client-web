@@ -67,9 +67,9 @@ export default function useCheckIn(): CheckIn {
   const [origin, setOrigin] = useState<?BusStop>();
   const [destination, setDestination] = useState<?BusStop>();
 
-  const [previousCheckIns] = useState<[BusStop, BusStop][]>(
-    getPreviousCheckIn()
-  );
+  const [previousCheckIns, setPreviousCheckIns] = useState<
+    [BusStop, BusStop][]
+  >(getPreviousCheckIn());
 
   const [checkInId, checkIn, checkOut] = useDeferredCheckInId();
 
@@ -129,11 +129,13 @@ export default function useCheckIn(): CheckIn {
     changeUser: () => {
       localStorage.removeItem("userId");
       localStorage.removeItem("guestCompany");
+      localStorage.removeItem("checkIns");
       setUserId();
       setGuestCompany();
       setDirection();
       setOrigin();
       setDestination();
+      setPreviousCheckIns([]);
     },
     undo: () => {
       checkOut();
@@ -179,11 +181,12 @@ function getPreviousCheckIn(): [BusStop, BusStop][] {
 function addPreviousCheckIn(origin: BusStop, destination: BusStop) {
   const previousCheckIn = getPreviousCheckIn();
   if (
-    !previousCheckIn.find(
+    previousCheckIn.every(
       previous =>
         previous[0].id !== origin.id && previous[1].id !== destination.id
     )
   ) {
+    console.log({ previousCheckIn, origin, destination });
     previousCheckIn.unshift([origin, destination]);
     localStorage.setItem(
       "checkIns",
