@@ -17,10 +17,7 @@ type QueryResult = {|
   departures: {|
     ...Departure,
     trip: {|
-      departures: {|
-        ...Departure,
-        busStop: BusStop
-      |}[]
+      id: string
     |}
   |}[]
 |};
@@ -38,16 +35,7 @@ const BUS_STOP = gql`
         actualTimestamp
         status
         trip {
-          departures {
-            scheduledTimestamp
-            predictedTimestamp
-            actualTimestamp
-            status
-            busStop {
-              id
-              name
-            }
-          }
+          id
         }
       }
     }
@@ -117,17 +105,9 @@ function useBusStop(busStopUrl): ?QueryResult {
     .map(departure => {
       const { trip, ...departureContent } = departure;
 
-      const processedTripDepartures = trip.departures.map(tripDeparture => {
-        const { busStop, ...tripDeparturesContent } = tripDeparture;
-        return {
-          ...formatDepartureData(tripDeparturesContent),
-          busStop
-        };
-      });
-
       return {
         ...formatDepartureData(departureContent),
-        trip: { departures: processedTripDepartures }
+        trip
       };
     })
     .sort(
