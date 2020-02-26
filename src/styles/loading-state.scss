@@ -5,6 +5,22 @@
   &.long {
     min-width: 75%;
   }
+
+  &.short {
+    min-width: 40%;
+  }
+
+  &.tiny {
+    min-width: 10%;
+  }
+
+  &.inline {
+    display: inline-block;
+  }
+
+  &.round {
+    border-radius: 0.5em;
+  }
 }
 
 .mock-tile {
@@ -17,11 +33,24 @@
   animation: beating-background 0.8s linear infinite alternate;
 }
 
+.is-loading-opacity {
+  animation: beating-opacity 0.8s linear infinite alternate;
+}
+
 @keyframes beating-background {
   from {
     background-color: var(--background);
   }
   to {
     background-color: #f3f3f3;
+  }
+}
+
+@keyframes beating-opacity {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 0.6;
   }
 }

@@ -5,6 +5,7 @@ import "../../../styles/bus-route.scss";
 import React, { useContext } from "react";
 
 import { ActiveBusStopContext } from "./BusStopDetailView.react";
+import BusRouteLoadingState from "../../edge-states/BusRouteLoadingState.react";
 import TimeWithAlertTag from "./TimeWithAlertTag.react";
 import { formatDepartureData } from "../../../utils/departureUtil";
 import { gql } from "apollo-boost";
@@ -39,7 +40,7 @@ export default function BusRoute({ tripId }: Props) {
     variables: { id: tripId }
   });
   const activeBusStop = useContext(ActiveBusStopContext);
-  if (!data) return "Loading...";
+  if (!data) return <BusRouteLoadingState />;
 
   const departures = data.trip.departures.map(({ busStop, ...departure }) => ({
     ...formatDepartureData(departure),
