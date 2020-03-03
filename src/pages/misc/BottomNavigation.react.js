@@ -36,10 +36,12 @@ export default function BottomNavigation() {
         <TableIcon filled={false} />
         <p>Timetable</p>
       </a>
-      <NavLink to="/passenger" className="tab">
-        <PassengerIcon filled={path === "/passenger"} />
-        <p>Passenger</p>
-      </NavLink>
+      {path === "/passenger" && (
+        <NavLink to="/passenger" className="tab">
+          <PassengerIcon filled={path === "/passenger"} />
+          <p>Passenger</p>
+        </NavLink>
+      )}
     </div>
   );
 }
