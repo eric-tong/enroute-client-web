@@ -14,10 +14,7 @@ type Props = {|
   departure: {|
     ...Departure,
     trip: {|
-      departures: {|
-        ...Departure,
-        busStop: BusStop
-      |}[]
+      id: string
     |}
   |},
   collapsible?: boolean
@@ -54,7 +51,7 @@ export default function BusStopDetailViewTile({
       {!isCollapsed && (
         <div className="lower-half">
           <h3>Bus Route</h3>
-          <BusRoute departures={trip.departures} />
+          <BusRoute tripId={trip.id} />
         </div>
       )}
     </div>

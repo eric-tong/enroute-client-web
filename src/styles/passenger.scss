@@ -1,0 +1,122 @@
+.passenger {
+  min-height: 100vh !important;
+
+  p,
+  h2 {
+    line-height: 1.5em;
+  }
+
+  h4 {
+    margin-bottom: 1rem;
+  }
+
+  .center {
+    align-self: center;
+  }
+
+  .content {
+    display: inherit;
+    flex-direction: inherit;
+    margin: auto 0;
+
+    &.option {
+      font-size: 1.5rem !important;
+    }
+  }
+
+  form {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .input-message {
+    margin-top: 2rem;
+    visibility: hidden;
+
+    &.visible {
+      visibility: visible;
+    }
+  }
+
+  .large-input {
+    width: 100%;
+    font-size: 2rem;
+    border: 1px solid currentColor;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: var(--accent);
+    transition: box-shadow 200ms;
+    box-sizing: border-box;
+
+    &.warning {
+      &:focus {
+        box-shadow: 0 0 0.75rem 0 var(--focus-warning);
+      }
+    }
+
+    &:focus {
+      box-shadow: 0 0 0.75rem 0 var(--focus);
+    }
+
+    &::placeholder {
+      color: var(--subtle);
+    }
+  }
+
+  .tile {
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    padding: 1rem 1rem;
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      justify-content: space-between;
+
+      h3 {
+        margin: 0;
+      }
+    }
+
+    .content {
+      font-size: 2rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .confirmation {
+    height: 15rem;
+    text-align: center;
+    margin: auto;
+  }
+
+  .guest-sign-in {
+    margin: 5rem 0 0;
+  }
+
+  .trip {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+
+    &:last-of-type {
+      border: none;
+      padding: 0;
+    }
+
+    .row {
+      line-height: 1.5em;
+
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+}

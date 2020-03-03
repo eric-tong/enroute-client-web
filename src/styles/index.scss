@@ -10,6 +10,8 @@ html {
   --font: #636363;
   --primary: #002147;
   --accent: #0cd390;
+  --focus: #0cd3917c;
+  --focus-warning: #ff98007c;
   --warning: #ff9800;
   --subtle: #b0bec5;
   --disabled: #aaa;
@@ -95,6 +97,15 @@ button {
   text-decoration: none;
   cursor: pointer;
 
+  &.big {
+    font-size: 1.25rem;
+    margin: 1rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.75em 1em;
+    border-radius: 0.25em;
+  }
+
   &.disabled {
     color: var(--disabled);
     cursor: default;
@@ -119,6 +130,12 @@ table {
 small {
   font-size: 0.75em;
   font-weight: bold;
+}
+
+input {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
 }
 
 .subtle {

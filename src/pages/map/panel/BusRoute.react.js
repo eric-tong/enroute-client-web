@@ -5,19 +5,48 @@ import "../../../styles/bus-route.scss";
 import React, { useContext } from "react";
 
 import { ActiveBusStopContext } from "./BusStopDetailView.react";
+import BusRouteLoadingState from "../../edge-states/BusRouteLoadingState.react";
 import TimeWithAlertTag from "./TimeWithAlertTag.react";
+import { formatDepartureData } from "../../../utils/departureUtil";
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/react-hooks";
 
 type Props = {|
-  departures: {|
-    ...Departure,
-    busStop: BusStop
-  |}[]
+  tripId: string
 |};
+
+const TRIP = gql`
+  query getTrip($id: Int!) {
+    trip(id: $id) {
+      departures {
+        scheduledTimestamp
+        predictedTimestamp
+        actualTimestamp
+        status
+        busStop {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
 
 const disabledStatuses = ["departed", "skipped"];
 
-export default function BusRoute({ departures }: Props) {
+export default function BusRoute({ tripId }: Props) {
+  const { data } = useQuery(TRIP, {
+    pollInterval: 15000,
+    variables: { id: tripId }
+  });
   const activeBusStop = useContext(ActiveBusStopContext);
+  if (!data) return <BusRouteLoadingState />;
+
+  const departures = data.trip.departures.map(({ busStop, ...departure }) => ({
+    ...formatDepartureData(departure),
+    busStop
+  }));
+
   const activeIndex = departures.findIndex(
     ({ busStop }) => activeBusStop && activeBusStop.id === busStop.id
   );

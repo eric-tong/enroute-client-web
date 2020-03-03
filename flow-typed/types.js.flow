@@ -11,7 +11,8 @@ declare type BusStop = {|
   direction: string,
   latitude: number,
   longitude: number,
-  roadAngle: number
+  roadAngle: number,
+  isTerminal: boolean
 |};
 
 declare type Departure = {|
