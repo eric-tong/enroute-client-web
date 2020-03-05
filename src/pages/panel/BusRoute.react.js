@@ -12,7 +12,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 type Props = {|
-  tripId: string
+  tripId: number
 |};
 
 const TRIP = gql`

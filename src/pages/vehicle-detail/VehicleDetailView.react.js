@@ -83,7 +83,7 @@ function TripTile({ tripId }: TripTileProps) {
       {tripId && (
         <div className="lower-half">
           <h3>Bus Route</h3>
-          <BusRoute tripId={tripId.toString()} />
+          <BusRoute tripId={tripId} />
         </div>
       )}
     </div>

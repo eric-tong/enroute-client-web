@@ -17,7 +17,7 @@ type QueryResult = {|
   departures: {|
     ...Departure,
     trip: {|
-      id: string
+      id: number
     |}
   |}[]
 |};

@@ -14,7 +14,7 @@ type Props = {|
   departure: {|
     ...Departure,
     trip: {|
-      id: string
+      id: number
     |}
   |},
   collapsible?: boolean
