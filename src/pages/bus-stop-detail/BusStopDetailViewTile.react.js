@@ -1,20 +1,20 @@
 // @flow
 
-import "../../../styles/detail-view-tile.scss";
+import "../../styles/detail-view-tile.scss";
 
 import React, { useState } from "react";
 
-import BusRoute from "./BusRoute.react";
+import BusRoute from "../panel/BusRoute.react";
 import { DateTime } from "luxon";
-import { TIME_FORMAT } from "../../../constants";
-import TimeWithAlertTag from "./TimeWithAlertTag.react";
-import { getHumanReadableTime } from "../../../utils/timeUtil";
+import { TIME_FORMAT } from "../../constants";
+import TimeWithAlertTag from "../panel/TimeWithAlertTag.react";
+import { getHumanReadableTime } from "../../utils/timeUtil";
 
 type Props = {|
   departure: {|
     ...Departure,
     trip: {|
-      id: string
+      id: number
     |}
   |},
   collapsible?: boolean

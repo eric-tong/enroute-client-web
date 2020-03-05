@@ -25,5 +25,22 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.3/firebase-analytics.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyBxBNv4iA5L_az99osDdGhxRiH6uIFthX8",
+        authDomain: "enroute-2ab50.firebaseapp.com",
+        databaseURL: "https://enroute-2ab50.firebaseio.com",
+        projectId: "enroute-2ab50",
+        storageBucket: "enroute-2ab50.appspot.com",
+        messagingSenderId: "604454009687",
+        appId: "1:604454009687:web:5897f85322d33954cf5c12",
+        measurementId: "G-3H1PFJELLT"
+      };
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
   </body>
 </html>

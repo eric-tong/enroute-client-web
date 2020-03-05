@@ -1,9 +1,9 @@
 // @flow
 
-import DeparturesEmptyState from "../../edge-states/DeparturesEmptyState.react";
+import DeparturesEmptyState from "../edge-states/DeparturesEmptyState.react";
 import { NavLink } from "react-router-dom";
 import React from "react";
-import { TIME_FORMAT } from "../../../constants";
+import { TIME_FORMAT } from "../../constants";
 
 type Props = {|
   ...BusStop,

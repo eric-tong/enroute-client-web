@@ -9,6 +9,7 @@ const VEHICLE = gql`
   {
     vehicles {
       id
+      registration
       avl {
         longitude
         latitude
@@ -37,6 +38,7 @@ export default function VehiclesOverlay() {
             latitude={latitude}
             longitude={longitude}
             bearing={angle}
+            registration={vehicle.registration}
           />
         );
       });

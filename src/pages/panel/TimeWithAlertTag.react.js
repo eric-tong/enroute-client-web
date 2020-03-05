@@ -1,8 +1,8 @@
 // @flow
 
 import React from "react";
-import { TIME_FORMAT } from "../../../constants";
-import { getClass } from "../../../utils/jsxUtil";
+import { TIME_FORMAT } from "../../constants";
+import { getClass } from "../../utils/jsxUtil";
 
 const ACCENT_TEXT_STATUSES = ["early", "arriving", "now"];
 const WARNING_TEXT_STATUSES = ["late"];

@@ -16,10 +16,14 @@ import useViewport from "../../utils/useViewport";
 const AVLS = gql`
   query getAvls($date: String!) {
     avls(date: $date) {
+      vehicleId
       timestamp
       latitude
       longitude
       angle
+    }
+    vehicles {
+      id
     }
   }
 `;
@@ -27,18 +31,22 @@ const AVLS = gql`
 export default function HistoryPage() {
   const [viewport, setViewport] = useViewport(true);
   const { date, increment, decrement } = useDate();
-  const { avl, steps, index, setIndex } = useAvl(date);
-
+  const { avls, latestAvl, steps, index, setIndex } = useAvl(date);
   return (
     <>
       <ReactMapGL {...viewport} onViewportChange={setViewport}>
-        {avl && (
-          <VehicleMarker
-            latitude={avl.latitude}
-            longitude={avl.longitude}
-            bearing={avl.angle}
-          />
-        )}
+        {avls &&
+          avls.map(
+            avl =>
+              avl && (
+                <VehicleMarker
+                  key={avl.vehicleId}
+                  latitude={avl.latitude}
+                  longitude={avl.longitude}
+                  bearing={avl.angle}
+                />
+              )
+          )}
         <BusStopsOverlay />
       </ReactMapGL>
       <div className="time-travel-slider-container">
@@ -51,8 +59,8 @@ export default function HistoryPage() {
             </button>
           </h2>
           <p>
-            {avl
-              ? DateTime.fromSQL(avl.timestamp).toLocaleString({
+            {latestAvl
+              ? DateTime.fromSQL(latestAvl.timestamp).toLocaleString({
                   hour: "2-digit",
                   minute: "2-digit",
                   second: "2-digit",
@@ -98,8 +106,20 @@ function useAvl(date: DateTime) {
     return {};
   } else {
     const steps = data.avls.length - 1;
+    const vehicleCount = data.vehicles.length;
+    const avls = Array.from({ length: vehicleCount });
+
+    let i = Math.min(index, steps);
+    let k = 0;
+    while (!avls.every(avl => !!avl) && i >= 0 && k < 50) {
+      const avl = data.avls[i];
+      if (!avls[avl.vehicleId - 1]) avls[avl.vehicleId - 1] = avl;
+      i--;
+      k++;
+    }
     return {
-      avl: data.avls[index],
+      avls: avls.filter(avl => !!avl),
+      latestAvl: data.avls[index],
       index: Math.min(index, steps),
       steps,
       setIndex

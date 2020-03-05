@@ -1,11 +1,11 @@
 // @flow
 
-import BackButton from "../../misc/BackButton.react";
-import BusDetailLoadingState from "../../edge-states/BusDetailLoadingState.react";
+import BackButton from "../misc/BackButton.react";
+import BusDetailLoadingState from "../edge-states/BusDetailLoadingState.react";
 import BusStopDetailViewTile from "./BusStopDetailViewTile.react";
-import DeparturesEmptyState from "../../edge-states/DeparturesEmptyState.react";
+import DeparturesEmptyState from "../edge-states/DeparturesEmptyState.react";
 import React from "react";
-import { formatDepartureData } from "../../../utils/departureUtil";
+import { formatDepartureData } from "../../utils/departureUtil";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
@@ -17,7 +17,7 @@ type QueryResult = {|
   departures: {|
     ...Departure,
     trip: {|
-      id: string
+      id: number
     |}
   |}[]
 |};
@@ -55,7 +55,6 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
 
   const { name, street, direction, departures } = busStop;
 
-  // TODO add null state
   return (
     <>
       <BackButton />

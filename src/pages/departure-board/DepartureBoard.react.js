@@ -1,9 +1,9 @@
 // @flow
 
-import DepartureBoardLoadingState from "../../edge-states/DepartureBoardLoadingState.react";
+import DepartureBoardLoadingState from "../edge-states/DepartureBoardLoadingState.react";
 import DepartureTile from "./DepartureTile.react";
 import React from "react";
-import { formatDepartureData } from "../../../utils/departureUtil";
+import { formatDepartureData } from "../../utils/departureUtil";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
@@ -72,12 +72,10 @@ function useBusStopGroups(): {
   }));
 
   const directions = new Set(busStops.map(busStop => busStop.direction));
-  const busStopsByDirection = Array.from(directions)
-    .map(direction => ({
-      direction,
-      busStops: busStops.filter(busStop => busStop.direction === direction)
-    }))
-    .reverse();
+  const busStopsByDirection = Array.from(directions).map(direction => ({
+    direction,
+    busStops: busStops.filter(busStop => busStop.direction === direction)
+  }));
 
   return busStopsByDirection;
 }
