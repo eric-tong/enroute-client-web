@@ -6,10 +6,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none;
 
   .icon {
     width: 70px;
     height: 70px;
+    pointer-events: all;
 
     @include medium {
       width: 50px;

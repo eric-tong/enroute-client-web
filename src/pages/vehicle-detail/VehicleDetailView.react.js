@@ -15,7 +15,7 @@ type Props = {|
 |};
 type QueryResult = {|
   id: number,
-  trip: { id: ?string },
+  trip: { id: ?number },
   avl: { timestamp: string }
 |};
 
@@ -62,23 +62,28 @@ export default function VehicleDetailView({ registration }: Props) {
 }
 
 type TripTileProps = {|
-  tripId: ?string
+  tripId: ?number
 |};
 
 function TripTile({ tripId }: TripTileProps) {
+  const tripIdWithTaxiTrips = tripId
+    ? tripId <= 26
+      ? tripId
+      : tripId + tripId - 26
+    : 0;
   return (
     <div
       className={getClass("detail-view-tile", tripId ? undefined : "collapsed")}
     >
       <header>
         <div className="subheader left">
-          <h1>{tripId ? `On Trip ${tripId}` : "Inactive"}</h1>
+          <h1>{tripId ? `On Trip ${tripIdWithTaxiTrips}` : "Inactive"}</h1>
         </div>
       </header>
       {tripId && (
         <div className="lower-half">
           <h3>Bus Route</h3>
-          <BusRoute tripId={tripId} />
+          <BusRoute tripId={tripId.toString()} />
         </div>
       )}
     </div>
