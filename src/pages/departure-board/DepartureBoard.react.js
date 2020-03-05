@@ -1,9 +1,9 @@
 // @flow
 
-import DepartureBoardLoadingState from "../../edge-states/DepartureBoardLoadingState.react";
+import DepartureBoardLoadingState from "../edge-states/DepartureBoardLoadingState.react";
 import DepartureTile from "./DepartureTile.react";
 import React from "react";
-import { formatDepartureData } from "../../../utils/departureUtil";
+import { formatDepartureData } from "../../utils/departureUtil";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 

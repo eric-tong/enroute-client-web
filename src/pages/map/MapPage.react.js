@@ -4,8 +4,8 @@ import "../../styles/panel.scss";
 
 import { Route, Switch } from "react-router-dom";
 
-import BusStopDetailView from "./panel/BusStopDetailView.react";
-import DepartureBoard from "./panel/DepartureBoard.react";
+import BusStopDetailView from "../bus-stop-detail/BusStopDetailView.react";
+import DepartureBoard from "../departure-board/DepartureBoard.react";
 import Map from "./Map.react";
 import { PANEL_WIDTH } from "../../utils/useViewport";
 import React from "react";

@@ -1,13 +1,13 @@
 // @flow
 
-import "../../../styles/bus-route.scss";
+import "../../styles/bus-route.scss";
 
 import React, { useContext } from "react";
 
-import { ActiveBusStopContext } from "./BusStopDetailView.react";
-import BusRouteLoadingState from "../../edge-states/BusRouteLoadingState.react";
+import { ActiveBusStopContext } from "../bus-stop-detail/BusStopDetailView.react";
+import BusRouteLoadingState from "../edge-states/BusRouteLoadingState.react";
 import TimeWithAlertTag from "./TimeWithAlertTag.react";
-import { formatDepartureData } from "../../../utils/departureUtil";
+import { formatDepartureData } from "../../utils/departureUtil";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
