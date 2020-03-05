@@ -55,7 +55,6 @@ export default function BusStopDetailView({ busStopUrl }: Props) {
 
   const { name, street, direction, departures } = busStop;
 
-  // TODO add null state
   return (
     <>
       <BackButton />
