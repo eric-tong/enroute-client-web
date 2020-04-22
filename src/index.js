@@ -2,13 +2,19 @@
 
 import "./styles/index.scss";
 
+import { hydrate, render } from "react-dom";
+
 import App from "./App.react";
 import React from "react";
-import ReactDOM from "react-dom";
 import { Settings } from "luxon";
 
 Settings.defaultLocale = "en-GB";
 Settings.defaultZoneName = "Europe/London";
 
-// $FlowFixMe
-ReactDOM.render(<App />, document.getElementById("root"));
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error("No root element found");
+if (rootElement.hasChildNodes()) {
+  hydrate(<App />, rootElement);
+} else {
+  render(<App />, rootElement);
+}

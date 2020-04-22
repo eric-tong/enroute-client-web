@@ -19,7 +19,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postbuild": "react-snap"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "flow-bin": "^0.110.1",
-    "flow-typed": "^2.6.2"
+    "flow-typed": "^2.6.2",
+    "react-snap": "^1.23.0"
   }
 }
